@@ -1,1 +1,57 @@
-<p>onboard works!</p>
+<div class="hero-page-container">
+  <mat-card class="hero-card mat-mdc-card-outlined">
+    <mat-card-header class="header-container">
+      <h1 class="mat-headline-1">
+        cleo.|
+      </h1>
+    </mat-card-header>
+
+    <mat-card-content>
+      <h2 class="mat-headline-6">
+        A journal text editor.
+      </h2>
+      <br>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <a
+        class="mat-button action-button"
+        mat-raised-button
+        routerLink="/sign-up"
+        color="accent"
+        disableRipple
+      >
+        Get Started
+      </a>
+    </mat-card-actions>
+
+    <mat-card-content>
+      <br>
+      <p class="mat-body-2">
+        Already have an account? <a routerLink="/sign-in">Sign in.</a>
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <a
+    class="navigation-button mat-elevation-z1"
+    mat-icon-button
+    routerLink="/about"
+    disableRipple
+    color="primary"
+  >
+    <mat-icon>keyboard_arrow_down</mat-icon>
+  </a>
+
+  <p class="mat-caption signature">
+    Terms of Use | Privacy Policy | Accessibility Statement
+  </p>
+
+  <button
+    class="help-button"
+    mat-icon-button
+    disableRipple
+    color="primary">
+    <mat-icon>help</mat-icon>
+  </button>
+</div>
