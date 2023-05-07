@@ -51,4 +51,8 @@ export class SignUpComponent {
       return;
     }
   }
+
+  ngOnDestroy() {
+    this.error.unsubscribe();
+  }
 }
