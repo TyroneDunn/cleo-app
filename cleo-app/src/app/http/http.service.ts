@@ -14,7 +14,6 @@ export class HttpService {
       .set("Content-Type", "application/json")
       .set("credentials", "true")
   };
-  constructor() {}
 
   public getRequest$<T>(url: string): Observable<HttpResponse<T>> {
     return this.http.get<T>(url, this.options).pipe(
