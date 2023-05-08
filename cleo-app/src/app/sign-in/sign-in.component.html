@@ -1,1 +1,100 @@
-<p>sign-in works!</p>
+<div class="hero-page-container">
+  <a
+    id="return-button"
+    class="navigation-button mat-elevation-z1"
+    routerLink=""
+    mat-icon-button
+    disableRipple
+    color="primary"
+  >
+    <mat-icon>keyboard_arrow_left</mat-icon>
+  </a>
+
+  <mat-card class="hero-card mat-mdc-card-outlined">
+    <mat-card-header class="title-container">
+      <h1 class="mat-headline-3">
+        Sign In.
+      </h1>
+      <p class="mat-subtitle-1">
+        Sign in to your account.
+      </p>
+    </mat-card-header>
+
+    <mat-card-content>
+      <br>
+      <form
+        (ngSubmit)="onSubmit()"
+        [formGroup]="signInForm"
+      >
+        <div class="form-container">
+          <mat-form-field
+            class="form-field"
+            appearance="outline"
+          >
+            <mat-label>Username</mat-label>
+            <input
+              formControlName="username"
+              name="username"
+              type="text"
+              matInput
+              required
+            >
+          </mat-form-field>
+
+          <mat-form-field
+            class="form-field"
+            appearance="outline"
+          >
+            <mat-label>Password</mat-label>
+            <input
+              formControlName="password"
+              name="password"
+              type="password"
+              matInput
+              required
+            >
+          </mat-form-field>
+
+          <div
+            class="text-left"
+          >
+            <mat-label
+              matError
+            >
+              {{error.value}}
+            </mat-label>
+            <br>
+          </div>
+
+          <div>
+            <button
+              class="action-button"
+              type="submit"
+              mat-raised-button
+              color="accent"
+            >
+              Sign In
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <div>
+    <br>
+    <br>
+    <p class="mat-body-2">
+      Don't have an account? Sign up <a routerLink="/sign-up">here.</a>
+    </p>
+  </div>
+
+  <a
+    class="help-button"
+    mat-icon-button
+    color="primary"
+    disableRipple
+  >
+    <mat-icon>help</mat-icon>
+  </a>
+</div>
