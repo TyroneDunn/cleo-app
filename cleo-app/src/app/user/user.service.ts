@@ -39,7 +39,7 @@ export class UserService {
     );
   }
 
-  login$(username: string, password: string): Observable<boolean> {
+  public login$(username: string, password: string): Observable<boolean> {
     const payload = {
       username: username,
       password: password,
