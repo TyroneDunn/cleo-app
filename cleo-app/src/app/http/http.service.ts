@@ -23,8 +23,8 @@ export class HttpService {
 
   public postRequest$(url: string, payload: object)
     : Observable<HttpResponse<object>> {
-      return this.http.post(url, payload, this.options).pipe(
-        retry(2),
-      );
-    }
+    return this.http.post(url, payload, this.options).pipe(
+      retry(2),
+    );
+  }
 }

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {RouterLink} from "@angular/router";
 import {MatButtonModule} from "@angular/material/button";
-import {MatIconModule} from "@angular/material/icon";
 import {MatCardModule} from "@angular/material/card";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
   selector: 'app-about',
@@ -12,10 +12,11 @@ import {MatCardModule} from "@angular/material/card";
     CommonModule,
     RouterLink,
     MatButtonModule,
+    MatCardModule,
     MatIconModule,
-    MatCardModule
   ],
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss']
 })
-export class AboutComponent {}
+export class AboutComponent {
+}
