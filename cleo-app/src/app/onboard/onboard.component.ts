@@ -3,10 +3,11 @@ import {CommonModule} from '@angular/common';
 import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {UserService} from "../user/user.service";
 import {SubSink} from "../../utils/sub-sink";
 import {BehaviorSubject, delay, timeout} from "rxjs";
+import {JOURNALS} from "../app-routing.constants";
 
 type State = 'loading' | 'isAuthorized' | 'notAuthorized';
 
@@ -25,6 +26,7 @@ type State = 'loading' | 'isAuthorized' | 'notAuthorized';
 })
 export class OnboardComponent {
   public userService = inject(UserService);
+  private router = inject(Router);
   private sink = new SubSink();
   public authorized$ = new BehaviorSubject<State>("loading");
 
@@ -35,14 +37,15 @@ export class OnboardComponent {
           timeout(2000),
           delay(2000),
         )
-        .subscribe((okStatus) => {
+        .subscribe(async (okStatus) => {
           if (!okStatus) {
             this.authorized$.next("notAuthorized");
             return;
           }
 
           this.authorized$.next("isAuthorized");
-      })
+          await this.router.navigate([JOURNALS]);
+        })
     );
   }
 
