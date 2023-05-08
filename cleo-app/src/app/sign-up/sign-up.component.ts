@@ -11,7 +11,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators}
 import {MatInputModule} from "@angular/material/input";
 import {UserService} from "../user/user.service";
 import {SubSink} from "../../utils/sub-sink";
-import {HOME, JOURNALS} from "../app-routing.constants";
+import {JOURNALS, SIGN_IN} from "../app-routing.constants";
 
 @Component({
   selector: 'app-sign-up',
@@ -59,7 +59,10 @@ export class SignUpComponent {
 
     const username = this.signUpForm.get('username')?.value as string;
     const password = this.signUpForm.get('password')?.value as string;
+    this.signUp(username, password);
+  }
 
+  private signUp(username: string, password: string) {
     this.sink.collect(
       this.userService.register$(username, password).subscribe(async (status) => {
         if (!status) {
@@ -69,7 +72,7 @@ export class SignUpComponent {
 
         this.userService.login$(username, password).subscribe(async (status) => {
           if (!status) {
-            await this.router.navigate([HOME]);
+            await this.router.navigate([SIGN_IN]);
             return;
           }
 
@@ -79,7 +82,7 @@ export class SignUpComponent {
     );
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.error.unsubscribe();
     this.sink.drain();
   }
