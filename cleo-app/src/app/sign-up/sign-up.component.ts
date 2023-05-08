@@ -64,14 +64,14 @@ export class SignUpComponent {
 
   private signUp(username: string, password: string) {
     this.sink.collect(
-      this.userService.register$(username, password).subscribe(async (status) => {
-        if (!status) {
+      this.userService.register$(username, password).subscribe(async (okStatus) => {
+        if (!okStatus) {
           this.error.next('Username already exists.');
           return;
         }
 
-        this.userService.login$(username, password).subscribe(async (status) => {
-          if (!status) {
+        this.userService.login$(username, password).subscribe(async (okStatus) => {
+          if (!okStatus) {
             await this.router.navigate([SIGN_IN]);
             return;
           }
