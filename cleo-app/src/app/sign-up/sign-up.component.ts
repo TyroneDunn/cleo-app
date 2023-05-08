@@ -70,14 +70,16 @@ export class SignUpComponent {
           return;
         }
 
-        this.userService.login$(username, password).subscribe(async (okStatus) => {
-          if (!okStatus) {
-            await this.router.navigate([SIGN_IN]);
-            return;
-          }
+        this.sink.collect(
+          this.userService.login$(username, password).subscribe(async (okStatus) => {
+            if (!okStatus) {
+              await this.router.navigate([SIGN_IN]);
+              return;
+            }
 
-          await this.router.navigate([JOURNALS]);
-        })
+            await this.router.navigate([JOURNALS]);
+          })
+        )
       })
     );
   }
