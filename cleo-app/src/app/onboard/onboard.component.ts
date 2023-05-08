@@ -45,4 +45,9 @@ export class OnboardComponent {
       })
     );
   }
+
+  public ngOnDestroy() {
+    this.sink.drain();
+    this.authorized$.unsubscribe();
+  }
 }
