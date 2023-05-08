@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpService} from "../http/http.service";
 import {catchError, map, Observable, of} from "rxjs";
-import {CLEO_API_PROTECTED_URL, CLEO_API_REGISTER_URL} from "./user.constants";
+import {CLEO_API_LOGIN_URL, CLEO_API_PROTECTED_URL, CLEO_API_REGISTER_URL} from "./user.constants";
 import {HttpErrorResponse} from "@angular/common/http";
 
 @Injectable({
@@ -29,6 +29,22 @@ export class UserService {
       map((response) => {
         return response.ok;
       }),
+    );
+  }
+
+  login$(username: string, password: string): Observable<boolean> {
+    const payload = {
+      username: username,
+      password: password,
+    };
+
+    return this.http.postRequest$(CLEO_API_LOGIN_URL, payload).pipe(
+      map((response) => {
+        return response.ok;
+      }),
+      catchError((response: HttpErrorResponse) => {
+        return of(false);
+      })
     );
   }
 }
