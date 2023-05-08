@@ -7,7 +7,6 @@ import {
   CLEO_API_PROTECTED_URL,
   CLEO_API_REGISTER_URL
 } from "./user.constants";
-import {HttpErrorResponse} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +18,8 @@ export class UserService {
       map((response) => {
         return response.ok;
       }),
-      catchError((response: HttpErrorResponse): Observable<boolean> => {
-        return of(response.ok);
+      catchError((): Observable<boolean> => {
+        return of(false);
       }),
     );
 
@@ -33,6 +32,9 @@ export class UserService {
     return this.http.postRequest$(CLEO_API_REGISTER_URL, payload).pipe(
       map((response) => {
         return response.ok;
+      }),
+      catchError((): Observable<boolean> => {
+        return of(false);
       }),
     );
   }
@@ -47,9 +49,9 @@ export class UserService {
       map((response) => {
         return response.ok;
       }),
-      catchError((response: HttpErrorResponse) => {
+      catchError(() => {
         return of(false);
-      })
+      }),
     );
   }
 
@@ -57,6 +59,9 @@ export class UserService {
     return this.http.postRequest$(CLEO_API_LOGOUT_URL, {}).pipe(
       map((response) => {
         return response.ok;
+      }),
+      catchError(() => {
+        return of(false);
       }),
     );
   }
