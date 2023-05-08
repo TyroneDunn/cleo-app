@@ -7,8 +7,7 @@ import {CLEO_API_PROTECTED_URL} from "./user.constants";
   providedIn: 'root'
 })
 export class UserService {
-  private http = inject(HttpService);
-
+  private readonly http = inject(HttpService);
   public readonly authorized$: Observable<boolean> =
     this.http.getRequest$(CLEO_API_PROTECTED_URL).pipe(
       map((response) => {
