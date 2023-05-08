@@ -18,4 +18,17 @@ export class UserService {
         return of(response.ok);
       }),
     );
+
+  public register$(username: string, password: string): Observable<boolean> {
+    const payload = {
+      username: username,
+      password: password,
+    };
+
+    return this.http.postRequest$(CLEO_API_REGISTER_URL, payload).pipe(
+      map((response) => {
+        return response.ok;
+      }),
+    );
+  }
 }
