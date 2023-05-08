@@ -8,6 +8,7 @@ import {UserService} from "../user/user.service";
 import {SubSink} from "../../utils/sub-sink";
 import {BehaviorSubject, delay, timeout} from "rxjs";
 import {JOURNALS} from "../app-routing.constants";
+import {SplashComponent} from "../splash/splash.component";
 
 type State = 'loading' | 'isAuthorized' | 'notAuthorized';
 
@@ -20,6 +21,7 @@ type State = 'loading' | 'isAuthorized' | 'notAuthorized';
     MatIconModule,
     MatButtonModule,
     RouterLink,
+    SplashComponent,
   ],
   templateUrl: './onboard.component.html',
   styleUrls: ['./onboard.component.scss']
