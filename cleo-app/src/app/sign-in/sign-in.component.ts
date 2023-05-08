@@ -56,14 +56,13 @@ export class SignInComponent {
 
     const username = this.signInForm.get('username')?.value as string;
     const password = this.signInForm.get('password')?.value as string;
-    console.log('1. username and password: ', username, password);
+
     this.signIn(username, password);
   }
 
   private signIn(username: string, password: string) {
     this.sink.collect(
       this.userService.login$(username, password).subscribe(async (success) => {
-        console.log('username and password: ', username, password);
         if (!success) {
           this.error.next('Incorrect username or password.');
           return;
