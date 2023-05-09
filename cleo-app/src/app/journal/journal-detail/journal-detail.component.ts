@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {Journal} from "../journal.type";
 
 @Component({
   selector: 'app-journal-detail',
@@ -9,5 +10,5 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./journal-detail.component.scss']
 })
 export class JournalDetailComponent {
-
+@Input() journal!: Journal;
 }
