@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {Observable} from "rxjs";
+import {Journal} from "../journal.type";
 
 @Component({
   selector: 'app-journals',
@@ -9,5 +11,5 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./journals.component.scss']
 })
 export class JournalsComponent {
-
+  @Input() journals$!: Observable<Journal[]>;
 }
