@@ -17,7 +17,6 @@ const routes: Routes = [
   {path: 'sign-in', component: SignInComponent},
   {path: 'sign-up', component: SignUpComponent},
   {path: 'journals', component: JournalsComponent},
-  {path: 'create-journal', component: CreateJournalComponent},
   {path: 'journal/:id', component: JournalDetailComponent},
   {path: 'journal-entry/:id', component: JournalEntryDetailComponent},
 ];
