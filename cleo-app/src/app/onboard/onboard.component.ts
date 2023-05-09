@@ -36,8 +36,8 @@ export class OnboardComponent {
     this.sink.collect(
       this.userService.authorized$
         .pipe(
-          timeout(2000),
-          delay(2000),
+          timeout(1000),
+          delay(1000),
         )
         .subscribe(async (okStatus) => {
           if (!okStatus) {
