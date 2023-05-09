@@ -1,10 +1,11 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Observable} from "rxjs";
 import {Journal} from "../journal.type";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatListModule} from "@angular/material/list";
+import {JournalService} from "../journal.service";
 
 @Component({
   selector: 'app-journals',
@@ -19,5 +20,10 @@ import {MatListModule} from "@angular/material/list";
   styleUrls: ['./journals.component.scss']
 })
 export class JournalsComponent {
-  @Input() journals$!: Observable<Journal[]>;
+  private journalsService = inject(JournalService);
+  public journals$!: Observable<Journal[]>;
+
+  public ngOnInit() {
+    this.journals$ = this.journalsService.journals$();
+  }
 }
