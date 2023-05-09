@@ -12,9 +12,7 @@
         colspan="1"
         rowspan="1"
       >
-        <mat-grid-tile-header>
-          <h2>{{journal.name}}</h2>
-        </mat-grid-tile-header>
+        <app-journal-card [journal]="journal"></app-journal-card>
       </mat-grid-tile>
     </mat-grid-list>
   </mat-list-item>

@@ -6,6 +6,11 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatListModule} from "@angular/material/list";
 import {JournalService} from "../journal.service";
+import {JournalDetailComponent} from "../journal-detail/journal-detail.component";
+import {
+  JournalEntryDetailComponent
+} from "../../journal-entry/journal-entry-detail/journal-entry-detail.component";
+import {JournalCardComponent} from "../journal-card/journal-card.component";
 
 @Component({
   selector: 'app-journals',
@@ -14,7 +19,10 @@ import {JournalService} from "../journal.service";
     CommonModule,
     MatProgressBarModule,
     MatGridListModule,
-    MatListModule
+    MatListModule,
+    JournalDetailComponent,
+    JournalEntryDetailComponent,
+    JournalCardComponent
   ],
   templateUrl: './journals.component.html',
   styleUrls: ['./journals.component.scss']
