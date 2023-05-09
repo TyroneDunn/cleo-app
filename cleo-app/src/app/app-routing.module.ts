@@ -7,6 +7,9 @@ import {SignUpComponent} from "./sign-up/sign-up.component";
 import {JournalsComponent} from "./journal/journals/journals.component";
 import {CreateJournalComponent} from "./journal/create-journal/create-journal.component";
 import {JournalDetailComponent} from "./journal/journal-detail/journal-detail.component";
+import {
+  JournalEntryDetailComponent
+} from "./journal-entry/journal-entry-detail/journal-entry-detail.component";
 
 const routes: Routes = [
   {path: '', component: OnboardComponent},
@@ -16,6 +19,7 @@ const routes: Routes = [
   {path: 'journals', component: JournalsComponent},
   {path: 'create-journal', component: CreateJournalComponent},
   {path: 'journal/:id', component: JournalDetailComponent},
+  {path: 'journal-entry/:id', component: JournalEntryDetailComponent},
 ];
 
 @NgModule({
