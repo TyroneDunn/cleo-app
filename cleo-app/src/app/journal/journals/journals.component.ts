@@ -11,6 +11,7 @@ import {
   JournalEntryDetailComponent
 } from "../../journal-entry/journal-entry-detail/journal-entry-detail.component";
 import {JournalCardComponent} from "../journal-card/journal-card.component";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-journals',
@@ -22,7 +23,8 @@ import {JournalCardComponent} from "../journal-card/journal-card.component";
     MatListModule,
     JournalDetailComponent,
     JournalEntryDetailComponent,
-    JournalCardComponent
+    JournalCardComponent,
+    RouterLink
   ],
   templateUrl: './journals.component.html',
   styleUrls: ['./journals.component.scss']
