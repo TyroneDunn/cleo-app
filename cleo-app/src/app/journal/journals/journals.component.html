@@ -3,4 +3,19 @@
   mode="indeterminate"
 ></mat-progress-bar>
 
-<p>journals works!</p>
+<mat-list>
+  <div mat-subheader>My Journals</div>
+  <mat-list-item>
+    <mat-grid-list cols="3" rowHeight="200px">
+      <mat-grid-tile
+        *ngFor="let journal of journals$ | async"
+        colspan="1"
+        rowspan="1"
+      >
+        <mat-grid-tile-header>
+          <h2>{{journal.name}}</h2>
+        </mat-grid-tile-header>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-list-item>
+</mat-list>
