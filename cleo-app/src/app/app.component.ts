@@ -7,5 +7,6 @@ import {UserService} from "./user/user.service";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public userService = inject(UserService);
+  private userService = inject(UserService);
+  public authorized$ = this.userService.authorized$;
 }
