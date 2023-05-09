@@ -70,18 +70,22 @@ export class SignUpComponent {
           return;
         }
 
-        this.sink.collect(
-          this.userService.login$(username, password).subscribe(async (okStatus) => {
-            if (!okStatus) {
-              await this.router.navigate([SIGN_IN]);
-              return;
-            }
-
-            await this.router.navigate([JOURNALS]);
-          })
-        )
+        this.login(username, password);
       })
     );
+  }
+
+  private login(username: string, password: string) {
+    this.sink.collect(
+      this.userService.login$(username, password).subscribe(async (okStatus) => {
+        if (!okStatus) {
+          await this.router.navigate([SIGN_IN]);
+          return;
+        }
+
+        await this.router.navigate([JOURNALS]);
+      })
+    )
   }
 
   public ngOnDestroy() {
