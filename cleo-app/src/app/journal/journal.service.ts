@@ -20,4 +20,16 @@ export class JournalService {
       }),
     );
   };
+
+  public createJournal$(name: string): Observable<boolean> {
+    const payload = {name: name};
+    return this.http.postRequest$(CLEO_API_JOURNALS_URL, payload).pipe(
+      map((response) => {
+        return response.ok;
+      }),
+      catchError(() => {
+        return of(false);
+      }),
+    );
+  }
 }
