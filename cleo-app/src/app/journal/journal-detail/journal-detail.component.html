@@ -12,6 +12,8 @@
 </button>
 
 <p *ngIf="journal$.value">{{journal$.value.name}}</p>
+<p *ngIf="journal$.value">{{journal$.value.dateOfCreation | date}} -
+  {{journal$.value.lastUpdated | date}}</p>
 
 <button
   mat-button
