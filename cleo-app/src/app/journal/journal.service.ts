@@ -21,14 +21,14 @@ export class JournalService {
     );
   };
 
-  public createJournal$(name: string): Observable<boolean> {
+  public createJournal$(name: string): Observable<Journal | undefined> {
     const payload = {name: name};
     return this.http.postRequest$(CLEO_API_JOURNALS_URL, payload).pipe(
       map((response) => {
-        return response.ok;
+        return response.body as Journal;
       }),
       catchError(() => {
-        return of(false);
+        return of(undefined);
       }),
     );
   }
