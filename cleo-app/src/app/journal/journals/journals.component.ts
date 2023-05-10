@@ -14,23 +14,25 @@ import {JournalCardComponent} from "../journal-card/journal-card.component";
 import {Router, RouterLink} from "@angular/router";
 import {MatButtonModule} from "@angular/material/button";
 import {SubSink} from "../../../utils/sub-sink";
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 const NEW_JOURNAL_PLACEHOLDER = 'New Journal';
 
 @Component({
   selector: 'app-journals',
   standalone: true,
-    imports: [
-        CommonModule,
-        MatProgressBarModule,
-        MatGridListModule,
-        MatListModule,
-        JournalDetailComponent,
-        JournalEntryDetailComponent,
-        JournalCardComponent,
-        RouterLink,
-        MatButtonModule
-    ],
+  imports: [
+    CommonModule,
+    MatProgressBarModule,
+    MatGridListModule,
+    MatListModule,
+    JournalDetailComponent,
+    JournalEntryDetailComponent,
+    JournalCardComponent,
+    RouterLink,
+    MatButtonModule,
+    MatToolbarModule
+  ],
   templateUrl: './journals.component.html',
   styleUrls: ['./journals.component.scss']
 })
