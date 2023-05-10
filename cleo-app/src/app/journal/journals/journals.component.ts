@@ -17,6 +17,8 @@ import {SubSink} from "../../../utils/sub-sink";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
+import {UserService} from "../../user/user.service";
+import {HOME} from "../../app-routing.constants";
 
 const NEW_JOURNAL_PLACEHOLDER = 'New Journal';
 
@@ -43,6 +45,7 @@ const NEW_JOURNAL_PLACEHOLDER = 'New Journal';
 export class JournalsComponent {
   private journalsService = inject(JournalService);
   private router = inject(Router);
+  private userService = inject(UserService);
   private sink = new SubSink();
   public journals$!: Observable<Journal[]>;
 
@@ -57,6 +60,15 @@ export class JournalsComponent {
           if (!journal) return;
           await this.router.navigate([`journal/${journal._id}`]);
         })
+    );
+  }
+
+  public logout() {
+    this.sink.collect(
+      this.userService.logout$().subscribe(async (success) => {
+        if (!success) return;
+        await this.router.navigate([HOME]);
+      })
     );
   }
 
