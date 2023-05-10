@@ -62,7 +62,7 @@ export class SignInComponent {
 
   private signIn(username: string, password: string) {
     this.sink.collect(
-      this.userService.login$(username, password).subscribe(async (success) => {
+      this.userService.signIn$(username, password).subscribe(async (success) => {
         if (!success) {
           this.error.next('Incorrect username or password.');
           return;

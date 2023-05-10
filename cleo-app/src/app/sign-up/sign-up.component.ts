@@ -64,7 +64,7 @@ export class SignUpComponent {
 
   private signUp(username: string, password: string) {
     this.sink.collect(
-      this.userService.register$(username, password).subscribe(async (okStatus) => {
+      this.userService.signUp$(username, password).subscribe(async (okStatus) => {
         if (!okStatus) {
           this.error.next('Username already exists.');
           return;
@@ -77,7 +77,7 @@ export class SignUpComponent {
 
   private login(username: string, password: string) {
     this.sink.collect(
-      this.userService.login$(username, password).subscribe(async (okStatus) => {
+      this.userService.signIn$(username, password).subscribe(async (okStatus) => {
         if (!okStatus) {
           await this.router.navigate([SIGN_IN]);
           return;
