@@ -32,4 +32,8 @@ export class JournalService {
       }),
     );
   }
+
+  public journal$(id: string): Observable<Journal | undefined> {
+
+  }
 }
