@@ -6,13 +6,15 @@
 <mat-list>
   <div mat-subheader>Journals.</div>
   <mat-grid-list cols="4" rowHeight="300px">
-    <a routerLink="/create-journal">
-      <mat-grid-tile>
-        <mat-grid-tile-header>
-          <h2>Create Journal</h2>
-        </mat-grid-tile-header>
-      </mat-grid-tile>
-    </a>
+    <mat-grid-tile>
+      <mat-grid-tile-header>
+        <button
+          mat-button
+        >
+          Create Journal
+        </button>
+      </mat-grid-tile-header>
+    </mat-grid-tile>
     <mat-grid-tile
       *ngFor="let journal of journals$ | async"
       colspan="1"

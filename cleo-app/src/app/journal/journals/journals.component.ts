@@ -12,20 +12,22 @@ import {
 } from "../../journal-entry/journal-entry-detail/journal-entry-detail.component";
 import {JournalCardComponent} from "../journal-card/journal-card.component";
 import {RouterLink} from "@angular/router";
+import {MatButtonModule} from "@angular/material/button";
 
 @Component({
   selector: 'app-journals',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatProgressBarModule,
-    MatGridListModule,
-    MatListModule,
-    JournalDetailComponent,
-    JournalEntryDetailComponent,
-    JournalCardComponent,
-    RouterLink
-  ],
+    imports: [
+        CommonModule,
+        MatProgressBarModule,
+        MatGridListModule,
+        MatListModule,
+        JournalDetailComponent,
+        JournalEntryDetailComponent,
+        JournalCardComponent,
+        RouterLink,
+        MatButtonModule
+    ],
   templateUrl: './journals.component.html',
   styleUrls: ['./journals.component.scss']
 })
