@@ -77,6 +77,16 @@ export class JournalDetailComponent {
     this.location.back();
   }
 
+  public deleteJournal() {
+    this.sink.collect(
+      this.journalService.deleteJournal$(this.id$.value)
+        .subscribe((success) => {
+          if (!success) return;
+          this.navigateBack();
+        })
+    );
+  }
+
   public ngOnDestroy() {
     this.id$.unsubscribe();
     this.journal$.unsubscribe();
