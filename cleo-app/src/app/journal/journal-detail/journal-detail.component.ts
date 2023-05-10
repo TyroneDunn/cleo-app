@@ -6,13 +6,6 @@ import {BehaviorSubject} from "rxjs";
 import {Journal} from "../journal.type";
 import {SubSink} from "../../../utils/sub-sink";
 
-const CACHED_JOURNAL: Journal = {
-  _id: '',
-  name: '',
-  lastUpdated: new Date(),
-  dateOfCreation: new Date(),
-}
-
 @Component({
   selector: 'app-journal-detail',
   standalone: true,
@@ -25,16 +18,22 @@ export class JournalDetailComponent {
   private route = inject(ActivatedRoute);
   private sink = new SubSink();
   private id = new BehaviorSubject<string>('');
-  private journal = new BehaviorSubject<Journal>(CACHED_JOURNAL);
+  private journal = new BehaviorSubject<Journal | undefined>(undefined);
 
   ngOnInit() {
     this.sink.collect(
       this.route.paramMap.subscribe(params => {
         this.id.next(params.get('id') as string);
+
+        this.sink.collect(
+          this.journalService.journal$(this.id.value).subscribe((journal) => {
+            if (!journal) return;
+            this.journal.next(journal);
+          })
+        );
       })
     );
   }
-
 
   public ngOnDestroy() {
     this.id.unsubscribe();
