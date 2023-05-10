@@ -25,14 +25,12 @@
 
   <mat-grid-list cols="4" rowHeight="300px">
     <mat-grid-tile>
-      <mat-grid-tile-header>
-        <button
-          mat-button
-          (click)="newJournal()"
-        >
-          Create Journal
-        </button>
-      </mat-grid-tile-header>
+      <button
+        mat-button
+        (click)="newJournal()"
+      >
+        Create Journal
+      </button>
     </mat-grid-tile>
     <mat-grid-tile
       *ngFor="let journal of journals$ | async"
