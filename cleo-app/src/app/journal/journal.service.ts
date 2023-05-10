@@ -45,8 +45,7 @@ export class JournalService {
   }
 
   public deleteJournal$(id: string): Observable<boolean> {
-    const payload = {id: id};
-    return this.http.deleteRequest$(`${CLEO_API_JOURNALS_URL}/${id}`).pipe(
+    return this.http.deleteRequest$(`${CLEO_API_JOURNALS_URL}${id}`).pipe(
       map((response) => {
         return response.ok;
       }),
