@@ -31,9 +31,16 @@
     <div mat-subheader>My Journals</div>
     <button
       mat-button
+      [matMenuTriggerFor]="sortMenu"
     >
-      Sort Menu Button
+      <mat-icon>sort</mat-icon>
+      Sort By
     </button>
+    <mat-menu #sortMenu="matMenu">
+      <button mat-menu-item>Name</button>
+      <button mat-menu-item>Last Updated</button>
+      <button mat-menu-item>Created</button>
+    </mat-menu>
   </mat-toolbar>
 
   <mat-grid-list cols="4" rowHeight="300px">
