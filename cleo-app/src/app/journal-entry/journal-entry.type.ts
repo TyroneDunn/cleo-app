@@ -1,5 +1,5 @@
 export type JournalEntry = {
-  id: string;
+  _id: string;
   content: string;
   lastUpdated: Date;
 }
