@@ -49,7 +49,7 @@ export class JournalsComponent {
       this.journalsService.createJournal$(NEW_JOURNAL_PLACEHOLDER)
         .subscribe(async (journal) => {
           if (!journal) return;
-          await this.router.navigate([`journal/${journal.id}`]);
+          await this.router.navigate([`journal/${journal._id}`]);
         })
     );
   }
@@ -58,3 +58,4 @@ export class JournalsComponent {
     this.sink.drain();
   }
 }
+``
