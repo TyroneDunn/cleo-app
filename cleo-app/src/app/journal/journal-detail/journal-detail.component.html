@@ -18,8 +18,7 @@
   </mat-menu>
 </mat-toolbar>
 
-
-<p *ngIf="journal$.value">{{journal$.value.name}}</p>
+<h2 *ngIf="journal$.value">{{journal$.value.name}}</h2>
 <p *ngIf="journal$.value">{{journal$.value.dateOfCreation | date}} -
   {{journal$.value.lastUpdated | date}}</p>
 
