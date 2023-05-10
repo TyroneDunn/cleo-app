@@ -15,6 +15,8 @@ import {Router, RouterLink} from "@angular/router";
 import {MatButtonModule} from "@angular/material/button";
 import {SubSink} from "../../../utils/sub-sink";
 import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatIconModule} from "@angular/material/icon";
+import {MatMenuModule} from "@angular/material/menu";
 
 const NEW_JOURNAL_PLACEHOLDER = 'New Journal';
 
@@ -31,7 +33,9 @@ const NEW_JOURNAL_PLACEHOLDER = 'New Journal';
     JournalCardComponent,
     RouterLink,
     MatButtonModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatIconModule,
+    MatMenuModule
   ],
   templateUrl: './journals.component.html',
   styleUrls: ['./journals.component.scss']

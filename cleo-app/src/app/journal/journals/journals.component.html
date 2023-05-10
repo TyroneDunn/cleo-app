@@ -6,10 +6,23 @@
 <mat-toolbar>
   <h1>cleo.|</h1>
   <button
-    mat-button
+    mat-icon-button
+    [matMenuTriggerFor]="menu"
   >
-    User Menu Button
+    <mat-icon>account_circle</mat-icon>
   </button>
+  <mat-menu #menu="matMenu">
+    <a
+      mat-menu-item
+      routerLink="/about"
+    >
+      About
+    </a>
+    <button mat-menu-item>Help</button>
+    <button mat-menu-item>Logout</button>
+  </mat-menu>
+
+
 </mat-toolbar>
 
 
