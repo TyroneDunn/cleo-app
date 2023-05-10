@@ -21,9 +21,14 @@ export class HttpService {
     );
   }
 
-  public postRequest$(url: string, payload: object)
-    : Observable<HttpResponse<object>> {
+  public postRequest$(url: string, payload: object): Observable<HttpResponse<object>> {
     return this.http.post(url, payload, this.options).pipe(
+      retry(2),
+    );
+  }
+
+  public deleteRequest$(url: string): Observable<HttpResponse<object>> {
+    return this.http.delete(url, this.options).pipe(
       retry(2),
     );
   }
