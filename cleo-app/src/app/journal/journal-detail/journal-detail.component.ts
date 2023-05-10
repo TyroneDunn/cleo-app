@@ -22,8 +22,8 @@ const CACHED_JOURNAL: Journal = {
 export class JournalDetailComponent {
   private journalService = inject(JournalService);
   private route = inject(ActivatedRoute);
-  private id = new BehaviorSubject<string>('');
-  private journal = new BehaviorSubject<Journal>(CACHED_JOURNAL);
+  private id = new BehaviorSubject<string>('')
+  private journal = new BehaviorSubject<Journal>(CACHED_JOURNAL)
 
   public ngOnDestroy() {
     this.id.unsubscribe();
