@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {JournalService} from "../journal.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
 import {Journal} from "../journal.type";
 import {SubSink} from "../../../utils/sub-sink";
@@ -29,6 +29,7 @@ export class JournalDetailComponent {
   private journalService = inject(JournalService);
   private journalEntryService = inject(JournalEntryService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private sink = new SubSink();
   private id$ = new BehaviorSubject<string>('');
   public journal$ = new BehaviorSubject<Journal | undefined>(undefined);
@@ -52,6 +53,16 @@ export class JournalDetailComponent {
           })
         );
       })
+    );
+  }
+
+  public newEntry() {
+    this.sink.collect(
+      this.journalEntryService.createJournalEntry$(this.id$.value, '')
+        .subscribe(async (journalEntry) => {
+          if (!journalEntry) return;
+          await this.router.navigate([`journal-entry/${journalEntry._id}`]);
+        })
     );
   }
 
