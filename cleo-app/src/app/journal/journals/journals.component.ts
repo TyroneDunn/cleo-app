@@ -58,4 +58,3 @@ export class JournalsComponent {
     this.sink.drain();
   }
 }
-``
