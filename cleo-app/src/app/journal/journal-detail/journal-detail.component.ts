@@ -41,6 +41,12 @@ export class JournalDetailComponent {
             this.journal$.next(journal);
           })
         );
+
+        this.sink.collect(
+          this.journalEntryService.journalEntries(this.id$.value).subscribe((entries) => {
+            this.journalEntries$.next(entries);
+          })
+        );
       })
     );
   }
