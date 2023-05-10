@@ -1,1 +1,23 @@
-<p>journal-detail works!</p>
+<button
+  mat-button
+>
+  Back
+</button>
+
+<button
+  mat-button
+>
+  Menu
+</button>
+
+<p *ngIf="journal.value">{{journal.value.name}}</p>
+
+<button
+  mat-button
+>
+  Add Entry
+</button>
+
+<mat-list>
+  <mat-list-item></mat-list-item>
+</mat-list>

@@ -5,11 +5,17 @@ import {ActivatedRoute} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
 import {Journal} from "../journal.type";
 import {SubSink} from "../../../utils/sub-sink";
+import {MatButtonModule} from "@angular/material/button";
+import {MatListModule} from "@angular/material/list";
 
 @Component({
   selector: 'app-journal-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatListModule
+  ],
   templateUrl: './journal-detail.component.html',
   styleUrls: ['./journal-detail.component.scss']
 })
@@ -18,7 +24,7 @@ export class JournalDetailComponent {
   private route = inject(ActivatedRoute);
   private sink = new SubSink();
   private id = new BehaviorSubject<string>('');
-  private journal = new BehaviorSubject<Journal | undefined>(undefined);
+  public journal = new BehaviorSubject<Journal | undefined>(undefined);
 
   ngOnInit() {
     this.sink.collect(
