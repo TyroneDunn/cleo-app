@@ -21,6 +21,17 @@ export class JournalService {
     );
   };
 
+  public journal$(id: string): Observable<Journal | undefined> {
+    return this.http.getRequest$(`${CLEO_API_JOURNALS_URL}/${id}`).pipe(
+      map((response) => {
+        return response.body as Journal;
+      }),
+      catchError(() => {
+        return of(undefined);
+      }),
+    );
+  }
+
   public createJournal$(name: string): Observable<Journal | undefined> {
     const payload = {name: name};
     return this.http.postRequest$(CLEO_API_JOURNALS_URL, payload).pipe(
@@ -31,9 +42,5 @@ export class JournalService {
         return of(undefined);
       }),
     );
-  }
-
-  public journal$(id: string): Observable<Journal | undefined> {
-
   }
 }
