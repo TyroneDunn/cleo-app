@@ -34,6 +34,7 @@ export class JournalDetailComponent {
         this.id.next(id);
         this.sink.collect(
           this.journalService.journal$(this.id.value).subscribe((journal) => {
+            if (!journal) return;
             this.journal.next(journal);
           })
         )
