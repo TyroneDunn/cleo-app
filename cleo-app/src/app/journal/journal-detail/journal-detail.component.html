@@ -19,5 +19,11 @@
 </button>
 
 <mat-list>
-  <mat-list-item></mat-list-item>
+  <mat-list-item
+    *ngFor="let entry of journalEntries$ | async"
+  >
+    <app-journal-entry-card
+      [journalEntry]="entry"
+    ></app-journal-entry-card>
+  </mat-list-item>
 </mat-list>

@@ -9,6 +9,9 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatListModule} from "@angular/material/list";
 import {JournalEntry} from "../../journal-entry/journal-entry.type";
 import {JournalEntryService} from "../../journal-entry/journal-entry.service";
+import {
+  JournalEntryCardComponent
+} from "../../journal-entry/journal-entry-card/journal-entry-card.component";
 
 @Component({
   selector: 'app-journal-detail',
@@ -16,7 +19,8 @@ import {JournalEntryService} from "../../journal-entry/journal-entry.service";
   imports: [
     CommonModule,
     MatButtonModule,
-    MatListModule
+    MatListModule,
+    JournalEntryCardComponent
   ],
   templateUrl: './journal-detail.component.html',
   styleUrls: ['./journal-detail.component.scss']
