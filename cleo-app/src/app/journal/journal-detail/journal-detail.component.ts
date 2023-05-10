@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {JournalService} from "../journal.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
 import {Journal} from "../journal.type";
 import {SubSink} from "../../../utils/sub-sink";
@@ -20,7 +20,8 @@ import {
     CommonModule,
     MatButtonModule,
     MatListModule,
-    JournalEntryCardComponent
+    JournalEntryCardComponent,
+    RouterLink
   ],
   templateUrl: './journal-detail.component.html',
   styleUrls: ['./journal-detail.component.scss']
