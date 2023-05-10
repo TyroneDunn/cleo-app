@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, Location} from '@angular/common';
 import {JournalService} from "../journal.service";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
@@ -36,6 +36,7 @@ export class JournalDetailComponent {
   private journalEntryService = inject(JournalEntryService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private location = inject(Location);
   private sink = new SubSink();
   private id$ = new BehaviorSubject<string>('');
   public journal$ = new BehaviorSubject<Journal | undefined>(undefined);
@@ -70,6 +71,10 @@ export class JournalDetailComponent {
           await this.router.navigate([`journal-entry/${journalEntry._id}`]);
         })
     );
+  }
+
+  public navigateBack() {
+    this.location.back();
   }
 
   public ngOnDestroy() {
