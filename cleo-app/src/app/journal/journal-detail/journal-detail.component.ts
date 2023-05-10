@@ -43,7 +43,7 @@ export class JournalDetailComponent {
         );
 
         this.sink.collect(
-          this.journalEntryService.journalEntries(this.id$.value).subscribe((entries) => {
+          this.journalEntryService.journalEntries$(this.id$.value).subscribe((entries) => {
             this.journalEntries$.next(entries);
           })
         );
