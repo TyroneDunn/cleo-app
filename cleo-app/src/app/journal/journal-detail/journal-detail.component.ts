@@ -9,9 +9,11 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatListModule} from "@angular/material/list";
 import {JournalEntry} from "../../journal-entry/journal-entry.type";
 import {JournalEntryService} from "../../journal-entry/journal-entry.service";
-import {
-  JournalEntryCardComponent
-} from "../../journal-entry/journal-entry-card/journal-entry-card.component";
+import {JournalEntryCardComponent}
+  from "../../journal-entry/journal-entry-card/journal-entry-card.component";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatIconModule} from "@angular/material/icon";
+import {MatMenuModule} from "@angular/material/menu";
 
 @Component({
   selector: 'app-journal-detail',
@@ -21,7 +23,10 @@ import {
     MatButtonModule,
     MatListModule,
     JournalEntryCardComponent,
-    RouterLink
+    RouterLink,
+    MatToolbarModule,
+    MatIconModule,
+    MatMenuModule
   ],
   templateUrl: './journal-detail.component.html',
   styleUrls: ['./journal-detail.component.scss']
