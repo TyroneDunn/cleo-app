@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {Component, inject} from '@angular/core';
+import {CommonModule, Location} from '@angular/common';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
@@ -9,12 +9,21 @@ import {RouterLink} from "@angular/router";
 @Component({
   selector: 'app-journal-entry-detail',
   standalone: true,
-  imports: [CommonModule, MatToolbarModule, MatIconModule, MatMenuModule, MatButtonModule, RouterLink],
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatMenuModule,
+    MatButtonModule,
+    RouterLink
+  ],
   templateUrl: './journal-entry-detail.component.html',
   styleUrls: ['./journal-entry-detail.component.scss']
 })
 export class JournalEntryDetailComponent {
+  private location = inject(Location);
 
   navigateBack() {
+    this.location.back();
   }
 }
