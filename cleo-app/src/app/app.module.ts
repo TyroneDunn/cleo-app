@@ -10,13 +10,13 @@ import {SplashComponent} from "./splash/splash.component";
   declarations: [
     AppComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    SplashComponent,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        SplashComponent,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
