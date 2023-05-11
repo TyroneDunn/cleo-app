@@ -45,7 +45,25 @@
 ></mat-progress-bar>
 
 <div *ngIf="journal$.value">
-  <h2>{{journal$.value.name}}</h2>
+  <h2
+    *ngIf="(state$.value === 'normal')"
+  >
+    {{journal$.value.name}}
+  </h2>
+  <form
+    *ngIf="(state$.value === 'edit')"
+  >
+    <mat-form-field>
+      <input
+        matInput
+        [value]="journal$.value.name"
+        name="name"
+        type="text"
+        formControlName="name"
+        required
+      >
+    </mat-form-field>
+  </form>
   <p>{{journal$.value.dateOfCreation | date}} -
     {{journal$.value.lastUpdated | date}}</p>
 

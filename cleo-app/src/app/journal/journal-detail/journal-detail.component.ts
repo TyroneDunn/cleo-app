@@ -15,6 +15,8 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatInputModule} from "@angular/material/input";
+import {ReactiveFormsModule} from "@angular/forms";
 
 type State = 'normal' | 'edit';
 
@@ -31,6 +33,8 @@ type State = 'normal' | 'edit';
     MatIconModule,
     MatMenuModule,
     MatProgressBarModule,
+    MatInputModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './journal-detail.component.html',
   styleUrls: ['./journal-detail.component.scss']
