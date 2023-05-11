@@ -27,11 +27,9 @@ export class AppComponent {
         )
         .subscribe(async (okStatus) => {
           this.state.next('completed');
-          if (!okStatus) {
-            return;
+          if (okStatus) {
+            await this.router.navigate([JOURNALS]);
           }
-
-          await this.router.navigate([JOURNALS]);
         })
     );
   }
