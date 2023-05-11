@@ -79,13 +79,27 @@
   <p>{{journal$.value.dateOfCreation | date}} -
     {{journal$.value.lastUpdated | date}}</p>
 
-  <button
-    *ngIf="(mode$.value === 'normal')"
-    mat-button
-    (click)="newEntry()"
-  >
-    Add Entry
-  </button>
+  <mat-toolbar>
+    <button
+      *ngIf="(mode$.value === 'normal')"
+      mat-button
+      (click)="newEntry()"
+    >
+      Add Entry
+    </button>
+    <button
+      mat-button
+      [matMenuTriggerFor]="sortMenu"
+    >
+      <mat-icon>sort</mat-icon>
+      Sort By
+    </button>
+    <mat-menu #sortMenu="matMenu">
+      <button mat-menu-item>Last Updated</button>
+      <button mat-menu-item>Created</button>
+    </mat-menu>
+  </mat-toolbar>
+
 
   <mat-list>
     <mat-list-item
