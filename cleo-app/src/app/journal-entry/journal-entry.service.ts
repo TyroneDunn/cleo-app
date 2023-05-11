@@ -20,6 +20,17 @@ export class JournalEntryService {
     );
   }
 
+  public journalEntry$(journalId: string, entryId: string): Observable<JournalEntry | undefined> {
+    return this.http.getRequest$<JournalEntry>(`${CLEO_API_JOURNAL_ENTRIES_URL}${journalId}/${entryId}`).pipe(
+      map((response) => {
+        return response.body as JournalEntry;
+      }),
+      catchError(() => {
+        return of(undefined);
+      }),
+    )
+  }
+
   public createJournalEntry$(journalId: string, content: string): Observable<JournalEntry | undefined> {
     const payload = {content: content};
     return this.http.postRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}/${journalId}`, payload).pipe(
