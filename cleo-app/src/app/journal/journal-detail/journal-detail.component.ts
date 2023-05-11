@@ -16,6 +16,8 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 
+type State = 'normal' | 'edit';
+
 @Component({
   selector: 'app-journal-detail',
   standalone: true,
@@ -28,7 +30,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
     MatToolbarModule,
     MatIconModule,
     MatMenuModule,
-    MatProgressBarModule
+    MatProgressBarModule,
   ],
   templateUrl: './journal-detail.component.html',
   styleUrls: ['./journal-detail.component.scss']
@@ -41,6 +43,7 @@ export class JournalDetailComponent {
   private location = inject(Location);
   private sink = new SubSink();
   private id$ = new BehaviorSubject<string>('');
+  public state$ = new BehaviorSubject<State>("normal");
   public journal$ = new BehaviorSubject<Journal | undefined>(undefined);
   public journalEntries$ = new BehaviorSubject<JournalEntry[] | undefined>(undefined) ;
 
