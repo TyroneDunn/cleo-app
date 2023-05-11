@@ -54,14 +54,14 @@
     *ngIf="(state$.value === 'edit')"
   >
     <mat-form-field>
-      <input
+      <textarea
         matInput
         [value]="journal$.value.name"
         name="name"
         type="text"
         formControlName="name"
         required
-      >
+      ></textarea>
     </mat-form-field>
   </form>
   <p>{{journal$.value.dateOfCreation | date}} -
