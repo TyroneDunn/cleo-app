@@ -32,4 +32,10 @@ export class HttpService {
       retry(2),
     );
   }
+
+  public patchRequest$<T>(url: string, payload: object): Observable<HttpResponse<T>> {
+    return this.http.patch<T>(url, payload, this.options).pipe(
+      retry(2),
+    );
+  }
 }
