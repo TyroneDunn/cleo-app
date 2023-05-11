@@ -8,6 +8,7 @@ import {RouterLink} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
 import {JournalEntry} from "../journal-entry.type";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {JournalEntryService} from "../journal-entry.service";
 
 type Mode = 'normal' | 'edit';
 
@@ -28,6 +29,7 @@ type Mode = 'normal' | 'edit';
 export class JournalEntryDetailComponent {
   private location = inject(Location);
   private formBuilder = inject(FormBuilder);
+  private journalEntryService = inject(JournalEntryService);
   public mode$ = new BehaviorSubject<Mode>("normal");
   public journalEntry$ = new BehaviorSubject<JournalEntry | undefined>(undefined);
   public entryForm: FormGroup = this.formBuilder.group({body: ['', Validators.required]});
