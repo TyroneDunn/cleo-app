@@ -11,7 +11,6 @@ import {JournalEntryDetailComponent}
 
 const routes: Routes = [
   {path: '', component: OnboardComponent},
-  {path: 'home', component: OnboardComponent},
   {path: 'about', component: AboutComponent},
   {path: 'sign-in', component: SignInComponent},
   {path: 'sign-up', component: SignUpComponent},

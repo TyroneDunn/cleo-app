@@ -1,1 +1,3 @@
-<router-outlet></router-outlet>
+<app-splash *ngIf="(state.value === 'loading')"></app-splash>
+<router-outlet *ngIf="(state.value === 'completed')"></router-outlet>
+
