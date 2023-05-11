@@ -1,6 +1,6 @@
 <mat-toolbar>
   <button
-    *ngIf="(state$.value === 'normal')"
+    *ngIf="(mode$.value === 'normal')"
     mat-icon-button
     (click)="navigateBack()"
   >
@@ -10,7 +10,7 @@
   </button>
 
   <button
-    *ngIf="(journal$.value) && (state$.value === 'normal')"
+    *ngIf="(journal$.value) && (mode$.value === 'normal')"
     mat-icon-button
     [matMenuTriggerFor]="menu"
   >
@@ -32,7 +32,7 @@
   </mat-menu>
 
   <button
-    *ngIf="(state$.value === 'edit')"
+    *ngIf="(mode$.value === 'edit')"
     mat-icon-button
     (click)="cancelEditing()"
     [disabled]="nameForm.invalid"
@@ -41,7 +41,7 @@
   </button>
 
   <button
-    *ngIf="(state$.value === 'edit')"
+    *ngIf="(mode$.value === 'edit')"
     mat-icon-button
     (click)="doneEditing()"
     [disabled]="nameForm.invalid"
@@ -57,12 +57,12 @@
 
 <div *ngIf="journal$.value">
   <h2
-    *ngIf="(state$.value === 'normal')"
+    *ngIf="(mode$.value === 'normal')"
   >
     {{journal$.value.name}}
   </h2>
   <form
-    *ngIf="(state$.value === 'edit')"
+    *ngIf="(mode$.value === 'edit')"
     [formGroup]="nameForm"
   >
     <mat-form-field>
@@ -80,7 +80,7 @@
     {{journal$.value.lastUpdated | date}}</p>
 
   <button
-    *ngIf="(state$.value === 'normal')"
+    *ngIf="(mode$.value === 'normal')"
     mat-button
     (click)="newEntry()"
   >

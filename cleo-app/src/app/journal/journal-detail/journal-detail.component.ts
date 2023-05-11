@@ -18,7 +18,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatInputModule} from "@angular/material/input";
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 
-type State = 'normal' | 'edit';
+type Mode = 'normal' | 'edit';
 
 @Component({
   selector: 'app-journal-detail',
@@ -49,7 +49,7 @@ export class JournalDetailComponent {
   public nameForm = this.formBuilder.group({name: ['', Validators.required]});
   private sink = new SubSink();
   private id$ = new BehaviorSubject<string>('');
-  public state$ = new BehaviorSubject<State>("normal");
+  public mode$ = new BehaviorSubject<Mode>("normal");
   public journal$ = new BehaviorSubject<Journal | undefined>(undefined);
   public journalEntries$ = new BehaviorSubject<JournalEntry[] | undefined>(undefined) ;
 
@@ -100,7 +100,7 @@ export class JournalDetailComponent {
   }
 
   public enterEditMode() {
-    this.state$.next("edit");
+    this.mode$.next("edit");
   }
 
   public doneEditing() {
@@ -112,7 +112,7 @@ export class JournalDetailComponent {
 
     const name = this.nameForm.get('name')?.value as string;
     if (name === this.journal$.value.name) {
-      this.state$.next("normal");
+      this.mode$.next("normal");
       return;
     }
 
@@ -120,7 +120,7 @@ export class JournalDetailComponent {
       this.journalService.patchJournalName$(this.id$.value, name).subscribe((success) => {
         if (!success) return;
         this.updateJournalName(name);
-        this.state$.next("normal");
+        this.mode$.next("normal");
       })
     );
   }
@@ -134,11 +134,11 @@ export class JournalDetailComponent {
   }
 
   public cancelEditing() {
-    this.state$.next("normal");
+    this.mode$.next("normal");
   }
 
   public ngOnDestroy() {
-    this.state$.unsubscribe();
+    this.mode$.unsubscribe();
     this.id$.unsubscribe();
     this.journal$.unsubscribe();
     this.sink.drain();
