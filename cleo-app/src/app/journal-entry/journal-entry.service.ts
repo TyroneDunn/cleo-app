@@ -42,4 +42,16 @@ export class JournalEntryService {
       }),
     );
   }
+
+  public deleteJournalEntry$(journalId: string, entryId: string): Observable<boolean> {
+    return this.http.deleteRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}/${journalId}/${entryId}`)
+      .pipe(
+        map((response) => {
+          return response.ok;
+        }),
+        catchError(() => {
+          return of(false);
+        }),
+      )
+  }
 }
