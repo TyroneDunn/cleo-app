@@ -12,4 +12,5 @@ import {RouterLink} from "@angular/router";
 })
 export class JournalEntryCardComponent {
   @Input() journalEntry!: JournalEntry;
+  @Input() journalId!: string;
 }

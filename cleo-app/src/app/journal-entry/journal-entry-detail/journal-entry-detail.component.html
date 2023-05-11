@@ -50,4 +50,26 @@
   </button>
 </mat-toolbar>
 
-<p>journal-entry-detail works!</p>
+
+<div
+  *ngIf="(journalEntry$.value)"
+>
+  <p *ngIf="(mode$.value === 'normal')">{{journalEntry$.value.body}}</p>
+
+  <form
+    *ngIf="(mode$.value === 'edit')"
+    [formGroup]="entryForm"
+  >
+    <mat-form-field>
+    <textarea
+      matInput
+      [ngModel]="journalEntry$.value.body"
+      name="body"
+      formControlName="body"
+      type="text"
+      required
+    ></textarea>
+    </mat-form-field>
+  </form>
+</div>
+

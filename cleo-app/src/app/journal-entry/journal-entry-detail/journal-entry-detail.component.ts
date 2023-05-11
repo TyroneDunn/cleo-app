@@ -7,9 +7,10 @@ import {MatButtonModule} from "@angular/material/button";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
 import {JournalEntry} from "../journal-entry.type";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {JournalEntryService} from "../journal-entry.service";
 import {SubSink} from "../../../utils/sub-sink";
+import {MatInputModule} from "@angular/material/input";
 
 type Mode = 'normal' | 'edit';
 
@@ -22,7 +23,9 @@ type Mode = 'normal' | 'edit';
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
-    RouterLink
+    RouterLink,
+    ReactiveFormsModule,
+    MatInputModule
   ],
   templateUrl: './journal-entry-detail.component.html',
   styleUrls: ['./journal-entry-detail.component.scss']
@@ -40,7 +43,6 @@ export class JournalEntryDetailComponent {
   private entryId$ = new BehaviorSubject<string>('');
 
   public ngOnInit() {
-
     this.sink.collect(
       this.route.paramMap.subscribe((params) => {
         this.journalId$.next(params.get('journalId') as string);
@@ -49,6 +51,7 @@ export class JournalEntryDetailComponent {
         this.sink.collect(
           this.journalEntryService.journalEntry$(this.journalId$.value, this.entryId$.value)
             .subscribe((journalEntry) => {
+              if (!journalEntry) return;
               this.journalEntry$.next(journalEntry);
               if (journalEntry.body === 'New Entry') this.enterEditMode();
             })

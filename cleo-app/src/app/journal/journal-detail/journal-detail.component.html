@@ -92,6 +92,7 @@
       *ngFor="let entry of journalEntries$ | async"
     >
       <app-journal-entry-card
+        [journalId]="journal$.value._id"
         [journalEntry]="entry"
       ></app-journal-entry-card>
     </mat-list-item>
