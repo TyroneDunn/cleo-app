@@ -57,7 +57,7 @@
     <mat-form-field>
       <input
         matInput
-        [placeholder]="journal$.value.name"
+        [ngModel]="journal$.value.name"
         name="name"
         formControlName="name"
         type="text"
