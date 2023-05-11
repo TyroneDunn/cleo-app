@@ -10,7 +10,7 @@ import {JournalEntryDetailComponent}
   from "./journal-entry/journal-entry-detail/journal-entry-detail.component";
 
 const routes: Routes = [
-  {path: 'home', component: OnboardComponent},
+  {path: '', component: OnboardComponent},
   {path: 'about', component: AboutComponent},
   {path: 'sign-in', component: SignInComponent},
   {path: 'sign-up', component: SignUpComponent},
