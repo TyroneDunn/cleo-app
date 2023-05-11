@@ -50,6 +50,7 @@
     {{journal$.value.lastUpdated | date}}</p>
 
   <button
+    *ngIf="(state$.value === 'normal')"
     mat-button
     (click)="newEntry()"
   >
@@ -66,4 +67,3 @@
     </mat-list-item>
   </mat-list>
 </div>
-
