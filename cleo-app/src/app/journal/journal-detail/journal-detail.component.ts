@@ -92,7 +92,12 @@ export class JournalDetailComponent {
     );
   }
 
+  public enterEditState() {
+    this.state$.next("edit");
+  }
+
   public ngOnDestroy() {
+    this.state$.unsubscribe();
     this.id$.unsubscribe();
     this.journal$.unsubscribe();
     this.sink.drain();
