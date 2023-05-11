@@ -4,7 +4,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from "@angular/common/http";
-import {ToolbarComponent} from "./toolbar/toolbar.component";
 
 @NgModule({
   declarations: [
@@ -15,7 +14,6 @@ import {ToolbarComponent} from "./toolbar/toolbar.component";
         AppRoutingModule,
         BrowserAnimationsModule,
         HttpClientModule,
-        ToolbarComponent,
     ],
   providers: [],
   bootstrap: [AppComponent]
