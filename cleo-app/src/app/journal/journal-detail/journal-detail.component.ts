@@ -80,7 +80,7 @@ export class JournalDetailComponent {
       this.journalEntryService.createJournalEntry$(this.id$.value, 'New Entry')
         .subscribe(async (journalEntry) => {
           if (!journalEntry) return;
-          await this.router.navigate([`journal-entry/${journalEntry._id}`]);
+          await this.router.navigate([`journal/${this.journal$.value?._id}/journal-entry/${journalEntry._id}`]);
         })
     );
   }
