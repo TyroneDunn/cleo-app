@@ -112,7 +112,7 @@ export class JournalDetailComponent {
 
     const name = this.nameForm.get('name')?.value as string;
     if (name === this.journal$.value.name) {
-      this.mode$.next("normal");
+      this.enterNormalMode();
       return;
     }
 
@@ -120,9 +120,13 @@ export class JournalDetailComponent {
       this.journalService.patchJournalName$(this.id$.value, name).subscribe((success) => {
         if (!success) return;
         this.updateJournalName(name);
-        this.mode$.next("normal");
+        this.enterNormalMode();
       })
     );
+  }
+
+  private enterNormalMode() {
+    this.mode$.next("normal");
   }
 
   private updateJournalName(name: string) {
