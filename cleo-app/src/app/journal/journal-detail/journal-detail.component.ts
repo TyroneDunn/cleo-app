@@ -16,7 +16,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatInputModule} from "@angular/material/input";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 
 type State = 'normal' | 'edit';
 
@@ -45,6 +45,8 @@ export class JournalDetailComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private location = inject(Location);
+  private formBuilder = inject(FormBuilder);
+  public nameForm = this.formBuilder.group({name: ['', Validators.required]});
   private sink = new SubSink();
   private id$ = new BehaviorSubject<string>('');
   public state$ = new BehaviorSubject<State>("normal");
@@ -96,8 +98,35 @@ export class JournalDetailComponent {
     );
   }
 
-  public enterEditState() {
+  public enterEditMode() {
     this.state$.next("edit");
+  }
+
+  public doneEditing() {
+    if (!this.journal$.value)
+      return;
+
+    const name = this.nameForm.get('name')?.value as string;
+    if (name === this.journal$.value.name) {
+      this.state$.next("normal");
+      return;
+    }
+
+    this.sink.collect(
+      this.journalService.patchJournalName$(this.id$.value, name).subscribe((success) => {
+        if (!success) return;
+        this.updateJournalName(name);
+        this.state$.next("normal");
+      })
+    );
+  }
+
+  private updateJournalName(name: string) {
+    if (this.journal$.value) {
+      let journal = this.journal$.value;
+      journal.name = name;
+      this.journal$.next(journal);
+    }
   }
 
   public ngOnDestroy() {
@@ -105,9 +134,5 @@ export class JournalDetailComponent {
     this.id$.unsubscribe();
     this.journal$.unsubscribe();
     this.sink.drain();
-  }
-
-  doneEditing() {
-    this.state$.next("normal");
   }
 }
