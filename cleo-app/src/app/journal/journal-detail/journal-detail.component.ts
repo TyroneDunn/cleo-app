@@ -14,6 +14,7 @@ import {JournalEntryCardComponent}
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 @Component({
   selector: 'app-journal-detail',
@@ -26,7 +27,8 @@ import {MatMenuModule} from "@angular/material/menu";
     RouterLink,
     MatToolbarModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressBarModule
   ],
   templateUrl: './journal-detail.component.html',
   styleUrls: ['./journal-detail.component.scss']

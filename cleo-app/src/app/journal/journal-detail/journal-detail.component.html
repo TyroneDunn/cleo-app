@@ -9,6 +9,7 @@
   </button>
 
   <button
+    *ngIf="journal$.value"
     mat-icon-button
     [matMenuTriggerFor]="menu"
   >
@@ -25,23 +26,31 @@
   </mat-menu>
 </mat-toolbar>
 
-<h2 *ngIf="journal$.value">{{journal$.value.name}}</h2>
-<p *ngIf="journal$.value">{{journal$.value.dateOfCreation | date}} -
-  {{journal$.value.lastUpdated | date}}</p>
+<mat-progress-bar
+  *ngIf="!(journal$.value)"
+  mode="indeterminate"
+></mat-progress-bar>
 
-<button
-  mat-button
-  (click)="newEntry()"
->
-  Add Entry
-</button>
+<div *ngIf="journal$.value">
+  <h2>{{journal$.value.name}}</h2>
+  <p>{{journal$.value.dateOfCreation | date}} -
+    {{journal$.value.lastUpdated | date}}</p>
 
-<mat-list>
-  <mat-list-item
-    *ngFor="let entry of journalEntries$ | async"
+  <button
+    mat-button
+    (click)="newEntry()"
   >
-    <app-journal-entry-card
-      [journalEntry]="entry"
-    ></app-journal-entry-card>
-  </mat-list-item>
-</mat-list>
+    Add Entry
+  </button>
+
+  <mat-list>
+    <mat-list-item
+      *ngFor="let entry of journalEntries$ | async"
+    >
+      <app-journal-entry-card
+        [journalEntry]="entry"
+      ></app-journal-entry-card>
+    </mat-list-item>
+  </mat-list>
+</div>
+
