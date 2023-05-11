@@ -1,5 +1,6 @@
 <mat-toolbar>
   <button
+    *ngIf="(mode$.value === 'normal')"
     mat-icon-button
     (click)="navigateBack()"
   >
@@ -9,15 +10,44 @@
   </button>
 
   <button
+    *ngIf="(journalEntry$.value) && (mode$.value === 'normal')"
     mat-icon-button
     [matMenuTriggerFor]="menu"
   >
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item>Edit</button>
-    <button mat-menu-item>Delete</button>
+    <button
+      mat-menu-item
+      (click)="enterEditMode()"
+    >
+      Edit
+    </button>
+    <button
+      mat-menu-item
+      (click)="deleteJournalEntry()"
+    >
+      Delete
+    </button>
   </mat-menu>
+
+  <button
+    *ngIf="(mode$.value === 'edit')"
+    mat-icon-button
+    (click)="cancelEditing()"
+    [disabled]="entryForm.invalid"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <button
+    *ngIf="(mode$.value === 'edit')"
+    mat-icon-button
+    (click)="doneEditing()"
+    [disabled]="entryForm.invalid"
+  >
+    <mat-icon>done</mat-icon>
+  </button>
 </mat-toolbar>
 
 <p>journal-entry-detail works!</p>

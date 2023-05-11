@@ -5,6 +5,11 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatButtonModule} from "@angular/material/button";
 import {RouterLink} from "@angular/router";
+import {BehaviorSubject} from "rxjs";
+import {JournalEntry} from "../journal-entry.type";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+
+type Mode = 'normal' | 'edit';
 
 @Component({
   selector: 'app-journal-entry-detail',
@@ -22,8 +27,32 @@ import {RouterLink} from "@angular/router";
 })
 export class JournalEntryDetailComponent {
   private location = inject(Location);
+  private formBuilder = inject(FormBuilder);
+  public mode$ = new BehaviorSubject<Mode>("normal");
+  public journalEntry$ = new BehaviorSubject<JournalEntry | undefined>(undefined);
+  public entryForm: FormGroup = this.formBuilder.group({body: ['', Validators.required]});
 
-  navigateBack() {
+  public navigateBack() {
     this.location.back();
+  }
+
+  public enterEditMode() {
+    this.mode$.next("edit");
+  }
+
+  public deleteJournalEntry() {
+
+  }
+
+  public cancelEditing() {
+    this.mode$.next("normal");
+  }
+
+  public doneEditing() {
+
+  }
+
+  public ngOnDestroy() {
+    this.mode$.unsubscribe();
   }
 }
