@@ -54,4 +54,16 @@ export class JournalService {
       }),
     );
   }
+
+  public patchJournalName$(id: string, name: string): Observable<boolean> {
+    const payload = {name: name};
+    return this.http.patchRequest$<object>(`${CLEO_API_JOURNALS_URL}${id}`, payload).pipe(
+      map((response) => {
+        return response.ok
+      }),
+      catchError(() => {
+        return of(false);
+      }),
+    );
+  }
 }
