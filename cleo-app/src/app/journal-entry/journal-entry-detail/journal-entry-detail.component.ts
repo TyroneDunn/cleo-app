@@ -64,18 +64,12 @@ export class JournalEntryDetailComponent {
     this.location.back();
   }
 
-  public enterEditMode() {
-    this.mode$.next("edit");
+  private enterNormalMode() {
+    this.mode$.next("normal");
   }
 
-  public deleteJournalEntry() {
-    this.sink.collect(
-      this.journalEntryService.deleteJournalEntry$(this.journalId$.value, this.entryId$.value)
-        .subscribe((success) => {
-          if (!success) return;
-          this.navigateBack();
-        })
-    );
+  public enterEditMode() {
+    this.mode$.next("edit");
   }
 
   public cancelEditing() {
@@ -83,7 +77,44 @@ export class JournalEntryDetailComponent {
   }
 
   public doneEditing() {
+    if (!this.journalEntry$.value)
+      return;
 
+    if (this.entryForm.invalid)
+      return;
+
+    const body = this.entryForm.get('body')?.value as string;
+    if (body === this.journalEntry$.value.body) {
+      this.enterNormalMode();
+      return;
+    }
+
+    this.sink.collect(
+      this.journalEntryService.patchJournalEntry$(this.journalId$.value, this.entryId$.value, body)
+        .subscribe((success) => {
+          if (!success) return;
+          this.updateEntry(body);
+          this.enterNormalMode();
+        })
+    );
+  }
+
+  private updateEntry(body: string) {
+    if (this.journalEntry$.value) {
+      let entry = this.journalEntry$.value;
+      entry.body = body;
+      this.journalEntry$.next(entry);
+    }
+  }
+
+  public deleteEntry() {
+    this.sink.collect(
+      this.journalEntryService.deleteJournalEntry$(this.journalId$.value, this.entryId$.value)
+        .subscribe((success) => {
+          if (!success) return;
+          this.navigateBack();
+        })
+    );
   }
 
   public ngOnDestroy() {
