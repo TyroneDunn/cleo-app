@@ -52,16 +52,17 @@
   </h2>
   <form
     *ngIf="(state$.value === 'edit')"
+    [formGroup]="nameForm"
   >
     <mat-form-field>
-      <textarea
+      <input
         matInput
-        [value]="journal$.value.name"
+        [placeholder]="journal$.value.name"
         name="name"
-        type="text"
         formControlName="name"
+        type="text"
         required
-      ></textarea>
+      >
     </mat-form-field>
   </form>
   <p>{{journal$.value.dateOfCreation | date}} -
