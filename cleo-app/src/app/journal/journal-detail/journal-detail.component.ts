@@ -62,6 +62,7 @@ export class JournalDetailComponent {
           this.journalService.journal$(this.id$.value).subscribe((journal) => {
             if (!journal) return;
             this.journal$.next(journal);
+            if (journal.name === 'New Journal') this.enterEditMode();
           })
         );
 
