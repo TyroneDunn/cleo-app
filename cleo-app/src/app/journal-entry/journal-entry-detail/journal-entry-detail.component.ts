@@ -66,7 +66,13 @@ export class JournalEntryDetailComponent {
   }
 
   public deleteJournalEntry() {
-
+    this.sink.collect(
+      this.journalEntryService.deleteJournalEntry$(this.journalId$.value, this.entryId$.value)
+        .subscribe((success) => {
+          if (!success) return;
+          this.navigateBack();
+        })
+    );
   }
 
   public cancelEditing() {
