@@ -34,6 +34,7 @@
     *ngIf="(state$.value === 'edit')"
     mat-icon-button
     (click)="doneEditing()"
+    [disabled]="nameForm.invalid"
   >
     <mat-icon>done</mat-icon>
   </button>

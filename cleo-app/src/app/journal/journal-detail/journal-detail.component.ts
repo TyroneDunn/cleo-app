@@ -106,6 +106,9 @@ export class JournalDetailComponent {
     if (!this.journal$.value)
       return;
 
+    if (this.nameForm.invalid)
+      return;
+
     const name = this.nameForm.get('name')?.value as string;
     if (name === this.journal$.value.name) {
       this.state$.next("normal");
