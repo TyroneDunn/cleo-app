@@ -10,7 +10,7 @@ import {CLEO_API_JOURNAL_ENTRIES_URL} from "./journal-entry.constants";
 export class JournalEntryService {
   private http = inject(HttpService);
   public journalEntries$(journalId: string): Observable<JournalEntry[]> {
-    return this.http.getRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}/${journalId}`).pipe(
+    return this.http.getRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}${journalId}`).pipe(
       map((response) => {
         return response.body as JournalEntry[];
       }),
@@ -33,7 +33,7 @@ export class JournalEntryService {
 
   public createJournalEntry$(journalId: string, content: string): Observable<JournalEntry | undefined> {
     const payload = {content: content};
-    return this.http.postRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}/${journalId}`, payload).pipe(
+    return this.http.postRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}${journalId}`, payload).pipe(
       map((response) => {
         return response.body as JournalEntry;
       }),
@@ -44,7 +44,7 @@ export class JournalEntryService {
   }
 
   public deleteJournalEntry$(journalId: string, entryId: string): Observable<boolean> {
-    return this.http.deleteRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}/${journalId}/${entryId}`)
+    return this.http.deleteRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}${journalId}/${entryId}`)
       .pipe(
         map((response) => {
           return response.ok;
@@ -52,6 +52,18 @@ export class JournalEntryService {
         catchError(() => {
           return of(false);
         }),
-      )
+      );
+  }
+
+  public patchJournalEntry$(journalId: string, entryId: string, body: string): Observable<boolean> {
+    const payload = {body: body};
+    return this.http.patchRequest$<object>(`${CLEO_API_JOURNAL_ENTRIES_URL}${journalId}/${entryId}`, payload).pipe(
+      map((response) => {
+        return response.ok;
+      }),
+      catchError(() => {
+        return of(false);
+      }),
+    );
   }
 }
