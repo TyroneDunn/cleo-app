@@ -1,5 +1,6 @@
 <mat-toolbar>
   <button
+    *ngIf="(state$.value === 'normal')"
     mat-icon-button
     (click)="navigateBack()"
   >
@@ -29,6 +30,15 @@
       Delete
     </button>
   </mat-menu>
+
+  <button
+    *ngIf="(state$.value === 'edit')"
+    mat-icon-button
+    (click)="cancelEditing()"
+    [disabled]="nameForm.invalid"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
 
   <button
     *ngIf="(state$.value === 'edit')"

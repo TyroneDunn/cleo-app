@@ -132,6 +132,10 @@ export class JournalDetailComponent {
     }
   }
 
+  public cancelEditing() {
+    this.state$.next("normal");
+  }
+
   public ngOnDestroy() {
     this.state$.unsubscribe();
     this.id$.unsubscribe();
