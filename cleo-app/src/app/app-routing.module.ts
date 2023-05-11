@@ -17,7 +17,7 @@ const routes: Routes = [
   {path: 'sign-up', component: SignUpComponent},
   {path: 'journals', component: JournalsComponent},
   {path: 'journal/:id', component: JournalDetailComponent},
-  {path: 'journal-entry/:id', component: JournalEntryDetailComponent},
+  {path: 'journal/:journalId/journal-entry/:entryId', component: JournalEntryDetailComponent},
 ];
 
 @NgModule({
