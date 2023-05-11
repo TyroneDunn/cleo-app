@@ -102,4 +102,8 @@ export class JournalDetailComponent {
     this.journal$.unsubscribe();
     this.sink.drain();
   }
+
+  doneEditing() {
+    this.state$.next("normal");
+  }
 }

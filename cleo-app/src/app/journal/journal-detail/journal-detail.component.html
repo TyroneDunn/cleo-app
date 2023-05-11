@@ -9,7 +9,7 @@
   </button>
 
   <button
-    *ngIf="journal$.value && (state$.value === 'normal')"
+    *ngIf="(journal$.value) && (state$.value === 'normal')"
     mat-icon-button
     [matMenuTriggerFor]="menu"
   >
@@ -29,6 +29,14 @@
       Delete
     </button>
   </mat-menu>
+
+  <button
+    *ngIf="(state$.value === 'edit')"
+    mat-icon-button
+    (click)="doneEditing()"
+  >
+    <mat-icon>done</mat-icon>
+  </button>
 </mat-toolbar>
 
 <mat-progress-bar
