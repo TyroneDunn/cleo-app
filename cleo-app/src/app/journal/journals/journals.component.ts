@@ -19,6 +19,8 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
 import {UserService} from "../../user/user.service";
 import {HOME} from "../../app-routing.constants";
+import {MatDialog} from "@angular/material/dialog";
+import {NewJournalComponent} from "../new-journal/new-journal.component";
 
 const NEW_JOURNAL_PLACEHOLDER = 'New Journal';
 
@@ -46,6 +48,7 @@ export class JournalsComponent {
   private journalsService = inject(JournalService);
   private router = inject(Router);
   private userService = inject(UserService);
+  private newJournalDialog = inject(MatDialog);
   private sink = new SubSink();
   public journals$!: Observable<Journal[]>;
 
@@ -78,5 +81,13 @@ export class JournalsComponent {
 
   public async navigateHome() {
     await this.router.navigate([HOME]);
+  }
+
+  public openNewJournalDialog() {
+    const dialogRef = this.newJournalDialog.open(NewJournalComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }
