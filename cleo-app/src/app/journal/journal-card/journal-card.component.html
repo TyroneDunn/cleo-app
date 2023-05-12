@@ -34,12 +34,14 @@
     <a
       routerLink="/journal/{{journal._id}}"
       mat-menu-item
+      disableRipple
     >
       Open
     </a>
     <button
       mat-menu-item
       (click)="openDeleteJournalDialog()"
+      disableRipple
     >
       Delete
     </button>
