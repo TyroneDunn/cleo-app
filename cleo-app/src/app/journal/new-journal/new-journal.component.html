@@ -1,1 +1,46 @@
-<p>new-journal works!</p>
+<mat-card class="hero-card">
+  <mat-card-header>
+    <mat-card-title>
+      <h1>New Journal</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <form
+    [formGroup]="nameForm"
+    (ngSubmit)="createJournal()"
+  >
+  <mat-card-content>
+    <br>
+      <div class="form-container">
+        <mat-form-field appearance="fill">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            formControlName="name"
+            id="name"
+            type="text"
+            required
+          >
+        </mat-form-field>
+      </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button
+      mat-dialog-close="true"
+      mat-button
+      disableRipple
+    >
+      Back
+    </button>
+    <button
+      [disabled]="(nameForm.invalid)"
+      mat-dialog-close="true"
+      disableRipple
+      mat-button
+      type="submit"
+    >
+      Create
+    </button>
+  </mat-card-actions>
+  </form>
+</mat-card>
