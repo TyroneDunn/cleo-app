@@ -1,12 +1,15 @@
 <mat-card>
-  <mat-card-header>
-    <h2
-      matCardTitle
-      class="mat-subtitle-1"
-    >
-      {{journal.name}}
-    </h2>
-  </mat-card-header>
+  <a
+    routerLink="/journal/{{journal._id}}"
+  >
+    <mat-card-header>
+      <h2
+        matCardTitle
+        class="mat-subtitle-1"
+      >
+        {{journal.name}}
+      </h2>
+    </mat-card-header>
   <mat-card-content>
     <p
       class="mat-caption"
@@ -19,11 +22,21 @@
       {{journal.dateOfCreation | date}} - {{journal.lastUpdated | date}}
     </p>
   </mat-card-content>
-  <a
-    routerLink="/journal/{{journal._id}}"
+  </a>
+  <button
     mat-icon-button
     disableRipple
+    [matMenuTriggerFor]="menu"
   >
     <mat-icon color="primary">more_horiz</mat-icon>
-  </a>
+  </button>
+  <mat-menu #menu="matMenu">
+    <a
+      routerLink="/journal/{{journal._id}}"
+      mat-menu-item
+    >
+      Open
+    </a>
+    <button mat-menu-item>Delete</button>
+  </mat-menu>
 </mat-card>
