@@ -1,6 +1,29 @@
-<a
-  routerLink="/journal/{{journal._id}}"
->
-  {{journal.name}}
-</a>
-
+<mat-card>
+  <mat-card-header>
+    <h2
+      matCardTitle
+      class="mat-subtitle-1"
+    >
+      {{journal.name}}
+    </h2>
+  </mat-card-header>
+  <mat-card-content>
+    <p
+      class="mat-caption"
+    >
+      x entries
+    </p>
+    <p
+      class="mat-caption"
+    >
+      {{journal.dateOfCreation | date}} - {{journal.lastUpdated | date}}
+    </p>
+  </mat-card-content>
+  <a
+    routerLink="/journal/{{journal._id}}"
+    mat-icon-button
+    disableRipple
+  >
+    <mat-icon color="primary">more_horiz</mat-icon>
+  </a>
+</mat-card>
