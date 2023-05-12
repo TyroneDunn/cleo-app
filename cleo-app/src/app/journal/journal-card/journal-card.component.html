@@ -37,6 +37,11 @@
     >
       Open
     </a>
-    <button mat-menu-item>Delete</button>
+    <button
+      mat-menu-item
+      (click)="openDeleteJournalDialog()"
+    >
+      Delete
+    </button>
   </mat-menu>
 </mat-card>
