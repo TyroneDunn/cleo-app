@@ -59,6 +59,7 @@
             class="text-left"
           >
             <mat-label
+              *ngIf="(error.value)"
               matError
             >
               {{error.value}}
