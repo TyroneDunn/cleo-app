@@ -20,24 +20,37 @@
       <br>
     </mat-card-content>
 
-    <mat-card-actions>
+    <div *ngIf="!(authorized$ | async)">
+      <mat-card-actions>
+        <a
+          class="mat-button action-button"
+          mat-raised-button
+          routerLink="/sign-up"
+          color="accent"
+          disableRipple
+        >
+          Get Started
+        </a>
+      </mat-card-actions>
+
+      <mat-card-content>
+        <br>
+        <p class="mat-body-2">
+          Already have an account? <a routerLink="/sign-in">Sign in.</a>
+        </p>
+      </mat-card-content>
+    </div>
+    <mat-card-actions *ngIf="(authorized$ | async)">
       <a
         class="mat-button action-button"
         mat-raised-button
-        routerLink="/sign-up"
+        routerLink="/journals"
         color="accent"
         disableRipple
       >
-        Get Started
+        Return to Journals
       </a>
     </mat-card-actions>
-
-    <mat-card-content>
-      <br>
-      <p class="mat-body-2">
-        Already have an account? <a routerLink="/sign-in">Sign in.</a>
-      </p>
-    </mat-card-content>
   </mat-card>
 
   <p class="mat-caption signature"
