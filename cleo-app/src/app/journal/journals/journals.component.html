@@ -24,10 +24,15 @@
     </button>
   </mat-menu>
 </mat-toolbar>
-
+<h2>My Journals</h2>
 <mat-list>
   <mat-toolbar>
-    <div mat-subheader>My Journals</div>
+    <button
+      mat-button
+      (click)="newJournal()"
+    >
+      Create Journal
+    </button>
     <button
       mat-button
       [matMenuTriggerFor]="sortMenu"
@@ -51,14 +56,6 @@
     cols="4"
     rowHeight="300px"
   >
-    <mat-grid-tile>
-      <button
-        mat-button
-        (click)="newJournal()"
-      >
-        Create Journal
-      </button>
-    </mat-grid-tile>
     <mat-grid-tile
       *ngFor="let journal of journals$ | async"
       colspan="1"
