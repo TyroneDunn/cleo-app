@@ -24,20 +24,32 @@ import {MatInputModule} from "@angular/material/input";
   styleUrls: ['./edit-journal.component.scss']
 })
 export class EditJournalComponent {
+  private readonly name;
   private formBuilder = inject(FormBuilder);
   public nameForm: FormGroup = this.formBuilder.group({
     name: ['', Validators.required],
   });
 
   public dialogRef = inject(MatDialogRef<EditJournalComponent>)
-  public constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+  public constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {
+    this.name = data.journal.name;
+  }
 
   public editJournal() {
-    const name = this.nameForm.get('name')?.value as string;
-    this.dialogRef.close(name);
+    const editedName = this.nameForm.get('name')?.value as string;
+
+    if (editedName === this.name) {
+      this.back();
+      return;
+    }
+
+    this.dialogRef.close(editedName);
   }
 
   public back() {
+    if (this.data.journal.name !== this.name)
+      this.data.journal.name = this.name;
+
     this.dialogRef.close();
   }
 }
