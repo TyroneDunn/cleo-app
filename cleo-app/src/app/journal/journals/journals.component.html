@@ -11,16 +11,23 @@
     </button>
     <button
       mat-icon-button
+      disableRipple
       color="primary"
       [matMenuTriggerFor]="menu"
     >
       <mat-icon>account_circle</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item>Help</button>
+      <button
+        disableRipple
+        mat-menu-item
+      >
+        Help
+      </button>
       <button
         (click)="logout()"
         mat-menu-item
+        disableRipple
       >
         Logout
       </button>
@@ -33,11 +40,13 @@
     <button
       mat-flat-button
       (click)="openNewJournalDialog()"
+      disableRipple
     >
       New Journal
     </button>
     <button
       mat-flat-button
+      disableRipple
       [matMenuTriggerFor]="sortMenu"
     >
       <mat-icon>sort</mat-icon>
