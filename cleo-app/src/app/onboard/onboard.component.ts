@@ -9,14 +9,14 @@ import {SplashComponent} from "../splash/splash.component";
 @Component({
   selector: 'app-onboard',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatIconModule,
-    MatButtonModule,
-    RouterLink,
-    SplashComponent,
-  ],
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatIconModule,
+        MatButtonModule,
+        RouterLink,
+        SplashComponent,
+    ],
   templateUrl: './onboard.component.html',
   styleUrls: ['./onboard.component.scss']
 })
