@@ -51,4 +51,8 @@ export class JournalCardComponent {
       }
     });
   }
+
+  public openEditJournalDialog() {
+
+  }
 }

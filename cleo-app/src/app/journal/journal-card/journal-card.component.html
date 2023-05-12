@@ -40,6 +40,13 @@
     </a>
     <button
       mat-menu-item
+      (click)="openEditJournalDialog()"
+      disableRipple
+    >
+      Edit
+    </button>
+    <button
+      mat-menu-item
       (click)="openDeleteJournalDialog()"
       disableRipple
     >
