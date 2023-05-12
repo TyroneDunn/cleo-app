@@ -41,7 +41,6 @@ export class JournalCardComponent {
     });
 
     dialogRef.afterClosed().subscribe((confirm: boolean) => {
-      console.log('Dialog result: ', confirm);
       if (confirm) {
         this.sink.collect(
           this.journalService.deleteJournal$(this.journal._id).subscribe((success) => {
