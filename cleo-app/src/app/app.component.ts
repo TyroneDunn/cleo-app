@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {UserService} from "./user/user.service";
 import {BehaviorSubject, delay, timeout} from "rxjs";
-import {JOURNALS} from "./app-routing.constants";
+import {HOME, JOURNALS} from "./app-routing.constants";
 import {SubSink} from "../utils/sub-sink";
 import {Router} from "@angular/router";
 
@@ -30,6 +30,7 @@ export class AppComponent {
           if (okStatus) {
             await this.router.navigate([JOURNALS]);
           }
+          await this.router.navigate([HOME]);
         })
     );
   }
