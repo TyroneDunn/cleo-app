@@ -2,7 +2,6 @@ import {Component, inject, Inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {MatCardModule} from "@angular/material/card";
-import {ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {Journal} from "../journal.type";
 import {MatButtonModule} from "@angular/material/button";
@@ -17,7 +16,6 @@ export interface DialogData {
   imports: [
     CommonModule,
     MatCardModule,
-    ReactiveFormsModule,
     MatInputModule,
     MatButtonModule,
     MatDialogModule
