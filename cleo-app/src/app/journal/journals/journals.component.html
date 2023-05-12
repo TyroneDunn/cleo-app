@@ -1,10 +1,17 @@
 <mat-toolbar>
   <mat-toolbar-row>
-    <a
-      routerLink=""
-    >cleo.|</a>
+    <button
+      (click)="navigateHome()"
+      mat-flat-button
+      disableRipple
+    >
+      <h2>
+        cleo.|
+      </h2>
+    </button>
     <button
       mat-icon-button
+      color="primary"
       [matMenuTriggerFor]="menu"
     >
       <mat-icon>account_circle</mat-icon>

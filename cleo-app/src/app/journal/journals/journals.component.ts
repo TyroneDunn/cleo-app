@@ -75,4 +75,8 @@ export class JournalsComponent {
   public ngOnDestroy() {
     this.sink.drain();
   }
+
+  public async navigateHome() {
+    await this.router.navigate([HOME]);
+  }
 }
