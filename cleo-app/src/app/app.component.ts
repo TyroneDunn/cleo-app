@@ -27,10 +27,10 @@ export class AppComponent {
         )
         .subscribe(async (okStatus) => {
           this.state.next('completed');
-          if (okStatus) {
+          if (okStatus)
             await this.router.navigate([JOURNALS]);
-          }
-          await this.router.navigate([HOME]);
+          else
+            await this.router.navigate([HOME]);
         })
     );
   }
