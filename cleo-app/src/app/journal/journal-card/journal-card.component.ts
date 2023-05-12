@@ -10,6 +10,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {DeleteJournalComponent} from "../delete-journal/delete-journal.component";
 import {JournalService} from "../journal.service";
 import {SubSink} from "../../../utils/sub-sink";
+import {EditJournalComponent} from "../edit-journal/edit-journal.component";
 
 @Component({
   selector: 'app-journal-card',
@@ -32,11 +33,10 @@ export class JournalCardComponent {
   @Input() journal!: Journal;
   @Output() onDeleteJournal = new EventEmitter();
 
-  public openDeleteJournalDialog() {
+  public deleteJournal() {
     const dialogRef = this.dialog.open(DeleteJournalComponent, {
       data: {
         journal: this.journal,
-        confirm: false,
       }
     });
 
@@ -52,7 +52,19 @@ export class JournalCardComponent {
     });
   }
 
-  public openEditJournalDialog() {
+  public editJournal() {
+    const dialogRef = this.dialog.open(EditJournalComponent, {
+      data: {
+        journal: this.journal,
+      }
+    });
 
+    dialogRef.afterClosed().subscribe((name: string) => {
+      if (name) {
+        this.sink.collect(
+          this.journalService.patchJournalName$(this.journal._id, name).subscribe()
+        );
+      }
+    });
   }
 }

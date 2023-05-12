@@ -1,1 +1,47 @@
-<p>edit-journal works!</p>
+<mat-card class="hero-card">
+  <mat-card-header>
+    <mat-card-title>
+      <h1>Edit Journal</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <form
+    [formGroup]="nameForm"
+    (ngSubmit)="editJournal()"
+  >
+    <mat-card-content>
+      <br>
+      <div class="form-container">
+        <mat-form-field appearance="fill">
+          <input
+            matInput
+            formControlName="name"
+            id="name"
+            type="text"
+            [(ngModel)]="data.journal.name"
+            required
+          >
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        (click)="back()"
+        mat-dialog-close
+        mat-button
+        disableRipple
+      >
+        Back
+      </button>
+      <button
+        [disabled]="(nameForm.invalid)"
+        mat-dialog-close
+        disableRipple
+        mat-button
+        type="submit"
+      >
+        Edit
+      </button>
+    </mat-card-actions>
+  </form>
+</mat-card>
