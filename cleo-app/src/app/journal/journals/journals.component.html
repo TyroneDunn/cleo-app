@@ -1,31 +1,33 @@
 <mat-toolbar>
-  <a
-    routerLink=""
-  >cleo.|</a>
-  <button
-    mat-icon-button
-    [matMenuTriggerFor]="menu"
-  >
-    <mat-icon>account_circle</mat-icon>
-  </button>
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item>Help</button>
+  <mat-toolbar-row>
+    <a
+      routerLink=""
+    >cleo.|</a>
     <button
-      (click)="logout()"
-      mat-menu-item
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
     >
-      Logout
+      <mat-icon>account_circle</mat-icon>
     </button>
-  </mat-menu>
-</mat-toolbar>
-<h2>My Journals</h2>
-<mat-list>
-  <mat-toolbar>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>Help</button>
+      <button
+        (click)="logout()"
+        mat-menu-item
+      >
+        Logout
+      </button>
+    </mat-menu>
+  </mat-toolbar-row>
+  <mat-toolbar-row>
+    <h2>My Journals</h2>
+  </mat-toolbar-row>
+  <mat-toolbar-row>
     <button
       mat-button
       (click)="newJournal()"
     >
-      Create Journal
+      New Journal
     </button>
     <button
       mat-button
@@ -39,8 +41,9 @@
       <button mat-menu-item>Last Updated</button>
       <button mat-menu-item>Created</button>
     </mat-menu>
-  </mat-toolbar>
-
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-list>
   <mat-progress-bar
     *ngIf="!(journals$ | async)"
     mode="indeterminate"
