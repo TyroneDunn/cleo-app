@@ -8,6 +8,8 @@ import {DialogData} from "../delete-journal/delete-journal.component";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 
+type state = 'unedited' | 'edited';
+
 @Component({
   selector: 'app-edit-journal',
   standalone: true,
@@ -25,6 +27,7 @@ import {MatInputModule} from "@angular/material/input";
 })
 export class EditJournalComponent {
   private readonly name;
+  private state: state = 'unedited';
   private formBuilder = inject(FormBuilder);
   public nameForm: FormGroup = this.formBuilder.group({
     name: ['', Validators.required],
@@ -43,13 +46,18 @@ export class EditJournalComponent {
       return;
     }
 
+    this.state = "edited";
     this.dialogRef.close(editedName);
   }
 
   public back() {
-    if (this.data.journal.name !== this.name)
-      this.data.journal.name = this.name;
-
     this.dialogRef.close();
+  }
+
+  public ngOnDestroy() {
+    if (this.state === "unedited") {
+      if (this.data.journal.name !== this.name)
+        this.data.journal.name = this.name;
+    }
   }
 }
