@@ -11,6 +11,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {SubSink} from "../../utils/sub-sink";
 import {UserService} from "../user/user.service";
 import {JOURNALS} from "../app-routing.constants";
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 @Component({
   selector: 'app-sign-in',
@@ -24,6 +25,7 @@ import {JOURNALS} from "../app-routing.constants";
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
+    MatToolbarModule,
   ],
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
