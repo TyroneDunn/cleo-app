@@ -30,7 +30,7 @@ export class JournalCardComponent {
   private journalService = inject(JournalService);
   private sink = new SubSink();
   @Input() journal!: Journal;
-  @Output() onDeleteJournal = new EventEmitter<Journal>();
+  @Output() onDeleteJournal = new EventEmitter();
 
   public openDeleteJournalDialog() {
     const dialogRef = this.dialog.open(DeleteJournalComponent, {
@@ -46,7 +46,7 @@ export class JournalCardComponent {
         this.sink.collect(
           this.journalService.deleteJournal$(this.journal._id).subscribe((success) => {
             if (success)
-              this.onDeleteJournal.emit(this.journal);
+              this.onDeleteJournal.emit();
           })
         );
       }

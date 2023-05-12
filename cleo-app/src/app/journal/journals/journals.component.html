@@ -74,7 +74,10 @@
       colspan="1"
       rowspan="1"
     >
-      <app-journal-card [journal]="journal"></app-journal-card>
+      <app-journal-card
+        [journal]="journal"
+        (onDeleteJournal)="handleOnDeleteJournal()"
+      ></app-journal-card>
     </mat-grid-tile>
   </mat-grid-list>
 </mat-list>

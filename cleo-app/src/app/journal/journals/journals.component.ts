@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Observable} from "rxjs";
+import {delay, Observable} from "rxjs";
 import {Journal} from "../journal.type";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatGridListModule} from "@angular/material/grid-list";
@@ -52,8 +52,12 @@ export class JournalsComponent {
   private sink = new SubSink();
   public journals$!: Observable<Journal[]>;
 
+  private updateJournals() {
+    this.journals$ = this.journalsService.journals$().pipe(delay(300));
+  }
+
   public ngOnInit() {
-    this.journals$ = this.journalsService.journals$();
+    this.updateJournals();
   }
 
   public newJournal() {
@@ -75,10 +79,6 @@ export class JournalsComponent {
     );
   }
 
-  public ngOnDestroy() {
-    this.sink.drain();
-  }
-
   public async navigateHome() {
     await this.router.navigate([HOME]);
   }
@@ -89,5 +89,13 @@ export class JournalsComponent {
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
+  }
+
+  public handleOnDeleteJournal() {
+    this.updateJournals();
+  }
+
+  public ngOnDestroy() {
+    this.sink.drain();
   }
 }
