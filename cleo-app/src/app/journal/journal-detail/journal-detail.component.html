@@ -2,8 +2,8 @@
   <mat-toolbar>
     <mat-toolbar-row>
       <button
-        *ngIf="(mode$.value === 'normal')"
         mat-icon-button
+        disableRipple
         (click)="navigateBack()"
       >
         <mat-icon>
@@ -12,8 +12,9 @@
       </button>
 
       <button
-        *ngIf="(journal$.value) && (mode$.value === 'normal')"
+        *ngIf="(journal$.value)"
         mat-icon-button
+        disableRipple
         [matMenuTriggerFor]="menu"
       >
         <mat-icon>more_vert</mat-icon>
@@ -21,35 +22,19 @@
       <mat-menu #menu="matMenu">
         <button
           mat-menu-item
-          (click)="enterEditMode()"
+          disableRipple
+          (click)="editJournal()"
         >
           Edit
         </button>
         <button
           mat-menu-item
+          disableRipple
           (click)="deleteJournal()"
         >
           Delete
         </button>
       </mat-menu>
-
-      <button
-        *ngIf="(mode$.value === 'edit')"
-        mat-icon-button
-        (click)="cancelEditing()"
-        [disabled]="nameForm.invalid"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-
-      <button
-        *ngIf="(mode$.value === 'edit')"
-        mat-icon-button
-        (click)="doneEditing()"
-        [disabled]="nameForm.invalid"
-      >
-        <mat-icon>done</mat-icon>
-      </button>
     </mat-toolbar-row>
     <mat-toolbar-row>
       <h2>
@@ -62,23 +47,30 @@
     </mat-toolbar-row>
     <mat-toolbar-row>
       <button
-        *ngIf="(mode$.value === 'normal')"
-        mat-button
+        mat-flat-button
+        disableRipple
         (click)="newEntry()"
       >
         Add Entry
       </button>
 
       <button
-        mat-button
+        mat-flat-button
+        disableRipple
         [matMenuTriggerFor]="sortMenu"
       >
         <mat-icon>sort</mat-icon>
         Sort By
       </button>
       <mat-menu #sortMenu="matMenu">
-        <button mat-menu-item>Last Updated</button>
-        <button mat-menu-item>Created</button>
+        <button
+          mat-menu-item
+          disableRipple
+        >Last Updated</button>
+        <button
+          mat-menu-item
+          disableRipple
+        >Created</button>
       </mat-menu>
     </mat-toolbar-row>
   </mat-toolbar>

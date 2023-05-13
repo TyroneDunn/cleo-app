@@ -16,9 +16,9 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatInputModule} from "@angular/material/input";
-import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-
-type Mode = 'normal' | 'edit';
+import {EditJournalComponent} from "../edit-journal/edit-journal.component";
+import {MatDialog} from "@angular/material/dialog";
+import {DeleteJournalComponent} from "../delete-journal/delete-journal.component";
 
 @Component({
   selector: 'app-journal-detail',
@@ -34,7 +34,6 @@ type Mode = 'normal' | 'edit';
     MatMenuModule,
     MatProgressBarModule,
     MatInputModule,
-    ReactiveFormsModule,
   ],
   templateUrl: './journal-detail.component.html',
   styleUrls: ['./journal-detail.component.scss']
@@ -45,15 +44,13 @@ export class JournalDetailComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private location = inject(Location);
-  private formBuilder = inject(FormBuilder);
-  public nameForm = this.formBuilder.group({name: ['', Validators.required]});
+  private dialog = inject(MatDialog);
   private sink = new SubSink();
   private id$ = new BehaviorSubject<string>('');
-  public mode$ = new BehaviorSubject<Mode>("normal");
   public journal$ = new BehaviorSubject<Journal | undefined>(undefined);
   public journalEntries$ = new BehaviorSubject<JournalEntry[] | undefined>(undefined) ;
 
-  ngOnInit() {
+  public ngOnInit() {
     this.sink.collect(
       this.route.paramMap.subscribe(params => {
         this.id$.next(params.get('id') as string);
@@ -62,7 +59,6 @@ export class JournalDetailComponent {
           this.journalService.journal$(this.id$.value).subscribe((journal) => {
             if (!journal) return;
             this.journal$.next(journal);
-            if (journal.name === 'New Journal') this.enterEditMode();
           })
         );
 
@@ -75,6 +71,10 @@ export class JournalDetailComponent {
     );
   }
 
+  public navigateBack() {
+    this.location.back();
+  }
+
   public newEntry() {
     this.sink.collect(
       this.journalEntryService.createJournalEntry$(this.id$.value, 'New Entry')
@@ -85,64 +85,42 @@ export class JournalDetailComponent {
     );
   }
 
-  public navigateBack() {
-    this.location.back();
+  public editJournal() {
+    const config = {
+      data: {journal: this.journal$.value}
+    }
+    const dialogRef = this.dialog.open(EditJournalComponent, config);
+    dialogRef.afterClosed().subscribe((name) => {
+      if (name && this.journal$.value) {
+        this.sink.collect(
+          this.journalService.patchJournalName$(this.journal$.value._id, name)
+            .subscribe(async (success) => {
+              if (!success) return;
+            })
+        );
+      }
+    });
   }
 
   public deleteJournal() {
-    this.sink.collect(
-      this.journalService.deleteJournal$(this.id$.value)
-        .subscribe((success) => {
-          if (!success) return;
-          this.navigateBack();
-        })
-    );
-  }
-
-  public enterEditMode() {
-    this.mode$.next("edit");
-  }
-
-  public doneEditing() {
-    if (!this.journal$.value)
-      return;
-
-    if (this.nameForm.invalid)
-      return;
-
-    const name = this.nameForm.get('name')?.value as string;
-    if (name === this.journal$.value.name) {
-      this.enterNormalMode();
-      return;
+    const config = {
+      data: {journal: this.journal$.value}
     }
-
-    this.sink.collect(
-      this.journalService.patchJournalName$(this.id$.value, name).subscribe((success) => {
-        if (!success) return;
-        this.updateJournalName(name);
-        this.enterNormalMode();
-      })
-    );
-  }
-
-  private enterNormalMode() {
-    this.mode$.next("normal");
-  }
-
-  private updateJournalName(name: string) {
-    if (this.journal$.value) {
-      let journal = this.journal$.value;
-      journal.name = name;
-      this.journal$.next(journal);
-    }
-  }
-
-  public cancelEditing() {
-    this.mode$.next("normal");
+    const dialogRef = this.dialog.open(DeleteJournalComponent, config);
+    dialogRef.afterClosed().subscribe((confirm) => {
+      if (confirm && this.journal$.value) {
+        this.sink.collect(
+          this.journalService.deleteJournal$(this.journal$.value._id)
+            .subscribe(async (success) => {
+              if (!success) return;
+              this.navigateBack();
+            })
+        );
+      }
+    });
   }
 
   public ngOnDestroy() {
-    this.mode$.unsubscribe();
     this.id$.unsubscribe();
     this.journal$.unsubscribe();
     this.sink.drain();
