@@ -1,5 +1,41 @@
-<a
-  routerLink="/journal/{{journalId}}/journal-entry/{{journalEntry._id}}"
->
-  {{journalEntry.body}}
-</a>
+<mat-card>
+  <a
+    routerLink="/journal/{{journalId}}/journal-entry/{{journalEntry._id}}"
+  >
+    <mat-card-header>
+      <p class="mat-body-1">
+        {{journalEntry.body}}
+      </p>
+    </mat-card-header>
+    <mat-card-content class="mat-subtitle-2">
+      {{journalEntry.lastUpdated | date}}
+    </mat-card-content>
+  </a>
+  <mat-card-actions>
+    <button
+      mat-icon-button
+      disableRipple
+      [matMenuTriggerFor]="menu"
+    >
+      <mat-icon color="primary">more_horiz</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <a
+        mat-menu-item
+        routerLink="/journal/{{journalId}}/journal-entry/{{journalEntry._id}}"
+        disableRipple
+      >
+        <mat-icon color="primary">open_in_new</mat-icon>
+        Open
+      </a>
+      <button
+        mat-menu-item
+        (click)="deleteJournalEntry()"
+        disableRipple
+      >
+        <mat-icon color="primary">delete</mat-icon>
+        Delete
+      </button>
+    </mat-menu>
+  </mat-card-actions>
+</mat-card>
