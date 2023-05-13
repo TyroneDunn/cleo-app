@@ -21,8 +21,8 @@ import {UserService} from "../../user/user.service";
 import {HOME} from "../../app-routing.constants";
 import {MatDialog} from "@angular/material/dialog";
 import {NewJournalComponent} from "../new-journal/new-journal.component";
-
-const NEW_JOURNAL_PLACEHOLDER = 'New Journal';
+import {EditJournalComponent} from "../edit-journal/edit-journal.component";
+import {DeleteJournalComponent} from "../delete-journal/delete-journal.component";
 
 @Component({
   selector: 'app-journals',
@@ -48,7 +48,7 @@ export class JournalsComponent {
   private journalsService = inject(JournalService);
   private router = inject(Router);
   private userService = inject(UserService);
-  private newJournalDialog = inject(MatDialog);
+  private dialog = inject(MatDialog);
   private sink = new SubSink();
   public journals$!: Observable<Journal[]>;
 
@@ -60,14 +60,60 @@ export class JournalsComponent {
     this.updateJournals();
   }
 
+  public async navigateHome() {
+    await this.router.navigate([HOME]);
+  }
+
   public newJournal() {
-    this.sink.collect(
-      this.journalsService.createJournal$(NEW_JOURNAL_PLACEHOLDER)
-        .subscribe(async (journal) => {
-          if (!journal) return;
-          await this.router.navigate([`journal/${journal._id}`]);
-        })
-    );
+    const dialogRef = this.dialog.open(NewJournalComponent);
+    dialogRef.afterClosed().subscribe((name) => {
+      if (name) {
+        this.sink.collect(
+          this.journalsService.createJournal$(name)
+            .subscribe(async (journal) => {
+              if (!journal) return;
+              await this.router.navigate([`journal/${journal._id}`]);
+            })
+        );
+      }
+    });
+  }
+
+  public editJournal(journal: Journal) {
+    const config = {
+      data: {journal: journal}
+    }
+    const dialogRef = this.dialog.open(EditJournalComponent, config);
+    dialogRef.afterClosed().subscribe((name) => {
+      if (name) {
+        this.sink.collect(
+          this.journalsService.patchJournalName$(journal._id, name)
+            .subscribe(async (success) => {
+              // todo: give confirmation alert
+              if (!success) return;
+            })
+        );
+      }
+    });
+  }
+
+  public deleteJournal(journal: Journal) {
+    const config = {
+      data: {journal: journal}
+    }
+    const dialogRef = this.dialog.open(DeleteJournalComponent, config);
+    dialogRef.afterClosed().subscribe((confirm) => {
+      if (confirm) {
+        this.sink.collect(
+          this.journalsService.deleteJournal$(journal._id)
+            .subscribe(async (success) => {
+              // todo: give confirmation alert
+              if (!success) return;
+              this.updateJournals();
+            })
+        );
+      }
+    });
   }
 
   public logout() {
@@ -77,22 +123,6 @@ export class JournalsComponent {
         await this.router.navigate([HOME]);
       })
     );
-  }
-
-  public async navigateHome() {
-    await this.router.navigate([HOME]);
-  }
-
-  public openNewJournalDialog() {
-    const dialogRef = this.newJournalDialog.open(NewJournalComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  public handleOnDeleteJournal() {
-    this.updateJournals();
   }
 
   public ngOnDestroy() {

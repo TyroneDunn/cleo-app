@@ -39,7 +39,7 @@
   <mat-toolbar-row>
     <button
       mat-flat-button
-      (click)="openNewJournalDialog()"
+      (click)="newJournal()"
       disableRipple
     >
       New Journal
@@ -75,7 +75,8 @@
     >
       <app-journal-card
         [journal]="journal"
-        (onDeleteJournal)="handleOnDeleteJournal()"
+        (onEditJournal)="editJournal($event)"
+        (onDeleteJournal)="deleteJournal($event)"
       ></app-journal-card>
     </mat-grid-tile>
   </mat-grid-list>
