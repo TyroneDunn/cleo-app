@@ -1,105 +1,92 @@
-<mat-toolbar>
-  <button
-    *ngIf="(mode$.value === 'normal')"
-    mat-icon-button
-    (click)="navigateBack()"
-  >
-    <mat-icon>
-      keyboard_arrow_left
-    </mat-icon>
-  </button>
-
-  <button
-    *ngIf="(journal$.value) && (mode$.value === 'normal')"
-    mat-icon-button
-    [matMenuTriggerFor]="menu"
-  >
-    <mat-icon>more_vert</mat-icon>
-  </button>
-  <mat-menu #menu="matMenu">
-    <button
-      mat-menu-item
-      (click)="enterEditMode()"
-    >
-      Edit
-    </button>
-    <button
-      mat-menu-item
-      (click)="deleteJournal()"
-    >
-      Delete
-    </button>
-  </mat-menu>
-
-  <button
-    *ngIf="(mode$.value === 'edit')"
-    mat-icon-button
-    (click)="cancelEditing()"
-    [disabled]="nameForm.invalid"
-  >
-    <mat-icon>close</mat-icon>
-  </button>
-
-  <button
-    *ngIf="(mode$.value === 'edit')"
-    mat-icon-button
-    (click)="doneEditing()"
-    [disabled]="nameForm.invalid"
-  >
-    <mat-icon>done</mat-icon>
-  </button>
-</mat-toolbar>
-
-<mat-progress-bar
-  *ngIf="!(journal$.value)"
-  mode="indeterminate"
-></mat-progress-bar>
-
-<div *ngIf="journal$.value">
-  <h2
-    *ngIf="(mode$.value === 'normal')"
-  >
-    {{journal$.value.name}}
-  </h2>
-  <form
-    *ngIf="(mode$.value === 'edit')"
-    [formGroup]="nameForm"
-  >
-    <mat-form-field>
-      <input
-        matInput
-        [ngModel]="journal$.value.name"
-        name="name"
-        formControlName="name"
-        type="text"
-        required
-      >
-    </mat-form-field>
-  </form>
-  <p>{{journal$.value.dateOfCreation | date}} -
-    {{journal$.value.lastUpdated | date}}</p>
-
+<div *ngIf="(journal$.value)">
   <mat-toolbar>
-    <button
-      *ngIf="(mode$.value === 'normal')"
-      mat-button
-      (click)="newEntry()"
-    >
-      Add Entry
-    </button>
-    <button
-      mat-button
-      [matMenuTriggerFor]="sortMenu"
-    >
-      <mat-icon>sort</mat-icon>
-      Sort By
-    </button>
-    <mat-menu #sortMenu="matMenu">
-      <button mat-menu-item>Last Updated</button>
-      <button mat-menu-item>Created</button>
-    </mat-menu>
+    <mat-toolbar-row>
+      <button
+        *ngIf="(mode$.value === 'normal')"
+        mat-icon-button
+        (click)="navigateBack()"
+      >
+        <mat-icon>
+          keyboard_arrow_left
+        </mat-icon>
+      </button>
+
+      <button
+        *ngIf="(journal$.value) && (mode$.value === 'normal')"
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button
+          mat-menu-item
+          (click)="enterEditMode()"
+        >
+          Edit
+        </button>
+        <button
+          mat-menu-item
+          (click)="deleteJournal()"
+        >
+          Delete
+        </button>
+      </mat-menu>
+
+      <button
+        *ngIf="(mode$.value === 'edit')"
+        mat-icon-button
+        (click)="cancelEditing()"
+        [disabled]="nameForm.invalid"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+
+      <button
+        *ngIf="(mode$.value === 'edit')"
+        mat-icon-button
+        (click)="doneEditing()"
+        [disabled]="nameForm.invalid"
+      >
+        <mat-icon>done</mat-icon>
+      </button>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <h2>
+        {{journal$.value.name}}
+      </h2>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <p class="mat-caption">{{journal$.value.dateOfCreation | date}} -
+        {{journal$.value.lastUpdated | date}}</p>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <button
+        *ngIf="(mode$.value === 'normal')"
+        mat-button
+        (click)="newEntry()"
+      >
+        Add Entry
+      </button>
+
+      <button
+        mat-button
+        [matMenuTriggerFor]="sortMenu"
+      >
+        <mat-icon>sort</mat-icon>
+        Sort By
+      </button>
+      <mat-menu #sortMenu="matMenu">
+        <button mat-menu-item>Last Updated</button>
+        <button mat-menu-item>Created</button>
+      </mat-menu>
+    </mat-toolbar-row>
   </mat-toolbar>
 
+  <mat-progress-bar
+    *ngIf="!(journal$.value)"
+    mode="indeterminate"
+  ></mat-progress-bar>
 
   <mat-list>
     <mat-list-item
