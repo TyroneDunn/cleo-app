@@ -4,11 +4,15 @@ import {MatCardModule} from "@angular/material/card";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
-import {DialogData} from "../delete-journal/delete-journal.component";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
+import {Journal} from "../journal.type";
 
 type state = 'unedited' | 'edited';
+
+interface DialogData {
+  journal: Journal;
+}
 
 @Component({
   selector: 'app-edit-journal',
