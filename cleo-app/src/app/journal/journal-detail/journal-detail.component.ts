@@ -120,6 +120,23 @@ export class JournalDetailComponent {
     });
   }
 
+  public deleteJournalEntry(journalEntry: JournalEntry) {
+    const journalId = this.journal$.value?._id as string;
+    const config = {
+      data: {journalEntry: journalEntry}
+    }
+    const dialogRef = this.dialog.open(DeleteJournalEntryComponent, config);
+    dialogRef.afterClosed().subscribe((confirm) => {
+      if (!confirm) return;
+      this.sink.collect(
+        this.journalEntryService.deleteJournalEntry$(journalId, journalEntry._id)
+          .subscribe((success) => {
+            if (success) this.updateJournalEntries()
+          })
+      );
+    });
+  }
+
   public ngOnDestroy() {
     this.id$.unsubscribe();
     this.journal$.unsubscribe();

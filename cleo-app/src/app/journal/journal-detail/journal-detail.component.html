@@ -42,7 +42,7 @@
       </h2>
     </mat-toolbar-row>
     <mat-toolbar-row>
-      <p class="mat-caption">{{journal$.value.dateOfCreation | date}} -
+      <p class="mat-subtitle-2">{{journal$.value.dateOfCreation | date}} -
         {{journal$.value.lastUpdated | date}}</p>
     </mat-toolbar-row>
     <mat-toolbar-row>
@@ -80,14 +80,13 @@
     mode="indeterminate"
   ></mat-progress-bar>
 
-  <mat-list>
-    <mat-list-item
-      *ngFor="let entry of journalEntries$ | async"
-    >
-      <app-journal-entry-card
-        [journalId]="journal$.value._id"
-        [journalEntry]="entry"
-      ></app-journal-entry-card>
-    </mat-list-item>
-  </mat-list>
+  <div
+    *ngFor="let entry of journalEntries$ | async"
+  >
+    <app-journal-entry-card
+      (onDeleteJournalEntry)="deleteJournalEntry($event)"
+      [journalId]="journal$.value._id"
+      [journalEntry]="entry"
+    ></app-journal-entry-card>
+  </div>
 </div>
