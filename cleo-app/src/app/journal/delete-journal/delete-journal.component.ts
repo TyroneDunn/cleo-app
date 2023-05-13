@@ -6,7 +6,7 @@ import {MatInputModule} from "@angular/material/input";
 import {Journal} from "../journal.type";
 import {MatButtonModule} from "@angular/material/button";
 
-export interface DialogData {
+interface DialogData {
   journal: Journal;
 }
 
