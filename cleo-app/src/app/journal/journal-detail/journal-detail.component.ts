@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {CommonModule, Location} from '@angular/common';
 import {JournalService} from "../journal.service";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, ParamMap, Router, RouterLink} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
 import {Journal} from "../journal.type";
 import {SubSink} from "../../../utils/sub-sink";
@@ -19,6 +19,8 @@ import {MatInputModule} from "@angular/material/input";
 import {EditJournalComponent} from "../edit-journal/edit-journal.component";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteJournalComponent} from "../delete-journal/delete-journal.component";
+import {DeleteJournalEntryComponent}
+  from "../../journal-entry/delete-journal-entry/delete-journal-entry.component";
 
 @Component({
   selector: 'app-journal-detail',
@@ -52,21 +54,31 @@ export class JournalDetailComponent {
 
   public ngOnInit() {
     this.sink.collect(
-      this.route.paramMap.subscribe(params => {
-        this.id$.next(params.get('id') as string);
+      this.route.paramMap.subscribe((params) => {
+        this.updateJournalId(params);
+        this.updateJournal();
+        this.updateJournalEntries();
+      })
+    );
+  }
 
-        this.sink.collect(
-          this.journalService.journal$(this.id$.value).subscribe((journal) => {
-            if (!journal) return;
-            this.journal$.next(journal);
-          })
-        );
+  private updateJournalId(params: ParamMap) {
+    this.id$.next(params.get('id') as string);
+  }
 
-        this.sink.collect(
-          this.journalEntryService.journalEntries$(this.id$.value).subscribe((entries) => {
-            this.journalEntries$.next(entries);
-          })
-        );
+  private updateJournal() {
+    this.sink.collect(
+      this.journalService.journal$(this.id$.value).subscribe((journal) => {
+        if (!journal) return;
+        this.journal$.next(journal);
+      })
+    );
+  }
+
+  private updateJournalEntries() {
+    this.sink.collect(
+      this.journalEntryService.journalEntries$(this.id$.value).subscribe((entries) => {
+        this.journalEntries$.next(entries);
       })
     );
   }
