@@ -1,0 +1,28 @@
+<mat-card class="hero-card">
+  <mat-card-header>
+    <mat-card-title>
+      <h1>Delete Entry</h1>
+      <br>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-actions>
+    <button
+      (click)="back()"
+      mat-dialog-close
+      mat-button
+      disableRipple
+    >
+      Back
+    </button>
+    <button
+      (click)="delete()"
+      mat-dialog-close
+      disableRipple
+      mat-button
+      type="submit"
+    >
+      Delete
+    </button>
+  </mat-card-actions>
+</mat-card>
