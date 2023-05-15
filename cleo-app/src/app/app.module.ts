@@ -6,6 +6,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from "@angular/common/http";
 import {SplashComponent} from "./splash/splash.component";
 import {MatDialogModule} from "@angular/material/dialog";
+import {QuillModule} from "ngx-quill";
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {MatDialogModule} from "@angular/material/dialog";
       HttpClientModule,
       SplashComponent,
       MatDialogModule,
+      QuillModule,
     ],
   providers: [],
   bootstrap: [AppComponent]
