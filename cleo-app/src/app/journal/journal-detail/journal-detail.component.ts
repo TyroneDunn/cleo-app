@@ -89,7 +89,7 @@ export class JournalDetailComponent {
 
   public newEntry() {
     this.sink.collect(
-      this.journalEntryService.createJournalEntry$(this.id$.value, 'New Entry')
+      this.journalEntryService.createJournalEntry$(this.id$.value, ' ')
         .subscribe(async (journalEntry) => {
           if (!journalEntry) return;
           await this.router.navigate([`journal/${this.journal$.value?._id}/journal-entry/${journalEntry._id}`]);

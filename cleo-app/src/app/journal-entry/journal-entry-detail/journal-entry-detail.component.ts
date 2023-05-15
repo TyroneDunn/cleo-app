@@ -7,8 +7,6 @@ import {MatButtonModule} from "@angular/material/button";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
 import {JournalEntry} from "../journal-entry.type";
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators}
-  from "@angular/forms";
 import {JournalEntryService} from "../journal-entry.service";
 import {SubSink} from "../../../utils/sub-sink";
 import {MatInputModule} from "@angular/material/input";
@@ -17,6 +15,7 @@ import {DeleteJournalEntryComponent}
 import {MatDialog} from "@angular/material/dialog";
 import {MatCardModule} from "@angular/material/card";
 import {QuillEditorComponent} from "ngx-quill";
+import {FormsModule} from "@angular/forms";
 
 type Mode = 'normal' | 'edit';
 
@@ -30,25 +29,22 @@ type Mode = 'normal' | 'edit';
     MatMenuModule,
     MatButtonModule,
     RouterLink,
-    ReactiveFormsModule,
     MatInputModule,
     MatCardModule,
     QuillEditorComponent,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './journal-entry-detail.component.html',
   styleUrls: ['./journal-entry-detail.component.scss']
 })
 export class JournalEntryDetailComponent {
   private location = inject(Location);
-  private formBuilder = inject(FormBuilder);
   private journalEntryService = inject(JournalEntryService);
   private route = inject(ActivatedRoute);
   private dialog = inject(MatDialog);
   private sink = new SubSink();
   public mode$ = new BehaviorSubject<Mode>("normal");
   public journalEntry$ = new BehaviorSubject<JournalEntry | undefined>(undefined);
-  public entryForm: FormGroup = this.formBuilder.group({body: ['', Validators.required]});
   private journalId$ = new BehaviorSubject<string>('');
   private entryId$ = new BehaviorSubject<string>('');
 
@@ -68,7 +64,7 @@ export class JournalEntryDetailComponent {
         .subscribe((journalEntry) => {
           if (!journalEntry) return;
           this.journalEntry$.next(journalEntry);
-          if (journalEntry.body === 'New Entry') this.enterEditMode();
+          if (journalEntry.body === ' ') this.enterEditMode();
         })
     );
   }

@@ -26,11 +26,12 @@
       <mat-icon>done</mat-icon>
     </button>
   </mat-toolbar-row>
-  <mat-toolbar-row *ngIf="(mode$.value === 'normal')">
+  <mat-toolbar-row>
     <button
       mat-flat-button
       disableRipple
       (click)="enterEditMode()"
+      [disabled]="(mode$.value === 'edit')"
     >
       Edit
     </button>
@@ -38,6 +39,7 @@
       mat-flat-button
       disableRipple
       (click)="deleteEntry()"
+      [disabled]="(mode$.value === 'edit')"
     >
       Delete
     </button>
