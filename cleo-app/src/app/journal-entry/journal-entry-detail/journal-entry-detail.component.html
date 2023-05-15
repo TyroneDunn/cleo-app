@@ -1,75 +1,58 @@
 <mat-toolbar>
-  <button
-    *ngIf="(mode$.value === 'normal')"
-    mat-icon-button
-    (click)="navigateBack()"
-  >
-    <mat-icon>
-      keyboard_arrow_left
-    </mat-icon>
-  </button>
-
-  <button
-    *ngIf="(journalEntry$.value) && (mode$.value === 'normal')"
-    mat-icon-button
-    [matMenuTriggerFor]="menu"
-  >
-    <mat-icon>more_vert</mat-icon>
-  </button>
-  <mat-menu #menu="matMenu">
+  <mat-toolbar-row>
     <button
-      mat-menu-item
+      *ngIf="(mode$.value === 'normal')"
+      mat-icon-button
+      (click)="navigateBack()"
+    >
+      <mat-icon>
+        keyboard_arrow_left
+      </mat-icon>
+    </button>
+
+    <button
+      *ngIf="(mode$.value === 'edit')"
+      mat-icon-button
+      (click)="cancelEditing()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+
+    <button
+      *ngIf="(mode$.value === 'edit')"
+      mat-icon-button
+      (click)="doneEditing()"
+    >
+      <mat-icon>done</mat-icon>
+    </button>
+  </mat-toolbar-row>
+  <mat-toolbar-row *ngIf="(mode$.value === 'normal')">
+    <button
+      mat-flat-button
+      disableRipple
       (click)="enterEditMode()"
     >
       Edit
     </button>
     <button
-      mat-menu-item
+      mat-flat-button
+      disableRipple
       (click)="deleteEntry()"
     >
       Delete
     </button>
-  </mat-menu>
-
-  <button
-    *ngIf="(mode$.value === 'edit')"
-    mat-icon-button
-    (click)="cancelEditing()"
-    [disabled]="entryForm.invalid"
-  >
-    <mat-icon>close</mat-icon>
-  </button>
-
-  <button
-    *ngIf="(mode$.value === 'edit')"
-    mat-icon-button
-    (click)="doneEditing()"
-    [disabled]="entryForm.invalid"
-  >
-    <mat-icon>done</mat-icon>
-  </button>
+  </mat-toolbar-row>
 </mat-toolbar>
 
 
-<div
+<mat-card
+  class="mat-mdc-card-outlined"
   *ngIf="(journalEntry$.value)"
 >
-  <p *ngIf="(mode$.value === 'normal')">{{journalEntry$.value.body}}</p>
-
-  <form
-    *ngIf="(mode$.value === 'edit')"
-    [formGroup]="entryForm"
-  >
-    <mat-form-field>
-    <textarea
-      matInput
-      [ngModel]="journalEntry$.value.body"
-      name="body"
-      formControlName="body"
-      type="text"
-      required
-    ></textarea>
-    </mat-form-field>
-  </form>
-</div>
-
+    <quill-editor
+      [modules]="{toolbar: false}"
+      [required]="true"
+      [(ngModel)]="journalEntry$.value.body"
+      [readOnly]="(mode$.value === 'normal')"
+    ></quill-editor>
+</mat-card>

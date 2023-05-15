@@ -7,10 +7,16 @@ import {MatButtonModule} from "@angular/material/button";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
 import {JournalEntry} from "../journal-entry.type";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators}
+  from "@angular/forms";
 import {JournalEntryService} from "../journal-entry.service";
 import {SubSink} from "../../../utils/sub-sink";
 import {MatInputModule} from "@angular/material/input";
+import {DeleteJournalEntryComponent}
+  from "../delete-journal-entry/delete-journal-entry.component";
+import {MatDialog} from "@angular/material/dialog";
+import {MatCardModule} from "@angular/material/card";
+import {QuillEditorComponent} from "ngx-quill";
 
 type Mode = 'normal' | 'edit';
 
@@ -25,7 +31,10 @@ type Mode = 'normal' | 'edit';
     MatButtonModule,
     RouterLink,
     ReactiveFormsModule,
-    MatInputModule
+    MatInputModule,
+    MatCardModule,
+    QuillEditorComponent,
+    FormsModule
   ],
   templateUrl: './journal-entry-detail.component.html',
   styleUrls: ['./journal-entry-detail.component.scss']
@@ -35,6 +44,7 @@ export class JournalEntryDetailComponent {
   private formBuilder = inject(FormBuilder);
   private journalEntryService = inject(JournalEntryService);
   private route = inject(ActivatedRoute);
+  private dialog = inject(MatDialog);
   private sink = new SubSink();
   public mode$ = new BehaviorSubject<Mode>("normal");
   public journalEntry$ = new BehaviorSubject<JournalEntry | undefined>(undefined);
@@ -47,17 +57,28 @@ export class JournalEntryDetailComponent {
       this.route.paramMap.subscribe((params) => {
         this.journalId$.next(params.get('journalId') as string);
         this.entryId$.next(params.get('entryId') as string);
-
-        this.sink.collect(
-          this.journalEntryService.journalEntry$(this.journalId$.value, this.entryId$.value)
-            .subscribe((journalEntry) => {
-              if (!journalEntry) return;
-              this.journalEntry$.next(journalEntry);
-              if (journalEntry.body === 'New Entry') this.enterEditMode();
-            })
-        );
+        this.updateJournalEntry();
       })
     )
+  }
+
+  private updateJournalEntry() {
+    this.sink.collect(
+      this.journalEntryService.journalEntry$(this.journalId$.value, this.entryId$.value)
+        .subscribe((journalEntry) => {
+          if (!journalEntry) return;
+          this.journalEntry$.next(journalEntry);
+          if (journalEntry.body === 'New Entry') this.enterEditMode();
+        })
+    );
+  }
+
+  private updateEntry(body: string) {
+    if (this.journalEntry$.value) {
+      let entry = this.journalEntry$.value;
+      entry.body = body;
+      this.journalEntry$.next(entry);
+    }
   }
 
   public navigateBack() {
@@ -80,14 +101,7 @@ export class JournalEntryDetailComponent {
     if (!this.journalEntry$.value)
       return;
 
-    if (this.entryForm.invalid)
-      return;
-
-    const body = this.entryForm.get('body')?.value as string;
-    if (body === this.journalEntry$.value.body) {
-      this.enterNormalMode();
-      return;
-    }
+    const body = this.journalEntry$.value?.body as string;
 
     this.sink.collect(
       this.journalEntryService.patchJournalEntry$(this.journalId$.value, this.entryId$.value, body)
@@ -99,22 +113,23 @@ export class JournalEntryDetailComponent {
     );
   }
 
-  private updateEntry(body: string) {
-    if (this.journalEntry$.value) {
-      let entry = this.journalEntry$.value;
-      entry.body = body;
-      this.journalEntry$.next(entry);
-    }
-  }
-
   public deleteEntry() {
-    this.sink.collect(
-      this.journalEntryService.deleteJournalEntry$(this.journalId$.value, this.entryId$.value)
-        .subscribe((success) => {
-          if (!success) return;
-          this.navigateBack();
-        })
-    );
+    const config = {
+      data: {journalEntry: this.journalEntry$.value}
+    }
+    const dialogRef = this.dialog.open(DeleteJournalEntryComponent, config);
+    dialogRef.afterClosed().subscribe((confirm) => {
+      if (!confirm) return;
+
+      if (this.journalEntry$.value) {
+        this.sink.collect(
+          this.journalEntryService.deleteJournalEntry$(this.journalId$.value, this.journalEntry$.value._id)
+            .subscribe((success) => {
+              if (success) this.navigateBack();
+            })
+        );
+      }
+    });
   }
 
   public ngOnDestroy() {

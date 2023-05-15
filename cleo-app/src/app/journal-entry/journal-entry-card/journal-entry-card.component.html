@@ -4,7 +4,7 @@
   >
     <mat-card-header>
       <p class="mat-body-1">
-        {{journalEntry.body}}
+        {{parseEntryBody(journalEntry) | async}}
       </p>
     </mat-card-header>
     <mat-card-content class="mat-subtitle-2">
