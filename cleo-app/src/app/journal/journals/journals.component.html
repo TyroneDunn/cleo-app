@@ -1,9 +1,12 @@
-<mat-toolbar>
+<mat-toolbar
+  color="primary"
+>
   <mat-toolbar-row>
     <button
       (click)="navigateHome()"
       mat-flat-button
       disableRipple
+      color="primary"
     >
       <h2>
         cleo.|
@@ -12,7 +15,6 @@
     <button
       mat-icon-button
       disableRipple
-      color="primary"
       [matMenuTriggerFor]="menu"
     >
       <mat-icon>person</mat-icon>
@@ -41,6 +43,7 @@
       mat-flat-button
       (click)="newJournal()"
       disableRipple
+      color="primary"
     >
       New Journal
     </button>
@@ -48,6 +51,7 @@
       mat-flat-button
       disableRipple
       [matMenuTriggerFor]="sortMenu"
+      color="primary"
     >
       <mat-icon>sort</mat-icon>
       Sort By
