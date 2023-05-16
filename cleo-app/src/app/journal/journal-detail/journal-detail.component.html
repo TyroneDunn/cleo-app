@@ -1,5 +1,7 @@
 <div *ngIf="(journal$.value)">
-  <mat-toolbar>
+  <mat-toolbar
+    color="primary"
+  >
     <mat-toolbar-row>
       <button
         mat-icon-button
@@ -50,6 +52,7 @@
         mat-flat-button
         disableRipple
         (click)="newEntry()"
+        color="primary"
       >
         New Entry
       </button>
@@ -58,6 +61,7 @@
         mat-flat-button
         disableRipple
         [matMenuTriggerFor]="sortMenu"
+        color="primary"
       >
         <mat-icon>sort</mat-icon>
         Sort By
