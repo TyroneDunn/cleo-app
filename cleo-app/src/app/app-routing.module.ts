@@ -9,6 +9,7 @@ import {JournalDetailComponent} from "./journal/journal-detail/journal-detail.co
 import {JournalEntryDetailComponent}
   from "./journal-entry/journal-entry-detail/journal-entry-detail.component";
 import {AuthGuard} from "./user/auth-guard.service";
+import {TermsOfServiceComponent} from "./terms-of-service/terms-of-service.component";
 
 const routes: Routes = [
   {path: '', component: OnboardComponent},
@@ -18,6 +19,7 @@ const routes: Routes = [
   {path: 'journals', component: JournalsComponent, canActivate: [AuthGuard]},
   {path: 'journal/:id', component: JournalDetailComponent, canActivate: [AuthGuard]},
   {path: 'journal/:journalId/journal-entry/:entryId', component: JournalEntryDetailComponent, canActivate: [AuthGuard]},
+  {path: 'terms-of-service', component: TermsOfServiceComponent},
 ];
 
 @NgModule({
