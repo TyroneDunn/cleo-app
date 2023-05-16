@@ -38,7 +38,7 @@ interface DialogData {
 export class NewJournalComponent {
   private formBuilder = inject(FormBuilder);
   public nameForm = this.formBuilder.group({
-    name: ['', Validators.required],
+    name: ['', Validators.maxLength(64)],
   });
 
   public dialogRef = inject(MatDialogRef<NewJournalComponent>)
