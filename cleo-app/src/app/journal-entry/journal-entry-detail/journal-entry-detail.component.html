@@ -18,22 +18,23 @@
       <mat-icon>close</mat-icon>
     </button>
 
-    <button
-      *ngIf="(mode$.value === 'edit')"
-      mat-icon-button
-      (click)="doneEditing()"
-    >
-      <mat-icon>done</mat-icon>
-    </button>
   </mat-toolbar-row>
   <mat-toolbar-row>
     <button
       mat-flat-button
       disableRipple
       (click)="enterEditMode()"
-      [disabled]="(mode$.value === 'edit')"
+      *ngIf="(mode$.value === 'normal')"
     >
       Edit
+    </button>
+    <button
+      *ngIf="(mode$.value === 'edit')"
+      mat-flat-button
+      disableRipple
+      (click)="doneEditing()"
+    >
+      Save
     </button>
     <button
       mat-flat-button
@@ -45,7 +46,6 @@
     </button>
   </mat-toolbar-row>
 </mat-toolbar>
-
 
 <mat-card
   class="mat-mdc-card-outlined"
