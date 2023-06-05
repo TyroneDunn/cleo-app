@@ -21,7 +21,7 @@ export class JournalEntryService {
   }
 
   public journalEntry$(journalId: string, entryId: string): Observable<JournalEntry | undefined> {
-    return this.http.getRequest$<JournalEntry>(`${CLEO_API_JOURNAL_ENTRIES_URL}${journalId}/${entryId}`).pipe(
+    return this.http.getRequest$<JournalEntry>(`${CLEO_API_JOURNAL_ENTRIES_URL}${entryId}`).pipe(
       map((response) => {
         return response.body as JournalEntry;
       }),
@@ -44,7 +44,7 @@ export class JournalEntryService {
   }
 
   public deleteJournalEntry$(journalId: string, entryId: string): Observable<boolean> {
-    return this.http.deleteRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}${journalId}/${entryId}`)
+    return this.http.deleteRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}${entryId}`)
       .pipe(
         map((response) => {
           return response.ok;
@@ -57,7 +57,7 @@ export class JournalEntryService {
 
   public patchJournalEntry$(journalId: string, entryId: string, body: string): Observable<boolean> {
     const payload = {body: body};
-    return this.http.patchRequest$<object>(`${CLEO_API_JOURNAL_ENTRIES_URL}${journalId}/${entryId}`, payload).pipe(
+    return this.http.patchRequest$<object>(`${CLEO_API_JOURNAL_ENTRIES_URL}${entryId}`, payload).pipe(
       map((response) => {
         return response.ok;
       }),

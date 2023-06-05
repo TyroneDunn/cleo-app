@@ -51,8 +51,7 @@ export class JournalEntryDetailComponent {
   public ngOnInit() {
     this.sink.collect(
       this.route.paramMap.subscribe((params) => {
-        this.journalId$.next(params.get('journalId') as string);
-        this.entryId$.next(params.get('entryId') as string);
+        this.entryId$.next(params.get('id') as string);
         this.updateJournalEntry();
       })
     )
