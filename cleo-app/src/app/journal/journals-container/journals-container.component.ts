@@ -22,7 +22,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {NewJournalComponent} from "../new-journal/new-journal.component";
 import {EditJournalComponent} from "../edit-journal/edit-journal.component";
 import {DeleteJournalComponent} from "../delete-journal/delete-journal.component";
-import {getJournalsDTO} from "../journal-dtos";
+import {GetJournalsDTO} from "../journal-dtos";
 
 @Component({
   selector: 'app-journals-container',
@@ -50,9 +50,9 @@ export class JournalsContainerComponent {
   private userService = inject(UserService);
   private dialog = inject(MatDialog);
   public journals$!: Observable<Journal[]>;
-  public getJournalsDTO: BehaviorSubject<getJournalsDTO> = new BehaviorSubject<getJournalsDTO>({});
+  public getJournalsDTO: BehaviorSubject<GetJournalsDTO> = new BehaviorSubject<GetJournalsDTO>({});
 
-  private updateJournals(dto: getJournalsDTO) {
+  private updateJournals(dto: GetJournalsDTO) {
     this.journals$ = this.journalsService.journals$(dto)
       .pipe(delay(300));
   }

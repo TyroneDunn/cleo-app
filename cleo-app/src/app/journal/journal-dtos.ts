@@ -1,4 +1,4 @@
-export type getJournalsDTO = {
+export type GetJournalsDTO = {
   name?: string,
   nameRegex?: string,
   sort?: 'name' | 'dateCreated' | 'lastUpdated',
