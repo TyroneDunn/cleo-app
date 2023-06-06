@@ -53,7 +53,7 @@ export class JournalsContainerComponent {
   public getJournalsDTO: BehaviorSubject<GetJournalsDTO> = new BehaviorSubject<GetJournalsDTO>({});
 
   private updateJournals(dto: GetJournalsDTO) {
-    this.journals$ = this.journalsService.journals$(dto)
+    this.journals$ = this.journalsService.getJournals$(dto)
       .pipe(delay(300));
   }
 
@@ -85,7 +85,7 @@ export class JournalsContainerComponent {
     const dialogRef = this.dialog.open(EditJournalComponent, config);
     dialogRef.afterClosed().subscribe((name) => {
       if (name) {
-        this.journalsService.patchJournalName$(journal._id, name)
+        this.journalsService.updateJournal$({id: journal._id.toString(), name})
           .subscribe(async (success) => {
             // todo: give confirmation alert
             if (!success) return;
@@ -105,7 +105,7 @@ export class JournalsContainerComponent {
           .subscribe(async (success) => {
             // todo: give confirmation alert
             if (!success) return;
-            this.updateJournals();
+            this.updateJournals({});
           })
       }
     });

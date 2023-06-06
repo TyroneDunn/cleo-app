@@ -105,7 +105,7 @@ export class JournalDetailComponent {
     dialogRef.afterClosed().subscribe((name) => {
       if (name && this.journal$.value) {
         this.sink.collect(
-          this.journalService.patchJournalName$(this.journal$.value._id, name)
+          this.journalService.updateJournal$({id: this.journal$.value._id, name: name})
             .subscribe(async (success) => {
               if (!success) return;
             })
