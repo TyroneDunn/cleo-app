@@ -9,7 +9,7 @@ import {JournalService} from "./journal.service";
 @Injectable({
   providedIn: 'root'
 })
-export class JournalHttpService implements JournalService{
+export class JournalHttpService implements JournalService {
   private http = inject(HttpService);
 
   public getJournals$ = (dto: getJournalsDTO): Observable<Journal[]> => {
@@ -24,44 +24,39 @@ export class JournalHttpService implements JournalService{
     );
   };
 
-  private mapToGetJournalsURL(dto: getJournalsDTO) {
+  private mapToGetJournalsURL = (dto: getJournalsDTO) => {
     let url = CLEO_API_JOURNALS_URL;
     if (dto.name)
       url.concat('?name')
     if (dto.sort)
       url.concat('?')
     return url;
-  }
+  };
 
-  public getJournal$(id: string): Observable<Journal | null> {
-    return this.http.getRequest$<Journal>(`${CLEO_API_JOURNALS_URL}/${id}`).pipe(
+  public getJournal$ = (id: string): Observable<Journal | null> =>
+    this.http.getRequest$<Journal | null>(`${CLEO_API_JOURNALS_URL}/${id}`).pipe(
       map((response) => {
         return response.body as Journal;
-      }),
-      catchError(() => {
-        return of(null);
-      }),
+      })
     );
-  }
 
-  public createJournal$(name: string): Observable<Journal> {
+  public createJournal$ = (name: string): Observable<Journal> => {
     const payload = {name: name};
     return this.http.postRequest$(CLEO_API_JOURNALS_URL, payload).pipe(
       map((response) => {
         return response.body as Journal;
       })
     );
-  }
+  };
 
-  public deleteJournal$(id: string): Observable<boolean> {
-    return this.http.deleteRequest$(`${CLEO_API_JOURNALS_URL}${id}`).pipe(
+  public deleteJournal$ = (id: string): Observable<Journal> =>
+    this.http.deleteRequest$(`${CLEO_API_JOURNALS_URL}/${id}`).pipe(
       map((response) => {
-        return response.ok;
-      }),
+        return response.body as Journal;
+      })
     );
-  }
 
-  public patchJournalName$(id: string, name: string): Observable<boolean> {
+  public patchJournalName$ = (id: string, name: string): Observable<boolean> => {
     const payload = {name: name};
     return this.http.patchRequest$<object>(`${CLEO_API_JOURNALS_URL}${id}`, payload).pipe(
       map((response) => {
@@ -71,5 +66,5 @@ export class JournalHttpService implements JournalService{
         return of(false);
       }),
     );
-  }
+  };
 }
