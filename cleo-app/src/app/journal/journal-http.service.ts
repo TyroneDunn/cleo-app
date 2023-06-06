@@ -3,7 +3,7 @@ import {HttpService} from "../http/http.service";
 import {catchError, map, Observable, of} from "rxjs";
 import {Journal} from "./journal.type";
 import {CLEO_API_JOURNALS_URL} from "./journal.constants";
-import {GetJournalsDTO} from "./journal-dtos";
+import {GetJournalsDTO, UpdateJournalDTO} from "./journal-dtos";
 import {JournalService} from "./journal.service";
 
 @Injectable({
@@ -56,15 +56,12 @@ export class JournalHttpService implements JournalService {
       })
     );
 
-  public patchJournalName$ = (id: string, name: string): Observable<Journal> => {
-    const payload = {name: name};
-    return this.http.patchRequest$<object>(`${CLEO_API_JOURNALS_URL}${id}`, payload).pipe(
+  public updateJournal$(dto: UpdateJournalDTO): Observable<Journal> {
+    const payload = {name: dto.name};
+    return this.http.patchRequest$<object>(`${CLEO_API_JOURNALS_URL}${dto.id}`, payload).pipe(
       map((response) => {
-        return response.ok
-      }),
-      catchError(() => {
-        return of(false);
-      }),
+        return response.body as Journal;
+      })
     );
   };
 }

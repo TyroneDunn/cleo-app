@@ -8,3 +8,8 @@ export type GetJournalsDTO = {
   page?: number,
   limit?: number,
 };
+
+export type UpdateJournalDTO = {
+  id: string,
+  name?: string,
+};

@@ -1,4 +1,4 @@
-import {GetJournalsDTO} from "./journal-dtos";
+import {GetJournalsDTO, UpdateJournalDTO} from "./journal-dtos";
 import {Observable} from "rxjs";
 import {Journal} from "./journal.type";
 
