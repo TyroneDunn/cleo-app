@@ -9,6 +9,11 @@ export type GetJournalsDTO = {
   limit?: number,
 };
 
+export type CreateJournalDTO = {
+  id: string,
+  name?: string,
+};
+
 export type UpdateJournalDTO = {
   id: string,
   name?: string,
