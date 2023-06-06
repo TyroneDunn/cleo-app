@@ -1,11 +1,11 @@
 import {Component, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {delay, Observable} from "rxjs";
+import {BehaviorSubject, delay, Observable} from "rxjs";
 import {Journal} from "../journal.type";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatListModule} from "@angular/material/list";
-import {JournalService} from "../journal.service";
+import {JournalHttpService} from "../journal-http.service";
 import {JournalDetailComponent}
   from "../journal-detail/journal-detail.component";
 import {JournalEntryDetailComponent}
@@ -13,7 +13,6 @@ import {JournalEntryDetailComponent}
 import {JournalCardComponent} from "../journal-card/journal-card.component";
 import {Router, RouterLink} from "@angular/router";
 import {MatButtonModule} from "@angular/material/button";
-import {SubSink} from "../../../utils/sub-sink";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
@@ -23,9 +22,10 @@ import {MatDialog} from "@angular/material/dialog";
 import {NewJournalComponent} from "../new-journal/new-journal.component";
 import {EditJournalComponent} from "../edit-journal/edit-journal.component";
 import {DeleteJournalComponent} from "../delete-journal/delete-journal.component";
+import {getJournalsDTO} from "../journal-dtos";
 
 @Component({
-  selector: 'app-journals',
+  selector: 'app-journals-container',
   standalone: true,
   imports: [
     CommonModule,
@@ -41,23 +41,24 @@ import {DeleteJournalComponent} from "../delete-journal/delete-journal.component
     MatIconModule,
     MatMenuModule
   ],
-  templateUrl: './journals.component.html',
-  styleUrls: ['./journals.component.scss']
+  templateUrl: './journals-container.component.html',
+  styleUrls: ['./journals-container.component.scss']
 })
-export class JournalsComponent {
-  private journalsService = inject(JournalService);
+export class JournalsContainerComponent {
+  private journalsService = inject(JournalHttpService);
   private router = inject(Router);
   private userService = inject(UserService);
   private dialog = inject(MatDialog);
-  private sink = new SubSink();
   public journals$!: Observable<Journal[]>;
+  public getJournalsDTO: BehaviorSubject<getJournalsDTO> = new BehaviorSubject<getJournalsDTO>({});
 
-  private updateJournals() {
-    this.journals$ = this.journalsService.journals$().pipe(delay(300));
+  private updateJournals(dto: getJournalsDTO) {
+    this.journals$ = this.journalsService.journals$(dto)
+      .pipe(delay(300));
   }
 
   public ngOnInit() {
-    this.updateJournals();
+    this.updateJournals({});
   }
 
   public async navigateHome() {
@@ -68,13 +69,11 @@ export class JournalsComponent {
     const dialogRef = this.dialog.open(NewJournalComponent);
     dialogRef.afterClosed().subscribe((name) => {
       if (name) {
-        this.sink.collect(
-          this.journalsService.createJournal$(name)
-            .subscribe(async (journal) => {
-              if (!journal) return;
-              await this.router.navigate([`journal/${journal._id}`]);
-            })
-        );
+        this.journalsService.createJournal$(name)
+          .subscribe(async (journal) => {
+            if (!journal) return;
+            await this.router.navigate([`journal/${journal._id}`]);
+          })
       }
     });
   }
@@ -86,13 +85,11 @@ export class JournalsComponent {
     const dialogRef = this.dialog.open(EditJournalComponent, config);
     dialogRef.afterClosed().subscribe((name) => {
       if (name) {
-        this.sink.collect(
-          this.journalsService.patchJournalName$(journal._id, name)
-            .subscribe(async (success) => {
-              // todo: give confirmation alert
-              if (!success) return;
-            })
-        );
+        this.journalsService.patchJournalName$(journal._id, name)
+          .subscribe(async (success) => {
+            // todo: give confirmation alert
+            if (!success) return;
+          })
       }
     });
   }
@@ -104,28 +101,20 @@ export class JournalsComponent {
     const dialogRef = this.dialog.open(DeleteJournalComponent, config);
     dialogRef.afterClosed().subscribe((confirm) => {
       if (confirm) {
-        this.sink.collect(
-          this.journalsService.deleteJournal$(journal._id)
-            .subscribe(async (success) => {
-              // todo: give confirmation alert
-              if (!success) return;
-              this.updateJournals();
-            })
-        );
+        this.journalsService.deleteJournal$(journal._id)
+          .subscribe(async (success) => {
+            // todo: give confirmation alert
+            if (!success) return;
+            this.updateJournals();
+          })
       }
     });
   }
 
   public logout() {
-    this.sink.collect(
-      this.userService.logout$().subscribe(async (success) => {
-        if (!success) return;
-        await this.router.navigate([HOME]);
-      })
-    );
-  }
-
-  public ngOnDestroy() {
-    this.sink.drain();
+    this.userService.logout$().subscribe(async (success) => {
+      if (!success) return;
+      await this.router.navigate([HOME]);
+    });
   }
 }

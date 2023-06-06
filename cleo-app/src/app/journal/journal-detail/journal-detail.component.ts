@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {CommonModule, Location} from '@angular/common';
-import {JournalService} from "../journal.service";
+import {JournalHttpService} from "../journal-http.service";
 import {ActivatedRoute, ParamMap, Router, RouterLink} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
 import {Journal} from "../journal.type";
@@ -41,7 +41,7 @@ import {DeleteJournalEntryComponent}
   styleUrls: ['./journal-detail.component.scss']
 })
 export class JournalDetailComponent {
-  private journalService = inject(JournalService);
+  private journalService = inject(JournalHttpService);
   private journalEntryService = inject(JournalEntryService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -68,7 +68,7 @@ export class JournalDetailComponent {
 
   private updateJournal() {
     this.sink.collect(
-      this.journalService.journal$(this.id$.value).subscribe((journal) => {
+      this.journalService.getJournal$(this.id$.value).subscribe((journal) => {
         if (!journal) return;
         this.journal$.next(journal);
       })
