@@ -7,4 +7,5 @@ export interface JournalService {
   getJournal$(id: string): Observable<Journal | null>;
   createJournal$(name: string): Observable<Journal>;
   deleteJournal$(id: string): Observable<Journal>;
+  updateJournal$(updateJournalDTO: UpdateJournalDTO): Observable<Journal>;
 }
