@@ -3,4 +3,4 @@ export type Journal = {
   name: string,
   lastUpdated: Date,
   dateOfCreation: Date,
-}
+};
