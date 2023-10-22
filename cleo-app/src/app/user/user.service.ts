@@ -7,15 +7,18 @@ import {
   CLEO_API_PROTECTED_URL,
   CLEO_API_REGISTER_URL
 } from "./user.constants";
+import {User} from "./user";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   private readonly http = inject(HttpService);
+  public user: User = {username: ""};
   public readonly authorized$: Observable<boolean> =
-    this.http.getRequest$<boolean>(CLEO_API_PROTECTED_URL).pipe(
+    this.http.getRequest$<object>(CLEO_API_PROTECTED_URL).pipe(
       map((response) => {
+          this.user = (response.body as User);
         return response.ok;
       }),
       catchError((): Observable<boolean> => {
@@ -47,6 +50,7 @@ export class UserService {
 
     return this.http.postRequest$(CLEO_API_LOGIN_URL, payload).pipe(
       map((response) => {
+        this.user = (response.body as User);
         return response.ok;
       }),
       catchError(() => {
@@ -58,6 +62,7 @@ export class UserService {
   public logout$(): Observable<boolean> {
     return this.http.postRequest$(CLEO_API_LOGOUT_URL, {}).pipe(
       map((response) => {
+        this.user = {username: ''};
         return response.ok;
       }),
       catchError(() => {
