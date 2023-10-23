@@ -1,15 +1,15 @@
 import {Component, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {BehaviorSubject, delay, Observable} from "rxjs";
-import {Journal} from "../journal.type";
+import {BehaviorSubject} from "rxjs";
+import {Journal, JournalSortOption} from "../journal.type";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatListModule} from "@angular/material/list";
 import {JournalHttpService} from "../journal-http.service";
-import {JournalDetailComponent}
-  from "../journal-detail/journal-detail.component";
-import {JournalEntryDetailComponent}
-  from "../../journal-entry/journal-entry-detail/journal-entry-detail.component";
+import {JournalDetailComponent} from "../journal-detail/journal-detail.component";
+import {
+  JournalEntryDetailComponent
+} from "../../journal-entry/journal-entry-detail/journal-entry-detail.component";
 import {JournalCardComponent} from "../journal-card/journal-card.component";
 import {Router, RouterLink} from "@angular/router";
 import {MatButtonModule} from "@angular/material/button";
@@ -23,6 +23,17 @@ import {NewJournalComponent} from "../new-journal/new-journal.component";
 import {EditJournalComponent} from "../edit-journal/edit-journal.component";
 import {DeleteJournalComponent} from "../delete-journal/delete-journal.component";
 import {GetJournalsDTO} from "../journal-dtos";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatCardModule} from "@angular/material/card";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {DateFilterComponent} from "../../date-filter/date-filter.component";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatTableModule} from "@angular/material/table";
+import {MatSortModule, Sort} from "@angular/material/sort";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @Component({
   selector: 'app-journals-container',
@@ -39,7 +50,18 @@ import {GetJournalsDTO} from "../journal-dtos";
     MatButtonModule,
     MatToolbarModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    MatButtonToggleModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    DateFilterComponent,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule
   ],
   templateUrl: './journals-container.component.html',
   styleUrls: ['./journals-container.component.scss']
@@ -49,8 +71,16 @@ export class JournalsContainerComponent {
   private router = inject(Router);
   private userService = inject(UserService);
   private dialog = inject(MatDialog);
-  public journals$!: Observable<Journal[]>;
-  public getJournalsDTO: BehaviorSubject<GetJournalsDTO> = new BehaviorSubject<GetJournalsDTO>({});
+  private formBuilder = inject(FormBuilder);
+  public searchForm: FormGroup = this.formBuilder.nonNullable.group({
+    searchValue: ''
+  });
+  public journals: BehaviorSubject<Journal[]> = new BehaviorSubject<Journal[]>([]);
+  public journalsDTO: BehaviorSubject<GetJournalsDTO> = new BehaviorSubject<GetJournalsDTO>({
+    sort: 'lastUpdated',
+    order: -1,
+  });
+  public displayedColumns: string[] = ['name', 'dateCreated', 'lastUpdated'];
 
   private updateJournals(dto: GetJournalsDTO) {
     this.journals$ = this.journalsService.getJournals$(dto)
@@ -58,7 +88,14 @@ export class JournalsContainerComponent {
   }
 
   public ngOnInit() {
-    this.updateJournals({});
+    this.fetchJournals();
+  }
+
+  private fetchJournals() {
+    this.journalsService.getJournals$(this.journalsDTO.value)
+      .subscribe((journals) => {
+        this.journals.next(journals);
+      });
   }
 
   public async navigateHome() {
@@ -76,6 +113,60 @@ export class JournalsContainerComponent {
           })
       }
     });
+  }
+
+  public filterJournalsByDate() {
+    const dialogRef = this.dialog.open(DateFilterComponent);
+    dialogRef.afterClosed().subscribe((dateFilter) => {
+      const dto = this.journalsDTO.value;
+      if (dateFilter.dateRange.startDate || dateFilter.dateRange.endDate)
+        this.journalsDTO.next(({
+          ...dto.name && {name: dto.name},
+          ...dto.nameRegex && {nameRegex: dto.nameRegex},
+          ...dto.sort && {sort: dto.sort},
+          ...dto.order && {order: dto.order},
+          ...dto.limit && {limit: dto.limit},
+          ...dateFilter.dateRange.startDate && {startDate: dateFilter.dateRange.startDate},
+          ...dateFilter.dateRange.endDate && {endDate: dateFilter.dateRange.endDate},
+        }));
+      else
+        this.journalsDTO.next(({
+          ...dto.name && {name: dto.name},
+          ...dto.nameRegex && {nameRegex: dto.nameRegex},
+          ...dto.sort && {sort: dto.sort},
+          ...dto.order && {order: dto.order},
+          ...dto.limit && {limit: dto.limit},
+        }));
+      this.fetchJournals();
+    });
+  }
+
+  public sortJournals($event: Sort): void {
+    const dto = this.journalsDTO.value;
+    this.journalsDTO.next(({
+      ...dto.name && {name: dto.name},
+      ...dto.nameRegex && {nameRegex: dto.nameRegex},
+      sort: $event.active as JournalSortOption,
+      order: $event.direction === 'asc'? 1:-1,
+      ...dto.limit && {limit: dto.limit},
+      ...dto.startDate && {startDate: dto.startDate},
+      ...dto.endDate && {endDate: dto.endDate},
+    }));
+    this.fetchJournals();
+  }
+
+  public onSearchSubmit() {
+    const dto = this.journalsDTO.value;
+    this.journalsDTO.next(({
+      ...dto.name && {name: dto.name},
+      nameRegex: this.searchForm.value.searchValue,
+      ...dto.sort && {sort: dto.sort},
+      ...dto.order && {order: dto.order},
+      ...dto.limit && {limit: dto.limit},
+      ...dto.startDate && {startDate: dto.startDate},
+      ...dto.endDate && {endDate: dto.endDate},
+    }));
+    this.fetchJournals();
   }
 
   public editJournal(journal: Journal) {
@@ -105,7 +196,6 @@ export class JournalsContainerComponent {
           .subscribe(async (success) => {
             // todo: give confirmation alert
             if (!success) return;
-            this.updateJournals({});
           })
       }
     });
