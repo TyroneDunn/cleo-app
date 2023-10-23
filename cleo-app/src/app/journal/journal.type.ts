@@ -4,3 +4,5 @@ export type Journal = {
   lastUpdated: Date,
   dateOfCreation: Date,
 };
+
+export type JournalSortOption = 'name' | 'lastUpdated' | 'dateCreated';
