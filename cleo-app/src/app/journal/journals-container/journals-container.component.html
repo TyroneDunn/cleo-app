@@ -1,9 +1,10 @@
 <mat-toolbar>
   <mat-toolbar-row>
     <button
-      (click)="navigateHome()"
       mat-flat-button
       disableRipple
+      class="mat-elevation-z1"
+      (click)="navigateHome()"
     >
       <h2>
         cleo.|
@@ -12,9 +13,10 @@
     <button
       mat-icon-button
       disableRipple
+      class="mat-elevation-z1"
       [matMenuTriggerFor]="menu"
     >
-      <mat-icon>menu</mat-icon>
+      <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
       <button
@@ -46,6 +48,7 @@
       mat-raised-button
       disableRipple
       color="primary"
+      class="mat-elevation-z1"
       (click)="newJournal()"
     >
       <mat-icon>create_new_folder</mat-icon>
@@ -55,6 +58,7 @@
       mat-raised-button
       disableRipple
       color="primary"
+      class="mat-elevation-z1"
       (click)="filterJournalsByDate()"
     >
       <mat-icon>date_range</mat-icon>
@@ -64,7 +68,29 @@
   <mat-toolbar-row>
     <form [formGroup]="searchForm" (ngSubmit)="onSearchSubmit()">
       <mat-form-field>
-        <input matInput type="text" placeholder="search" formControlName="searchValue">
+        <button
+          matIconPrefix
+          mat-icon-button
+          aria-label="Search"
+          (click)="onSearchSubmit()"
+        >
+          <mat-icon>search</mat-icon>
+        </button>
+        <input
+          matInput
+          type="text"
+          placeholder="Search..."
+          formControlName="searchValue"
+        >
+        <button
+          *ngIf="searchForm.value.searchValue"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="searchForm.patchValue({searchValue: ''}); onSearchSubmit();"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
       </mat-form-field>
     </form>
   </mat-toolbar-row>
