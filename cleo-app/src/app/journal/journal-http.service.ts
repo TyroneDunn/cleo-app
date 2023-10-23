@@ -5,12 +5,14 @@ import {Journal} from "./journal.type";
 import {CLEO_API_JOURNALS_URL} from "./journal.constants";
 import {CreateJournalDTO, GetJournalsDTO, UpdateJournalDTO} from "./journal-dtos";
 import {JournalService} from "./journal.service";
+import {UserService} from "../user/user.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class JournalHttpService implements JournalService {
   private http = inject(HttpService);
+  private userService = inject(UserService);
 
   public getJournals$ = (dto: GetJournalsDTO): Observable<Journal[]> => {
     const url = this.mapToGetJournalsURL(dto);
@@ -61,10 +63,13 @@ export class JournalHttpService implements JournalService {
 
   private mapToGetJournalsURL = (dto: GetJournalsDTO): string => {
     const url = new URL(CLEO_API_JOURNALS_URL);
+    url.searchParams.append('author', this.userService.user.username);
     if (dto.name)
       url.searchParams.append('name', dto.name);
     if (dto.nameRegex)
       url.searchParams.append('nameRegex', dto.nameRegex);
+    else
+      url.searchParams.append('nameRegex','');
     if (dto.sort)
       url.searchParams.append('sort', dto.sort);
     if (dto.order)
