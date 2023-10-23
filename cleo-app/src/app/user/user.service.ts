@@ -7,7 +7,7 @@ import {
   CLEO_API_PROTECTED_URL,
   CLEO_API_REGISTER_URL
 } from "./user.constants";
-import {User} from "./user";
+import {User} from "./user.type";
 
 @Injectable({
   providedIn: 'root'
