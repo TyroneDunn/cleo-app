@@ -34,6 +34,7 @@ import {MatNativeDateModule} from "@angular/material/core";
 import {MatTableModule} from "@angular/material/table";
 import {MatSortModule, Sort} from "@angular/material/sort";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-journals-container',
@@ -61,7 +62,8 @@ import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
     DateFilterComponent,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSnackBarModule,
   ],
   templateUrl: './journals-container.component.html',
   styleUrls: ['./journals-container.component.scss']
@@ -72,6 +74,7 @@ export class JournalsContainerComponent {
   private userService = inject(UserService);
   private dialog = inject(MatDialog);
   private formBuilder = inject(FormBuilder);
+  private snackBar = inject(MatSnackBar);
   public searchForm: FormGroup = this.formBuilder.nonNullable.group({
     searchValue: ''
   });
@@ -110,6 +113,7 @@ export class JournalsContainerComponent {
         const dto: CreateJournalDTO = {name: name};
         this.journalsService.createJournal$(dto)
           .subscribe(async () => {
+            this.notify(`'${name}' created.`)
             this.fetchJournals();
           })
       }
@@ -199,7 +203,8 @@ export class JournalsContainerComponent {
       if (name) {
         this.journalsService.updateJournal$({id: journal._id.toString(), name})
           .subscribe(async (success) => {
-            // todo: give confirmation alert
+            this.notify(`Renamed to '${name}.'`);
+            this.fetchJournals();
             if (!success) return;
           })
       }
@@ -215,7 +220,8 @@ export class JournalsContainerComponent {
       if (confirm) {
         this.journalsService.deleteJournal$(journal._id)
           .subscribe(async (success) => {
-            // todo: give confirmation alert
+            this.notify(`'${journal.name}' deleted.`);
+            this.fetchJournals();
             if (!success) return;
           })
       }
@@ -226,6 +232,14 @@ export class JournalsContainerComponent {
     this.userService.logout$().subscribe(async (success) => {
       if (!success) return;
       await this.router.navigate([HOME]);
+    });
+  }
+
+  private notify(message: string) {
+    this.snackBar.open(message, '×', {
+      duration: 3000,
+      horizontalPosition: "left",
+      verticalPosition: "bottom",
     });
   }
 }

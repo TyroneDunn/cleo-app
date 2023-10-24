@@ -136,14 +136,16 @@
         <button
           disableRipple
           mat-menu-item
+          (click)="editJournal(element)"
         >
-          Edit
+          Rename...
         </button>
         <button
           disableRipple
           mat-menu-item
+          (click)="deleteJournal(element)"
         >
-          Delete
+          Delete...
         </button>
       </mat-menu>
     </td>
