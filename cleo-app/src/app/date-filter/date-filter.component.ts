@@ -20,7 +20,12 @@ import {MatDialogRef} from "@angular/material/dialog";
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatNativeDateModule, MatRippleModule, BrowserAnimationsModule, MatIconModule, MatCardModule, ReactiveFormsModule,
+    MatNativeDateModule,
+    MatRippleModule,
+    BrowserAnimationsModule,
+    MatIconModule,
+    MatCardModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './date-filter.component.html',
   styleUrls: ['./date-filter.component.scss']
@@ -40,7 +45,6 @@ export class DateFilterComponent {
   public onSubmit(): void {
     this.dialogRef.close(this.form.value);
   }
-
   public onReset() {
     this.dialogRef.close({dateRange: {startDate: null, endDate: null}});
   }
