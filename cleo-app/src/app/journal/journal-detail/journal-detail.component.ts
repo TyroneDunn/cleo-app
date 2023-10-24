@@ -97,7 +97,7 @@ export class JournalDetailComponent {
     );
   }
 
-  public editJournal() {
+  public renameJournal() {
     const config = {
       data: {journal: this.journal$.value}
     }
