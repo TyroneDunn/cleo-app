@@ -80,7 +80,6 @@ export class JournalsContainerComponent {
   });
   public journals: BehaviorSubject<Journal[]> = new BehaviorSubject<Journal[]>([]);
   public count: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  public pageIndex: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   public limit: BehaviorSubject<number> = new BehaviorSubject<number>(10);
   public journalsDTO: BehaviorSubject<GetJournalsDTO> = new BehaviorSubject<GetJournalsDTO>({
     sort: 'lastUpdated',
