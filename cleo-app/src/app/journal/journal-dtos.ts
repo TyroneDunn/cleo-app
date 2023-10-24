@@ -10,8 +10,7 @@ export type GetJournalsDTO = {
 };
 
 export type CreateJournalDTO = {
-  id: string,
-  name?: string,
+  name: string,
 };
 
 export type UpdateJournalDTO = {

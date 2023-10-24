@@ -22,7 +22,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {NewJournalComponent} from "../new-journal/new-journal.component";
 import {EditJournalComponent} from "../edit-journal/edit-journal.component";
 import {DeleteJournalComponent} from "../delete-journal/delete-journal.component";
-import {GetJournalsDTO} from "../journal-dtos";
+import {CreateJournalDTO, GetJournalsDTO} from "../journal-dtos";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatCardModule} from "@angular/material/card";
@@ -106,10 +106,10 @@ export class JournalsContainerComponent {
     const dialogRef = this.dialog.open(NewJournalComponent);
     dialogRef.afterClosed().subscribe((name) => {
       if (name) {
-        this.journalsService.createJournal$(name)
-          .subscribe(async (journal) => {
-            if (!journal) return;
-            await this.router.navigate([`journal/${journal._id}`]);
+        const dto: CreateJournalDTO = {name: name};
+        this.journalsService.createJournal$(dto)
+          .subscribe(async () => {
+            this.fetchJournals();
           })
       }
     });
