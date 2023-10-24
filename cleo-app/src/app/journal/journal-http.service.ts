@@ -77,11 +77,11 @@ export class JournalHttpService implements JournalService {
       url.searchParams.append('nameRegex','');
     if (dto.sort)
       url.searchParams.append('sort', dto.sort);
-    if (dto.order)
+    if (dto.order !== undefined)
       url.searchParams.append('order', dto.order.toString());
-    if (dto.page)
+    if (dto.page !== undefined)
       url.searchParams.append('page', dto.page.toString());
-    if (dto.limit)
+    if (dto.limit !== undefined)
       url.searchParams.append('limit', dto.limit.toString());
     if (dto.startDate)
       url.searchParams.append('startDate', dto.startDate.toString());

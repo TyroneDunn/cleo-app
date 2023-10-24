@@ -33,7 +33,7 @@ import {DateFilterComponent} from "../../date-filter/date-filter.component";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatTableModule} from "@angular/material/table";
 import {MatSortModule, Sort} from "@angular/material/sort";
-import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 
 @Component({
   selector: 'app-journals-container',
@@ -76,9 +76,14 @@ export class JournalsContainerComponent {
     searchValue: ''
   });
   public journals: BehaviorSubject<Journal[]> = new BehaviorSubject<Journal[]>([]);
+  public count: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  public pageIndex: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  public limit: BehaviorSubject<number> = new BehaviorSubject<number>(10);
   public journalsDTO: BehaviorSubject<GetJournalsDTO> = new BehaviorSubject<GetJournalsDTO>({
     sort: 'lastUpdated',
     order: -1,
+    page: 0,
+    limit: 10,
   });
   public displayedColumns: string[] = ['name', 'dateCreated', 'lastUpdated'];
 
@@ -93,8 +98,9 @@ export class JournalsContainerComponent {
 
   private fetchJournals() {
     this.journalsService.getJournals$(this.journalsDTO.value)
-      .subscribe((journals) => {
-        this.journals.next(journals);
+      .subscribe((getJournalsResponseDTO) => {
+        this.count.next(getJournalsResponseDTO.count);
+        this.journals.next(getJournalsResponseDTO.journals);
       });
   }
 
@@ -125,9 +131,10 @@ export class JournalsContainerComponent {
           ...dto.nameRegex && {nameRegex: dto.nameRegex},
           ...dto.sort && {sort: dto.sort},
           ...dto.order && {order: dto.order},
-          ...dto.limit && {limit: dto.limit},
           ...dateFilter.dateRange.startDate && {startDate: dateFilter.dateRange.startDate},
           ...dateFilter.dateRange.endDate && {endDate: dateFilter.dateRange.endDate},
+          ...dto.page && {page: dto.page},
+          ...dto.limit && {limit: dto.limit},
         }));
       else
         this.journalsDTO.next(({
@@ -135,6 +142,7 @@ export class JournalsContainerComponent {
           ...dto.nameRegex && {nameRegex: dto.nameRegex},
           ...dto.sort && {sort: dto.sort},
           ...dto.order && {order: dto.order},
+          ...dto.page && {page: dto.page},
           ...dto.limit && {limit: dto.limit},
         }));
       this.fetchJournals();
@@ -148,9 +156,10 @@ export class JournalsContainerComponent {
       ...dto.nameRegex && {nameRegex: dto.nameRegex},
       sort: $event.active as JournalSortOption,
       order: $event.direction === 'asc'? 1:-1,
-      ...dto.limit && {limit: dto.limit},
       ...dto.startDate && {startDate: dto.startDate},
       ...dto.endDate && {endDate: dto.endDate},
+      ...dto.page && {page: dto.page},
+      ...dto.limit && {limit: dto.limit},
     }));
     this.fetchJournals();
   }
@@ -165,7 +174,24 @@ export class JournalsContainerComponent {
       ...dto.limit && {limit: dto.limit},
       ...dto.startDate && {startDate: dto.startDate},
       ...dto.endDate && {endDate: dto.endDate},
+      ...dto.page && {page: dto.page},
+      ...dto.limit && {limit: dto.limit},
     }));
+    this.fetchJournals();
+  }
+
+  public handlePageEvent($event: PageEvent) {
+    const dto = this.journalsDTO.value;
+    this.journalsDTO.next({
+      ...dto.name && {name: dto.name},
+      ...dto.nameRegex && {nameRegex: dto.nameRegex},
+      ...dto.sort && {sort: dto.sort},
+      ...dto.order && {order: dto.order},
+      ...dto.startDate && {startDate: dto.startDate},
+      ...dto.endDate && {endDate: dto.endDate},
+      ...$event.pageIndex && {page: $event.pageIndex},
+      ...$event.pageSize && {limit: $event.pageSize},
+    });
     this.fetchJournals();
   }
 
