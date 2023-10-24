@@ -1,3 +1,5 @@
+import {Journal} from "./journal.type";
+
 export type GetJournalsDTO = {
   name?: string,
   nameRegex?: string,
@@ -5,6 +7,13 @@ export type GetJournalsDTO = {
   order?: 1 | -1,
   startDate?: string,
   endDate?: string,
+  page?: number,
+  limit?: number,
+};
+
+export type GetJournalsResponseDTO = {
+  count: number,
+  journals: Journal[],
   page?: number,
   limit?: number,
 };

@@ -3,7 +3,12 @@ import {HttpService} from "../http/http.service";
 import {map, Observable} from "rxjs";
 import {Journal} from "./journal.type";
 import {CLEO_API_JOURNALS_URL} from "./journal.constants";
-import {CreateJournalDTO, GetJournalsDTO, UpdateJournalDTO} from "./journal-dtos";
+import {
+  CreateJournalDTO,
+  GetJournalsDTO,
+  GetJournalsResponseDTO,
+  UpdateJournalDTO
+} from "./journal-dtos";
 import {JournalService} from "./journal.service";
 import {UserService} from "../user/user.service";
 
@@ -14,11 +19,11 @@ export class JournalHttpService implements JournalService {
   private http = inject(HttpService);
   private userService = inject(UserService);
 
-  public getJournals$ = (dto: GetJournalsDTO): Observable<Journal[]> => {
+  public getJournals$ = (dto: GetJournalsDTO): Observable<GetJournalsResponseDTO> => {
     const url = this.mapToGetJournalsURL(dto);
-    return this.http.getRequest$<Journal[]>(url).pipe(
+    return this.http.getRequest$<GetJournalsResponseDTO>(url).pipe(
       map((response) => {
-        return response.body as Journal[];
+        return response.body as GetJournalsResponseDTO;
       })
     );
   };
