@@ -206,7 +206,7 @@ export class JournalsContainerComponent {
       if (name) {
         this.journalsService.updateJournal$({id: journal._id.toString(), name})
           .subscribe(async (success) => {
-            this.notify(`Renamed to '${name}.'`);
+            this.notify(`Renamed to '${name}'.`);
             this.fetchJournals();
             if (!success) return;
           })
