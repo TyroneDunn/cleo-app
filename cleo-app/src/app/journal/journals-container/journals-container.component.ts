@@ -106,6 +106,10 @@ export class JournalsContainerComponent {
     await this.router.navigate([HOME]);
   }
 
+  public async navigateToJournal(journal: Journal) {
+    await this.router.navigate([`journals/${journal._id}`])
+  }
+
   public newJournal() {
     const dialogRef = this.dialog.open(NewJournalComponent);
     dialogRef.afterClosed().subscribe((name) => {

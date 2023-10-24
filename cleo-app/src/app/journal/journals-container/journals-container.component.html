@@ -123,6 +123,7 @@
         mat-icon-button
         disableRipple
         [matMenuTriggerFor]="journalsMenu"
+        (click)="$event.stopPropagation()"
       >
         <mat-icon>more_vert</mat-icon>
       </button>
@@ -152,7 +153,12 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  <tr
+    class="clickable"
+    mat-row
+    *matRowDef="let row; columns: displayedColumns"
+    (click)="navigateToJournal(row)">
+  </tr>
 </table>
 
 <mat-paginator
