@@ -87,11 +87,6 @@ export class JournalsContainerComponent {
   });
   public displayedColumns: string[] = ['name', 'dateCreated', 'lastUpdated'];
 
-  private updateJournals(dto: GetJournalsDTO) {
-    this.journals$ = this.journalsService.getJournals$(dto)
-      .pipe(delay(300));
-  }
-
   public ngOnInit() {
     this.fetchJournals();
   }
