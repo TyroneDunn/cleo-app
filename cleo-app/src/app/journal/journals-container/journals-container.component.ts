@@ -85,7 +85,7 @@ export class JournalsContainerComponent {
     page: 0,
     limit: 10,
   });
-  public displayedColumns: string[] = ['name', 'dateCreated', 'lastUpdated'];
+  public displayedColumns: string[] = ['name', 'dateCreated', 'lastUpdated', 'actions'];
 
   public ngOnInit() {
     this.fetchJournals();
