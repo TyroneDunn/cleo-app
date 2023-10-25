@@ -7,7 +7,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
 import {Entry} from "../entry.type";
-import {JournalEntryService} from "../journal-entry.service";
+import {EntryHttpService} from "../entry-http.service";
 import {SubSink} from "../../../utils/sub-sink";
 import {MatInputModule} from "@angular/material/input";
 import {DeleteJournalEntryComponent}
@@ -39,7 +39,7 @@ type Mode = 'normal' | 'edit';
 })
 export class JournalEntryDetailComponent {
   private location = inject(Location);
-  private journalEntryService = inject(JournalEntryService);
+  private entryService = inject(EntryHttpService);
   private route = inject(ActivatedRoute);
   private dialog = inject(MatDialog);
   private sink = new SubSink();
@@ -59,7 +59,7 @@ export class JournalEntryDetailComponent {
 
   private updateJournalEntry() {
     this.sink.collect(
-      this.journalEntryService.journalEntry$(this.journalId$.value, this.entryId$.value)
+      this.entryService.journalEntry$(this.journalId$.value, this.entryId$.value)
         .subscribe((journalEntry) => {
           if (!journalEntry) return;
           this.journalEntry$.next(journalEntry);
@@ -99,7 +99,7 @@ export class JournalEntryDetailComponent {
     const body = this.journalEntry$.value?.body as string;
 
     this.sink.collect(
-      this.journalEntryService.patchJournalEntry$(this.journalId$.value, this.entryId$.value, body)
+      this.entryService.patchJournalEntry$(this.journalId$.value, this.entryId$.value, body)
         .subscribe((success) => {
           if (!success) return;
           this.updateEntry(body);
@@ -118,7 +118,7 @@ export class JournalEntryDetailComponent {
 
       if (this.journalEntry$.value) {
         this.sink.collect(
-          this.journalEntryService.deleteJournalEntry$(this.journalId$.value, this.journalEntry$.value._id)
+          this.entryService.deleteJournalEntry$(this.journalId$.value, this.journalEntry$.value._id)
             .subscribe((success) => {
               if (success) this.navigateBack();
             })

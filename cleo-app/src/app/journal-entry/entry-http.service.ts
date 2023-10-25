@@ -1,13 +1,14 @@
 import {inject, Injectable} from '@angular/core';
 import {catchError, map, Observable, of} from "rxjs";
-import {JournalEntry} from "./journal-entry.type";
+import {Entry} from "./entry.type";
 import {HttpService} from "../http/http.service";
 import {CLEO_API_JOURNAL_ENTRIES_URL} from "./journal-entry.constants";
+import {GetEntriesResponseDTO} from './entry-dtos';
 
 @Injectable({
   providedIn: 'root'
 })
-export class JournalEntryService {
+export class EntryHttpService {
   private http = inject(HttpService);
   public journalEntries$(journalId: string): Observable<JournalEntry[]> {
     return this.http.getRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}${journalId}`).pipe(
@@ -20,10 +21,10 @@ export class JournalEntryService {
     );
   }
 
-  public journalEntry$(journalId: string, entryId: string): Observable<JournalEntry | undefined> {
-    return this.http.getRequest$<JournalEntry>(`${CLEO_API_JOURNAL_ENTRIES_URL}${entryId}`).pipe(
+  public journalEntry$(journalId: string, entryId: string): Observable<Entry | undefined> {
+    return this.http.getRequest$<Entry>(`${CLEO_API_JOURNAL_ENTRIES_URL}${entryId}`).pipe(
       map((response) => {
-        return response.body as JournalEntry;
+        return response.body as Entry;
       }),
       catchError(() => {
         return of(undefined);
@@ -31,11 +32,11 @@ export class JournalEntryService {
     )
   }
 
-  public createJournalEntry$(journalId: string, content: string): Observable<JournalEntry | undefined> {
+  public createJournalEntry$(journalId: string, content: string): Observable<Entry | undefined> {
     const payload = {content: content};
     return this.http.postRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}${journalId}`, payload).pipe(
       map((response) => {
-        return response.body as JournalEntry;
+        return response.body as Entry;
       }),
       catchError(() => {
         return of(undefined);
