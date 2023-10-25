@@ -10,14 +10,14 @@ import {GetEntriesResponseDTO} from './entry-dtos';
 })
 export class EntryHttpService {
   private http = inject(HttpService);
-  public journalEntries$(journalId: string): Observable<JournalEntry[]> {
-    return this.http.getRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}${journalId}`).pipe(
+
+  public journalEntries$(journalId: string): Observable<GetEntriesResponseDTO> {
+    const url = new URL(CLEO_API_JOURNAL_ENTRIES_URL);
+    url.searchParams.append('journal', journalId);
+    return this.http.getRequest$<GetEntriesResponseDTO>(url.toString()).pipe(
       map((response) => {
-        return response.body as JournalEntry[];
-      }),
-      catchError(() => {
-        return of([]);
-      }),
+        return response.body as GetEntriesResponseDTO;
+      })
     );
   }
 
