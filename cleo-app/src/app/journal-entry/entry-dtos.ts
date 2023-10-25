@@ -2,7 +2,7 @@ import {Entry} from "./entry.type";
 
 export type GetEntriesResponseDTO = {
   count: number,
-  journals: Entry[],
+  entries: Entry[],
   page?: number,
   limit?: number,
 };
