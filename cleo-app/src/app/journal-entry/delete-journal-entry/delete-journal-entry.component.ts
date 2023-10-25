@@ -3,10 +3,10 @@ import {CommonModule} from '@angular/common';
 import {MatCardModule} from "@angular/material/card";
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
-import {JournalEntry} from "../journal-entry.type";
+import {Entry} from "../entry.type";
 
 interface DialogData {
-  journalEntry: JournalEntry;
+  journalEntry: Entry;
 }
 
 @Component({

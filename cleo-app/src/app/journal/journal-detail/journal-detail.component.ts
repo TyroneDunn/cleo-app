@@ -7,7 +7,7 @@ import {Journal} from "../journal.type";
 import {SubSink} from "../../../utils/sub-sink";
 import {MatButtonModule} from "@angular/material/button";
 import {MatListModule} from "@angular/material/list";
-import {JournalEntry} from "../../journal-entry/journal-entry.type";
+import {Entry} from "../../journal-entry/entry.type";
 import {JournalEntryService} from "../../journal-entry/journal-entry.service";
 import {JournalEntryCardComponent}
   from "../../journal-entry/journal-entry-card/journal-entry-card.component";
@@ -21,6 +21,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {DeleteJournalComponent} from "../delete-journal/delete-journal.component";
 import {DeleteJournalEntryComponent}
   from "../../journal-entry/delete-journal-entry/delete-journal-entry.component";
+import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-journal-detail',
@@ -36,6 +37,7 @@ import {DeleteJournalEntryComponent}
     MatMenuModule,
     MatProgressBarModule,
     MatInputModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './journal-detail.component.html',
   styleUrls: ['./journal-detail.component.scss']
@@ -46,11 +48,15 @@ export class JournalDetailComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private location = inject(Location);
+  private formBuilder = inject(FormBuilder);
   private dialog = inject(MatDialog);
   private sink = new SubSink();
   private id$ = new BehaviorSubject<string>('');
   public journal$ = new BehaviorSubject<Journal | undefined>(undefined);
-  public journalEntries$ = new BehaviorSubject<JournalEntry[] | undefined>(undefined) ;
+  public journalEntries$ = new BehaviorSubject<Entry[] | undefined>(undefined) ;
+  public searchForm: FormGroup = this.formBuilder.nonNullable.group({
+    searchValue: ''
+  });
 
   public ngOnInit() {
     this.sink.collect(
@@ -132,7 +138,7 @@ export class JournalDetailComponent {
     });
   }
 
-  public deleteJournalEntry(journalEntry: JournalEntry) {
+  public deleteJournalEntry(journalEntry: Entry) {
     const journalId = this.journal$.value?._id as string;
     const config = {
       data: {journalEntry: journalEntry}
@@ -153,5 +159,9 @@ export class JournalDetailComponent {
     this.id$.unsubscribe();
     this.journal$.unsubscribe();
     this.sink.drain();
+  }
+
+  public onSearchSubmit(): void {
+
   }
 }

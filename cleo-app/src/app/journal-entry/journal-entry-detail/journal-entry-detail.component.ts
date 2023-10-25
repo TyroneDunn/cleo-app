@@ -6,7 +6,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatButtonModule} from "@angular/material/button";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
-import {JournalEntry} from "../journal-entry.type";
+import {Entry} from "../entry.type";
 import {JournalEntryService} from "../journal-entry.service";
 import {SubSink} from "../../../utils/sub-sink";
 import {MatInputModule} from "@angular/material/input";
@@ -44,7 +44,7 @@ export class JournalEntryDetailComponent {
   private dialog = inject(MatDialog);
   private sink = new SubSink();
   public mode$ = new BehaviorSubject<Mode>("normal");
-  public journalEntry$ = new BehaviorSubject<JournalEntry | undefined>(undefined);
+  public journalEntry$ = new BehaviorSubject<Entry | undefined>(undefined);
   private journalId$ = new BehaviorSubject<string>('');
   private entryId$ = new BehaviorSubject<string>('');
 

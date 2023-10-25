@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {JournalEntry} from "../journal-entry.type";
+import {Entry} from "../entry.type";
 import {RouterLink} from "@angular/router";
 import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
@@ -24,10 +24,10 @@ import {Observable, of} from "rxjs";
   styleUrls: ['./journal-entry-card.component.scss']
 })
 export class JournalEntryCardComponent {
-  @Input() journalEntry!: JournalEntry;
+  @Input() journalEntry!: Entry;
   @Input() journalId!: string;
-  @Output() onDeleteJournalEntry = new EventEmitter<JournalEntry>()
-  public parseEntryBody(entry: JournalEntry): Observable<string> {
+  @Output() onDeleteJournalEntry = new EventEmitter<Entry>()
+  public parseEntryBody(entry: Entry): Observable<string> {
     return of(convert(entry.body));
   }
 
