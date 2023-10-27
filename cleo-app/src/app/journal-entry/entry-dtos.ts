@@ -13,7 +13,7 @@ export type GetEntriesDTO = {
 
 export type GetEntriesResponseDTO = {
   count: number,
-  entries: Entry[],
+  items: Entry[],
   page?: number,
   limit?: number,
 };

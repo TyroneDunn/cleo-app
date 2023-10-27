@@ -13,7 +13,7 @@ export type GetJournalsDTO = {
 
 export type GetJournalsResponseDTO = {
   count: number,
-  journals: Journal[],
+  items: Journal[],
   page?: number,
   limit?: number,
 };
