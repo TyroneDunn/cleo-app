@@ -14,7 +14,7 @@ import {MatButtonModule} from "@angular/material/button";
 })
 export class TermsOfServiceComponent {
   private location = inject(Location);
-  public navigateBack() {
+  public navigateBack(): void {
     this.location.back();
   }
 }
