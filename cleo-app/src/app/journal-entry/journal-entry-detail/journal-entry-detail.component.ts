@@ -10,8 +10,8 @@ import {Entry} from "../entry.type";
 import {EntryHttpService} from "../entry-http.service";
 import {SubSink} from "../../../utils/sub-sink";
 import {MatInputModule} from "@angular/material/input";
-import {DeleteJournalEntryComponent}
-  from "../delete-journal-entry/delete-journal-entry.component";
+import {DeleteEntryComponent}
+  from "../delete-entry/delete-entry.component";
 import {MatDialog} from "@angular/material/dialog";
 import {MatCardModule} from "@angular/material/card";
 import {QuillEditorComponent} from "ngx-quill";
@@ -52,18 +52,18 @@ export class JournalEntryDetailComponent {
     this.sink.collect(
       this.route.paramMap.subscribe((params) => {
         this.entryId$.next(params.get('id') as string);
-        this.updateJournalEntry();
+        this.fetchEntry();
       })
     )
   }
 
-  private updateJournalEntry() {
+  private fetchEntry() {
     this.sink.collect(
       this.entryService.journalEntry$(this.journalId$.value, this.entryId$.value)
         .subscribe((journalEntry) => {
           if (!journalEntry) return;
           this.journalEntry$.next(journalEntry);
-          if (journalEntry.body === ' ') this.enterEditMode();
+          if (journalEntry.body === '') this.enterEditMode();
         })
     );
   }
@@ -112,7 +112,7 @@ export class JournalEntryDetailComponent {
     const config = {
       data: {journalEntry: this.journalEntry$.value}
     }
-    const dialogRef = this.dialog.open(DeleteJournalEntryComponent, config);
+    const dialogRef = this.dialog.open(DeleteEntryComponent, config);
     dialogRef.afterClosed().subscribe((confirm) => {
       if (!confirm) return;
 

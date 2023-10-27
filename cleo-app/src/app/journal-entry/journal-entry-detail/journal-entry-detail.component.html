@@ -61,5 +61,6 @@
       [required]="true"
       [(ngModel)]="journalEntry$.value.body"
       [readOnly]="(mode$.value === 'normal')"
+      (onEditorCreated)="$event.focus()"
     ></quill-editor>
 </mat-card>
