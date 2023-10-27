@@ -20,7 +20,7 @@ import {FormsModule} from "@angular/forms";
 type Mode = 'normal' | 'edit';
 
 @Component({
-  selector: 'app-journal-entry-detail',
+  selector: 'app-entry-detail',
   standalone: true,
   imports: [
     CommonModule,

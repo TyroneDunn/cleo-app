@@ -7,7 +7,7 @@ import {SignUpComponent} from "./sign-up/sign-up.component";
 import {JournalsComponent} from "./journal/journals/journals.component";
 import {JournalDetailComponent} from "./journal/journal-detail/journal-detail.component";
 import {JournalEntryDetailComponent}
-  from "./journal-entry/journal-entry-detail/journal-entry-detail.component";
+  from "./entry/journal-entry-detail/journal-entry-detail.component";
 import {AuthGuard} from "./user/auth-guard.service";
 import {TermsOfServiceComponent} from "./terms-of-service/terms-of-service.component";
 

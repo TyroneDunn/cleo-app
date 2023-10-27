@@ -6,11 +6,11 @@ import {BehaviorSubject, debounceTime} from "rxjs";
 import {Journal} from "../journal.type";
 import {MatButtonModule} from "@angular/material/button";
 import {MatListModule} from "@angular/material/list";
-import {Entry, EntrySortOption} from "../../journal-entry/entry.type";
-import {EntryHttpService} from "../../journal-entry/entry-http.service";
+import {Entry, EntrySortOption} from "../../entry/entry.type";
+import {EntryHttpService} from "../../entry/entry-http.service";
 import {
   JournalEntryCardComponent
-} from "../../journal-entry/journal-entry-card/journal-entry-card.component";
+} from "../../entry/journal-entry-card/journal-entry-card.component";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
@@ -19,10 +19,10 @@ import {MatInputModule} from "@angular/material/input";
 import {EditJournalComponent} from "../edit-journal/edit-journal.component";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteJournalComponent} from "../delete-journal/delete-journal.component";
-import {DeleteEntryComponent} from "../../journal-entry/delete-entry/delete-entry.component";
+import {DeleteEntryComponent} from "../../entry/delete-entry/delete-entry.component";
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {DateFilterComponent} from "../../date-filter/date-filter.component";
-import {GetEntriesDTO} from 'src/app/journal-entry/entry-dtos';
+import {GetEntriesDTO} from 'src/app/entry/entry-dtos';
 import {MatTableModule} from "@angular/material/table";
 import {MatSortModule, Sort} from "@angular/material/sort";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";

@@ -10,7 +10,7 @@ import {convert} from "html-to-text";
 import {Observable, of} from "rxjs";
 
 @Component({
-  selector: 'app-journal-entry-card',
+  selector: 'app-entry-card',
   standalone: true,
   imports: [
     CommonModule,
