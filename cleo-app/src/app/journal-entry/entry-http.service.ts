@@ -3,7 +3,7 @@ import {catchError, map, Observable, of} from "rxjs";
 import {Entry} from "./entry.type";
 import {HttpService} from "../http/http.service";
 import {CLEO_API_JOURNAL_ENTRIES_URL} from "./journal-entry.constants";
-import {GetEntriesResponseDTO} from './entry-dtos';
+import {GetEntriesDTO, GetEntriesResponseDTO} from './entry-dtos';
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +11,33 @@ import {GetEntriesResponseDTO} from './entry-dtos';
 export class EntryHttpService {
   private http = inject(HttpService);
 
-  public journalEntries$(journalId: string): Observable<GetEntriesResponseDTO> {
-    const url = new URL(CLEO_API_JOURNAL_ENTRIES_URL);
-    url.searchParams.append('journal', journalId);
-    return this.http.getRequest$<GetEntriesResponseDTO>(url.toString()).pipe(
+  public journalEntries$(dto: GetEntriesDTO): Observable<GetEntriesResponseDTO> {
+    const url: string = this.mapToGetEntriesURL(dto);
+    return this.http.getRequest$<GetEntriesResponseDTO>(url).pipe(
       map((response) => {
         return response.body as GetEntriesResponseDTO;
       })
     );
+  }
+
+  private mapToGetEntriesURL(dto: GetEntriesDTO): string {
+    const url = new URL(CLEO_API_JOURNAL_ENTRIES_URL);
+    url.searchParams.append('journal', dto.journal);
+    if (dto.bodyRegex !== undefined)
+      url.searchParams.append('bodyRegex', dto.bodyRegex);
+    if (dto.startDate)
+      url.searchParams.append('startDate', dto.startDate.toString());
+    if (dto.endDate)
+      url.searchParams.append('endDate', dto.endDate.toString());
+    if (dto.sort)
+      url.searchParams.append('sort', dto.sort);
+    if (dto.order !== undefined)
+      url.searchParams.append('order', dto.order.toString());
+    if (dto.page !== undefined)
+      url.searchParams.append('page', dto.page.toString());
+    if (dto.limit !== undefined)
+      url.searchParams.append('limit', dto.limit.toString());
+    return url.toString();
   }
 
   public journalEntry$(journalId: string, entryId: string): Observable<Entry | undefined> {
@@ -32,8 +51,8 @@ export class EntryHttpService {
     )
   }
 
-  public createJournalEntry$(journalId: string, content: string): Observable<Entry | undefined> {
-    const payload = {content: content};
+  public createJournalEntry$(journalId: string, body: string): Observable<Entry | undefined> {
+    const payload = {body: body};
     return this.http.postRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}${journalId}`, payload).pipe(
       map((response) => {
         return response.body as Entry;
