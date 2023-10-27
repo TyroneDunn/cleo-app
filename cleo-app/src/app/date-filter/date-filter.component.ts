@@ -6,7 +6,7 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from "@angular
 import {MatCardModule} from "@angular/material/card";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
-import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
+import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatIconModule} from "@angular/material/icon";
 import {MatDialogRef} from "@angular/material/dialog";
@@ -45,7 +45,7 @@ export class DateFilterComponent {
   public onSubmit(): void {
     this.dialogRef.close(this.form.value);
   }
-  public onReset() {
+  public onReset(): void {
     this.dialogRef.close({dateRange: {startDate: null, endDate: null}});
   }
 }
