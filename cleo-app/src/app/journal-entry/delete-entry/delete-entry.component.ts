@@ -10,14 +10,14 @@ interface DialogData {
 }
 
 @Component({
-  selector: 'app-delete-journal-entry',
+  selector: 'app-delete-entry',
   standalone: true,
   imports: [CommonModule, MatCardModule, MatDialogModule, MatButtonModule],
-  templateUrl: './delete-journal-entry.component.html',
-  styleUrls: ['./delete-journal-entry.component.scss']
+  templateUrl: './delete-entry.component.html',
+  styleUrls: ['./delete-entry.component.scss']
 })
-export class DeleteJournalEntryComponent {
-  public dialogRef = inject(MatDialogRef<DeleteJournalEntryComponent>)
+export class DeleteEntryComponent {
+  public dialogRef = inject(MatDialogRef<DeleteEntryComponent>)
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
   public back() {
     this.dialogRef.close(false);
