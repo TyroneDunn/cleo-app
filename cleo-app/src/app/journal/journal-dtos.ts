@@ -1,9 +1,9 @@
-import {Journal} from "./journal.type";
+import {Journal, JournalSortOption} from "./journal.type";
 
 export type GetJournalsDTO = {
   name?: string,
   nameRegex?: string,
-  sort?: 'name' | 'dateCreated' | 'lastUpdated',
+  sort?: JournalSortOption,
   order?: 1 | -1,
   startDate?: string,
   endDate?: string,
