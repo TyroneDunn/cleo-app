@@ -242,18 +242,19 @@ export class JournalDetailComponent {
     });
   }
 
-  public handleDeleteEntry(journalEntry: Entry) {
+  public handleDeleteEntry(entry: Entry) {
     const config = {
-      data: {journalEntry: journalEntry}
+      data: {journalEntry: entry}
     }
     const dialogRef = this.dialog.open(DeleteEntryComponent, config);
     dialogRef.afterClosed().subscribe((confirm: boolean) => {
       if (!confirm) return;
-      this.entryService.deleteJournalEntry$(journalEntry._id)
+      this.entryService.deleteJournalEntry$(entry._id)
         .subscribe((success) => {
           if (success) {
             this.notify('Entry deleted.');
             this.fetchEntries(this.journalID$.value, this.route.snapshot.queryParams as GetEntriesDTO)
+          }
         });
     });
   }
