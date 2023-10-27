@@ -160,7 +160,8 @@
 
 <mat-paginator
   [pageSizeOptions]="[10, 25, 50]"
-  [pageSize]="10"
+  [pageSize]="(limit | async)"
+  [pageIndex]="(page | async)"
   [length]="(count | async)"
   (page)="handlePageEvent($event)">
 </mat-paginator>

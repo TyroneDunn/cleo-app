@@ -65,13 +65,14 @@ export class JournalsComponent {
   });
   public journals: BehaviorSubject<Journal[]> = new BehaviorSubject<Journal[]>([]);
   public count: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  public limit: BehaviorSubject<number> = new BehaviorSubject<number>(10);
   public displayedColumns: string[] = ['name', 'dateCreated', 'lastUpdated', 'actions'];
+  public page!: BehaviorSubject<number>;
+  public limit!: BehaviorSubject<number>;
 
 
   public ngOnInit(): void {
     this.route.queryParams.subscribe(queryParams => {
-      if (!queryParams)
+      if (Object.keys(queryParams).length === 0)
         this.router.navigate(
           [],
           {
@@ -82,6 +83,8 @@ export class JournalsComponent {
         );
       else {
         this.fetchJournals(queryParams as GetJournalsDTO);
+        this.page = new BehaviorSubject<number>((queryParams as GetJournalsDTO).page || 0);
+        this.limit = new BehaviorSubject<number>((queryParams as GetJournalsDTO).limit || 10);
       }
     });
 
@@ -92,7 +95,7 @@ export class JournalsComponent {
           [],
           {
             relativeTo: this.route,
-            queryParams: {'nameRegex': query},
+            queryParams: {'nameRegex': query.searchValue},
             queryParamsHandling: "merge",
           },
         );
@@ -160,7 +163,6 @@ export class JournalsComponent {
   }
 
   public onSearchSubmit(): void {
-
     this.router.navigate(
       [],
       {
@@ -177,8 +179,8 @@ export class JournalsComponent {
       {
         relativeTo: this.route,
         queryParams: {
-          ...$event.pageIndex && {page: $event.pageIndex},
-          ...$event.pageSize && {limit: $event.pageSize},
+          ...$event.pageIndex !== undefined && {page: $event.pageIndex},
+          ...$event.pageSize !== undefined && {limit: $event.pageSize},
         },
         queryParamsHandling: "merge",
       },
@@ -226,8 +228,8 @@ export class JournalsComponent {
         this.journalsService.deleteJournal$(journal._id)
           .subscribe(async (success) => {
             this.notify(`'${journal.name}' deleted.`);
-            this.fetchJournals(this.route.snapshot.queryParams);
-            if (!success) return;
+            if (success)
+              this.fetchJournals(this.route.snapshot.queryParams);
           })
       }
     });

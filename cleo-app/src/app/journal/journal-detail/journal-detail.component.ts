@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {CommonModule, Location} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {JournalHttpService} from "../journal-http.service";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {BehaviorSubject, debounceTime} from "rxjs";
@@ -51,7 +51,6 @@ export class JournalDetailComponent {
   private entryService = inject(EntryHttpService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private location = inject(Location);
   private formBuilder = inject(FormBuilder);
   private dialog = inject(MatDialog);
   private journalID$ = new BehaviorSubject<string>('');
@@ -122,7 +121,7 @@ export class JournalDetailComponent {
   }
 
   public navigateBack(): void {
-    this.location.back();
+    this.router.navigate(['/journals']);
   }
 
   public async navigateToEntry(entry: Entry): Promise<void> {
