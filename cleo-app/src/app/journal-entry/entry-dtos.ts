@@ -1,8 +1,8 @@
 import {Entry} from "./entry.type";
 
 export type GetEntriesDTO = {
+  journal: string,
   bodyRegex?: string,
-  journal?: string,
   startDate?: string,
   endDate?: string,
   sort?: 'body' | 'dateCreated' | 'lastUpdated',
