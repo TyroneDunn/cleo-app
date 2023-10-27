@@ -19,7 +19,6 @@ const routes: Routes = [
   {path: 'journals', component: JournalsContainerComponent, canActivate: [AuthGuard]},
   {path: 'journals/:id', component: JournalDetailComponent, canActivate: [AuthGuard]},
   {path: 'entries/:id', component: JournalEntryDetailComponent, canActivate: [AuthGuard]},
-  {path: 'journal/:journalId/journal-entry/:entryId', component: JournalEntryDetailComponent, canActivate: [AuthGuard]},
   {path: 'terms-of-service', component: TermsOfServiceComponent},
 ];
 
