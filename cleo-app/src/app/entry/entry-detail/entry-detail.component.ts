@@ -33,10 +33,10 @@ type Mode = 'normal' | 'edit';
     QuillEditorComponent,
     FormsModule,
   ],
-  templateUrl: './journal-entry-detail.component.html',
-  styleUrls: ['./journal-entry-detail.component.scss']
+  templateUrl: './entry-detail.component.html',
+  styleUrls: ['./entry-detail.component.scss']
 })
-export class JournalEntryDetailComponent {
+export class EntryDetailComponent {
   private location = inject(Location);
   private entryService = inject(EntryHttpService);
   private route = inject(ActivatedRoute);

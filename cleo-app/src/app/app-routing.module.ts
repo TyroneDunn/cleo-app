@@ -6,8 +6,8 @@ import {SignInComponent} from "./sign-in/sign-in.component";
 import {SignUpComponent} from "./sign-up/sign-up.component";
 import {JournalsComponent} from "./journal/journals/journals.component";
 import {JournalDetailComponent} from "./journal/journal-detail/journal-detail.component";
-import {JournalEntryDetailComponent}
-  from "./entry/journal-entry-detail/journal-entry-detail.component";
+import {EntryDetailComponent}
+  from "./entry/entry-detail/entry-detail.component";
 import {AuthGuard} from "./user/auth-guard.service";
 import {TermsOfServiceComponent} from "./terms-of-service/terms-of-service.component";
 
@@ -18,7 +18,7 @@ const routes: Routes = [
   {path: 'sign-up', component: SignUpComponent},
   {path: 'journals', component: JournalsComponent, canActivate: [AuthGuard]},
   {path: 'journals/:id', component: JournalDetailComponent, canActivate: [AuthGuard]},
-  {path: 'entries/:id', component: JournalEntryDetailComponent, canActivate: [AuthGuard]},
+  {path: 'entries/:id', component: EntryDetailComponent, canActivate: [AuthGuard]},
   {path: 'terms-of-service', component: TermsOfServiceComponent},
 ];
 
