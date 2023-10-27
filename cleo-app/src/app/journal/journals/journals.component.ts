@@ -118,7 +118,7 @@ export class JournalsComponent {
     await this.router.navigate([`journals/${journal._id}`])
   }
 
-  public filterJournalsByDate(): void {
+  public handleFilterJournalsByDate(): void {
     const dialogRef = this.dialog.open(DateFilterComponent);
     dialogRef.afterClosed().subscribe((dateFilter) => {
       if (dateFilter.dateRange.startDate || dateFilter.dateRange.endDate)
@@ -148,7 +148,7 @@ export class JournalsComponent {
     });
   }
 
-  public sortJournals($event: Sort): void {
+  public handleSortJournals($event: Sort): void {
     this.router.navigate(
       [],
       {
@@ -162,7 +162,7 @@ export class JournalsComponent {
     );
   }
 
-  public onSearchSubmit(): void {
+  public handleSearchSubmit(): void {
     this.router.navigate(
       [],
       {
@@ -187,7 +187,7 @@ export class JournalsComponent {
     );
   }
 
-  public newJournal(): void {
+  public handleNewJournal(): void {
     const dialogRef = this.dialog.open(NewJournalComponent);
     dialogRef.afterClosed().subscribe((name) => {
       if (name) {
@@ -201,7 +201,7 @@ export class JournalsComponent {
     });
   }
 
-  public editJournal(journal: Journal): void {
+  public handleRenameJournal(journal: Journal): void {
     const config = {
       data: {journal: journal}
     }
@@ -218,7 +218,7 @@ export class JournalsComponent {
     });
   }
 
-  public deleteJournal(journal: Journal): void {
+  public handleDeleteJournal(journal: Journal): void {
     const config = {
       data: {journal: journal}
     }
@@ -236,7 +236,7 @@ export class JournalsComponent {
     });
   }
 
-  public logout(): void {
+  public handleLogout(): void {
     this.userService.logout$().subscribe(async (success) => {
       if (!success) return;
       await this.router.navigate([HOME]);

@@ -30,7 +30,7 @@
       </button>
 
       <button
-        (click)="logout()"
+        (click)="handleLogout()"
         mat-menu-item
         disableRipple>
         Logout
@@ -46,7 +46,7 @@
     <button
       mat-flat-button
       disableRipple
-      (click)="newJournal()">
+      (click)="handleNewJournal()">
       <mat-icon>add</mat-icon>
       New Journal
     </button>
@@ -54,20 +54,20 @@
     <button
       mat-flat-button
       disableRipple
-      (click)="filterJournalsByDate()">
+      (click)="handleFilterJournalsByDate()">
       <mat-icon>filter_list</mat-icon>
       Filter
     </button>
   </mat-toolbar-row>
 
   <mat-toolbar-row>
-    <form [formGroup]="searchForm" (ngSubmit)="onSearchSubmit()">
+    <form [formGroup]="searchForm" (ngSubmit)="handleSearchSubmit()">
       <mat-form-field>
         <button
           matIconPrefix
           mat-icon-button
           aria-label="Search"
-          (click)="onSearchSubmit()">
+          (click)="handleSearchSubmit()">
           <mat-icon>search</mat-icon>
         </button>
 
@@ -82,7 +82,7 @@
           matSuffix
           mat-icon-button
           aria-label="Clear"
-          (click)="searchForm.patchValue({searchValue: ''}); onSearchSubmit();">
+          (click)="searchForm.patchValue({searchValue: ''}); handleSearchSubmit();">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -91,7 +91,7 @@
 </mat-toolbar>
 
 <table mat-table matSort
-   (matSortChange)="sortJournals($event)"
+   (matSortChange)="handleSortJournals($event)"
    matSortDisableClear
    [dataSource]="journals">
   <ng-container matColumnDef="name">
@@ -131,14 +131,14 @@
         <button
           disableRipple
           mat-menu-item
-          (click)="editJournal(element)">
+          (click)="handleRenameJournal(element)">
           Rename...
         </button>
 
         <button
           disableRipple
           mat-menu-item
-          (click)="deleteJournal(element)">
+          (click)="handleDeleteJournal(element)">
           Delete...
         </button>
       </mat-menu>
