@@ -211,7 +211,7 @@ export class JournalDetailComponent {
   public handleRenameJournal() {
     const config = {
       data: {journal: this.journal$.value}
-    }
+    };
     const dialogRef = this.dialog.open(EditJournalComponent, config);
     dialogRef.afterClosed().subscribe((name) => {
       if (name && this.journal$.value) {
@@ -227,7 +227,7 @@ export class JournalDetailComponent {
   public handleDeleteJournal() {
     const config = {
       data: {journal: this.journal$.value}
-    }
+    };
     const dialogRef = this.dialog.open(DeleteJournalComponent, config);
     dialogRef.afterClosed().subscribe((confirm) => {
       if (confirm) {
@@ -245,7 +245,7 @@ export class JournalDetailComponent {
   public handleDeleteEntry(entry: Entry) {
     const config = {
       data: {journalEntry: entry}
-    }
+    };
     const dialogRef = this.dialog.open(DeleteEntryComponent, config);
     dialogRef.afterClosed().subscribe((confirm: boolean) => {
       if (!confirm) return;
