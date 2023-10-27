@@ -6,3 +6,4 @@ export type Entry = {
   dateCreated: Date,
 };
 
+export type EntrySortOption = 'body' | 'lastUpdated' | 'dateCreated';
