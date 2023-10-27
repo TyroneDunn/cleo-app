@@ -15,6 +15,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {MatCardModule} from "@angular/material/card";
 import {QuillEditorComponent} from "ngx-quill";
 import {FormsModule} from "@angular/forms";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 
 type Mode = 'normal' | 'edit';
 
@@ -32,6 +33,7 @@ type Mode = 'normal' | 'edit';
     MatCardModule,
     QuillEditorComponent,
     FormsModule,
+    MatSnackBarModule,
   ],
   templateUrl: './entry-detail.component.html',
   styleUrls: ['./entry-detail.component.scss']
@@ -41,6 +43,7 @@ export class EntryDetailComponent {
   private entryService = inject(EntryHttpService);
   private route = inject(ActivatedRoute);
   private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
   public mode$ = new BehaviorSubject<Mode>("normal");
   public journalEntry$ = new BehaviorSubject<Entry | undefined>(undefined);
   private journalId$ = new BehaviorSubject<string>('');
@@ -96,6 +99,7 @@ export class EntryDetailComponent {
       .subscribe((success) => {
         if (!success) return;
         this.updateEntry(body);
+        this.notify('Entry updated.')
         this.enterNormalMode();
       });
   }
@@ -111,12 +115,22 @@ export class EntryDetailComponent {
       if (this.journalEntry$.value) {
         this.entryService.deleteJournalEntry$(this.journalEntry$.value._id)
           .subscribe((success) => {
-            if (success) this.navigateBack();
+            if (success) {
+              this.notify('Entry deleted.')
+              this.navigateBack();
+            }
           });
       }
     });
   }
 
+  private notify(message: string): void {
+    this.snackBar.open(message, '×', {
+      duration: 3000,
+      horizontalPosition: "left",
+      verticalPosition: "bottom",
+    });
+  }
   public ngOnDestroy() {
     this.mode$.unsubscribe();
   }
