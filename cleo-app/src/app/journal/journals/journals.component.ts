@@ -227,9 +227,10 @@ export class JournalsComponent {
       if (confirm) {
         this.journalsService.deleteJournal$(journal._id)
           .subscribe(async (success) => {
-            this.notify(`'${journal.name}' deleted.`);
-            if (success)
+            if (success) {
+              this.notify(`'${journal.name}' deleted.`);
               this.fetchJournals(this.route.snapshot.queryParams);
+            }
           })
       }
     });
