@@ -8,9 +8,6 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatListModule} from "@angular/material/list";
 import {Entry, EntrySortOption} from "../../entry/entry.type";
 import {EntryHttpService} from "../../entry/entry-http.service";
-import {
-  JournalEntryCardComponent
-} from "../../entry/journal-entry-card/journal-entry-card.component";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
@@ -35,7 +32,6 @@ import {convert} from "html-to-text";
     CommonModule,
     MatButtonModule,
     MatListModule,
-    JournalEntryCardComponent,
     RouterLink,
     MatToolbarModule,
     MatIconModule,
