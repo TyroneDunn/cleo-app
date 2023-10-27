@@ -1,12 +1,10 @@
 <mat-toolbar
-  color="primary"
->
+  color="primary">
   <mat-toolbar-row>
     <button
       *ngIf="(mode$.value === 'normal')"
       mat-icon-button
-      (click)="navigateBack()"
-    >
+      (click)="navigateBack()">
       <mat-icon>
         keyboard_arrow_left
       </mat-icon>
@@ -15,8 +13,7 @@
     <button
       *ngIf="(mode$.value === 'edit')"
       mat-icon-button
-      (click)="cancelEditing()"
-    >
+      (click)="cancelEditing()">
       <mat-icon>close</mat-icon>
     </button>
 
@@ -27,26 +24,25 @@
       disableRipple
       (click)="enterEditMode()"
       *ngIf="(mode$.value === 'normal')"
-      color="primary"
-    >
+      color="primary">
       Edit
     </button>
+
     <button
       *ngIf="(mode$.value === 'edit')"
       mat-flat-button
       disableRipple
       (click)="doneEditing()"
-      color="primary"
-    >
+      color="primary">
       Save
     </button>
+
     <button
       mat-flat-button
       disableRipple
       (click)="deleteEntry()"
       [disabled]="(mode$.value === 'edit')"
-      color="primary"
-    >
+      color="primary">
       Delete
     </button>
   </mat-toolbar-row>
@@ -54,8 +50,7 @@
 
 <mat-card
   class="mat-mdc-card-outlined"
-  *ngIf="(journalEntry$.value)"
->
+  *ngIf="(journalEntry$.value)">
     <quill-editor
       [modules]="{toolbar: false}"
       [required]="true"
