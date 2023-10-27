@@ -24,6 +24,7 @@ import {MatTableModule} from "@angular/material/table";
 import {MatSortModule, Sort} from "@angular/material/sort";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {convert} from "html-to-text";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-journal-detail',
@@ -42,6 +43,7 @@ import {convert} from "html-to-text";
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    MatSnackBarModule,
   ],
   templateUrl: './journal-detail.component.html',
   styleUrls: ['./journal-detail.component.scss']
@@ -52,6 +54,7 @@ export class JournalDetailComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
+  private snackBar = inject(MatSnackBar);
   private dialog = inject(MatDialog);
   private journalID$ = new BehaviorSubject<string>('');
   public journal$ = new BehaviorSubject<Journal | undefined>(undefined);
@@ -214,7 +217,8 @@ export class JournalDetailComponent {
       if (name && this.journal$.value) {
         this.journalService.updateJournal$({id: this.journalID$.value, name: name})
           .subscribe(async (success) => {
-            if (!success) return;
+            if (success)
+              this.notify(`Renamed to '${name}'.`);
           });
       }
     });
@@ -229,8 +233,10 @@ export class JournalDetailComponent {
       if (confirm) {
         this.journalService.deleteJournal$(this.journalID$.value)
           .subscribe(async (success) => {
-            if (!success) return;
-            this.navigateBack();
+            if (success) {
+              this.notify(`'${this.journal$.value?.name}' deleted.`);
+              this.navigateBack();
+            }
           });
       }
     });
@@ -245,9 +251,18 @@ export class JournalDetailComponent {
       if (!confirm) return;
       this.entryService.deleteJournalEntry$(journalEntry._id)
         .subscribe((success) => {
-          if (success)
+          if (success) {
+            this.notify('Entry deleted.');
             this.fetchEntries(this.journalID$.value, this.route.snapshot.queryParams as GetEntriesDTO)
         });
+    });
+  }
+
+  private notify(message: string): void {
+    this.snackBar.open(message, '×', {
+      duration: 3000,
+      horizontalPosition: "left",
+      verticalPosition: "bottom",
     });
   }
 
