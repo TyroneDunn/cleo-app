@@ -3,7 +3,7 @@ import {catchError, map, Observable, of} from "rxjs";
 import {Entry} from "./entry.type";
 import {HttpService} from "../http/http.service";
 import {CLEO_API_JOURNAL_ENTRIES_URL} from "./journal-entry.constants";
-import {GetEntriesDTO, GetEntriesResponseDTO} from './entry-dtos';
+import {CreateEntryDTO, GetEntriesDTO, GetEntriesResponseDTO} from './entry-dtos';
 
 @Injectable({
   providedIn: 'root'
@@ -51,9 +51,9 @@ export class EntryHttpService {
     )
   }
 
-  public createJournalEntry$(journalId: string, body: string): Observable<Entry | undefined> {
-    const payload = {body: body};
-    return this.http.postRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}${journalId}`, payload).pipe(
+  public createJournalEntry$(dto: CreateEntryDTO): Observable<Entry | undefined> {
+    const payload = {body: dto.body};
+    return this.http.postRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}${dto.journal}`, payload).pipe(
       map((response) => {
         return response.body as Entry;
       }),

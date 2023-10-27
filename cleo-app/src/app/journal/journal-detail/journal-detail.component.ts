@@ -201,11 +201,7 @@ export class JournalDetailComponent {
   }
 
   public handleCreateEntry() {
-    this.entryService.createJournalEntry$(this.journalID$.value, '')
-      .subscribe(async (journalEntry) => {
-        if (!journalEntry) return;
-        await this.router.navigate([`entries/${journalEntry._id}`]);
-      })
+    this.router.navigate([`/journals/${this.journalID$.value}/new-entry`]);
   }
 
   public handleRenameJournal() {
