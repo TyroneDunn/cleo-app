@@ -95,7 +95,8 @@
     *ngIf="!(journal$.value)"
     mode="indeterminate"
   ></mat-progress-bar>
-  <table mat-table matSort matSortActive="lastUpdated" matSortDirection="desc"
+
+  <table mat-table matSort
          (matSortChange)="handleSortEntries($event)"
          matSortDisableClear
          [dataSource]="entries$">
@@ -149,8 +150,9 @@
 
   <mat-paginator
     [pageSizeOptions]="[10, 25, 50]"
-    [pageSize]="10"
+    [pageSize]="(limit | async)"
     [length]="(count | async)"
+    [pageIndex]="(page | async)"
     (page)="handlePageEvent($event)">
   </mat-paginator>
 </div>

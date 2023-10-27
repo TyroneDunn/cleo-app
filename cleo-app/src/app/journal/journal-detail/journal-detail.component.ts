@@ -58,68 +58,66 @@ export class JournalDetailComponent {
   public journal$ = new BehaviorSubject<Journal | undefined>(undefined);
   public entries$ = new BehaviorSubject<Entry[]>([]) ;
   public count: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  public entriesDTO$: BehaviorSubject<GetEntriesDTO> = new BehaviorSubject<GetEntriesDTO>({
-    journal: '',
-    sort: 'lastUpdated',
-    order: -1,
+  private defaultQueryParams = {
     page: 0,
     limit: 10,
-  });
+  };
   public searchForm: FormGroup = this.formBuilder.nonNullable.group({
     searchValue: ''
   });
   public displayedColumns: string[] = ['body', 'lastUpdated', 'actions'];
+  public page!: BehaviorSubject<number>;
+  public limit!: BehaviorSubject<number>;
 
   public ngOnInit() {
     this.route.params.subscribe((params) => {
       this.journalID$.next(params['id'] as string);
-      const dto = this.entriesDTO$.value;
-      this.entriesDTO$.next({
-        ...dto.bodyRegex && {name: dto.bodyRegex},
-        journal: this.journalID$.value,
-        ...dto.sort && {sort: dto.sort},
-        ...dto.order && {order: dto.order},
-        ...dto.startDate && {startDate: dto.startDate},
-        ...dto.endDate && {endDate: dto.endDate},
-        ...(dto.page!== undefined) && {page: dto.page},
-        ...(dto.limit !== undefined) && {limit: dto.limit},
+      this.fetchJournal(this.journalID$.value);
+      this.route.queryParams.subscribe(queryParams => {
+        if (Object.keys(queryParams).length === 0)
+          this.router.navigate(
+            [],
+            {
+              relativeTo: this.route,
+              queryParams: this.defaultQueryParams,
+              queryParamsHandling: "merge",
+            },
+          );
+        else {
+          this.fetchEntries(this.journalID$.value, queryParams as GetEntriesDTO);
+          this.page = new BehaviorSubject<number>((queryParams as GetEntriesDTO).page || 0);
+          this.limit = new BehaviorSubject<number>((queryParams as GetEntriesDTO).limit || 10);
+        }
       });
-      this.fetchJournal();
-      this.fetchEntries();
+    });
 
-
-      this.searchForm.valueChanges
-        .pipe(debounceTime(300))
-        .subscribe(query => {
-          const dto = this.entriesDTO$.value;
-          this.entriesDTO$.next({
-            journal: dto.journal,
-            bodyRegex: this.searchForm.value.searchValue,
-            ...dto.sort && {sort: dto.sort},
-            ...dto.order && {order: dto.order},
-            ...dto.startDate && {startDate: dto.startDate},
-            ...dto.endDate && {endDate: dto.endDate},
-            ...dto.page && {page: dto.page},
-            ...dto.limit && {limit: dto.limit},
-          });
-          this.fetchEntries();
-        });
-    })
+    this.searchForm.valueChanges
+      .pipe(debounceTime(300))
+      .subscribe(query => {
+        this.router.navigate(
+          [],
+          {
+            relativeTo: this.route,
+            queryParams: {'bodyRegex': query.searchValue},
+            queryParamsHandling: "merge",
+          },
+        );
+      });
   }
 
-  private fetchJournal(): void {
-    this.journalService.getJournal$(this.journalID$.value)
+  private fetchJournal(id: string): void {
+    this.journalService.getJournal$(id)
       .subscribe((journal) => {
         if (!journal) return;
         this.journal$.next(journal);
       });
   }
 
-  private fetchEntries(): void {
-    this.entryService.journalEntries$(this.entriesDTO$.value)
-      .subscribe((dto) => {
-        this.count.next(dto.count);
-        this.entries$.next(dto.items);
+  private fetchEntries(journalID: string, dto: GetEntriesDTO): void {
+    this.entryService.journalEntries$({...dto, journal: journalID})
+      .subscribe((response) => {
+        this.count.next(response.count);
+        this.entries$.next(response.items);
       })
   }
 
@@ -132,61 +130,72 @@ export class JournalDetailComponent {
   }
 
   public handleSortEntries($event: Sort): void {
-    const dto = this.entriesDTO$.value;
-    this.entriesDTO$.next({
-      journal: dto.journal,
-      ...dto.bodyRegex && {name: dto.bodyRegex},
-      sort: $event.active as EntrySortOption,
-      order: $event.direction === 'asc'? 1:-1,
-      ...dto.startDate && {startDate: dto.startDate},
-      ...dto.endDate && {endDate: dto.endDate},
-      ...dto.page && {page: dto.page},
-      ...dto.limit && {limit: dto.limit},
-    });
-    this.fetchEntries();
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: {
+          sort: $event.active as EntrySortOption,
+          order: $event.direction === 'asc'? 1:-1,
+        },
+        queryParamsHandling: "merge",
+      },
+    );
   }
 
   public handleFilterEntriesByDate(): void {
     const dialogRef = this.dialog.open(DateFilterComponent);
     dialogRef.afterClosed().subscribe((dateFilter) => {
-      const dto = this.entriesDTO$.value;
       if (dateFilter.dateRange.startDate || dateFilter.dateRange.endDate)
-        this.entriesDTO$.next(({
-          ...dto.bodyRegex && {name: dto.bodyRegex},
-          journal: dto.journal,
-          ...dto.sort && {sort: dto.sort},
-          ...dto.order && {order: dto.order},
-          ...dateFilter.dateRange.startDate && {startDate: dateFilter.dateRange.startDate},
-          ...dateFilter.dateRange.endDate && {endDate: dateFilter.dateRange.endDate},
-          ...dto.page && {page: dto.page},
-          ...dto.limit && {limit: dto.limit},
-        }));
+        this.router.navigate(
+          [],
+          {
+            relativeTo: this.route,
+            queryParams: {
+              ...dateFilter.dateRange.startDate && {startDate: dateFilter.dateRange.startDate},
+              ...dateFilter.dateRange.endDate && {endDate: dateFilter.dateRange.endDate},
+            },
+            queryParamsHandling: "merge",
+          },
+        );
       else
-        this.entriesDTO$.next(({
-          ...dto.bodyRegex && {name: dto.bodyRegex},
-          journal: dto.journal,
-          ...dto.sort && {sort: dto.sort},
-          ...dto.order && {order: dto.order},
-          ...dto.page && {page: dto.page},
-          ...dto.limit && {limit: dto.limit},
-        }));
-      this.fetchEntries();
+        this.router.navigate(
+          [],
+          {
+            relativeTo: this.route,
+            queryParams: {
+              startDate: undefined,
+              endDate: undefined,
+            },
+            queryParamsHandling: "merge",
+          },
+        );
     });
   }
 
   public handleOnSearchSubmit(): void {
-    const dto = this.entriesDTO$.value;
-    this.entriesDTO$.next({
-      journal: dto.journal,
-      bodyRegex: this.searchForm.value.searchValue,
-      ...dto.sort && {sort: dto.sort},
-      ...dto.order && {order: dto.order},
-      ...dto.startDate && {startDate: dto.startDate},
-      ...dto.endDate && {endDate: dto.endDate},
-      ...dto.page && {page: dto.page},
-      ...dto.limit && {limit: dto.limit},
-    });
-    this.fetchEntries();
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: {'bodyRegex': this.searchForm.value.searchValue},
+        queryParamsHandling: "merge",
+      },
+    );
+  }
+
+  public handlePageEvent($event: PageEvent): void {
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: {
+          ...$event.pageIndex !== undefined && {page: $event.pageIndex},
+          ...$event.pageSize !== undefined && {limit: $event.pageSize},
+        },
+        queryParamsHandling: "merge",
+      },
+    );
   }
 
   public handleCreateEntry() {
@@ -204,7 +213,7 @@ export class JournalDetailComponent {
     const dialogRef = this.dialog.open(EditJournalComponent, config);
     dialogRef.afterClosed().subscribe((name) => {
       if (name && this.journal$.value) {
-        this.journalService.updateJournal$({id: this.journal$.value._id, name: name})
+        this.journalService.updateJournal$({id: this.journalID$.value, name: name})
           .subscribe(async (success) => {
             if (!success) return;
           });
@@ -218,8 +227,8 @@ export class JournalDetailComponent {
     }
     const dialogRef = this.dialog.open(DeleteJournalComponent, config);
     dialogRef.afterClosed().subscribe((confirm) => {
-      if (confirm && this.journal$.value) {
-        this.journalService.deleteJournal$(this.journal$.value._id)
+      if (confirm) {
+        this.journalService.deleteJournal$(this.journalID$.value)
           .subscribe(async (success) => {
             if (!success) return;
             this.navigateBack();
@@ -229,33 +238,18 @@ export class JournalDetailComponent {
   }
 
   public handleDeleteEntry(journalEntry: Entry) {
-    const journalId = this.journal$.value?._id as string;
     const config = {
       data: {journalEntry: journalEntry}
     }
     const dialogRef = this.dialog.open(DeleteEntryComponent, config);
-    dialogRef.afterClosed().subscribe((confirm) => {
+    dialogRef.afterClosed().subscribe((confirm: boolean) => {
       if (!confirm) return;
-      this.entryService.deleteJournalEntry$(journalId, journalEntry._id)
+      this.entryService.deleteJournalEntry$(journalEntry._id)
         .subscribe((success) => {
-          if (success) this.fetchEntries()
+          if (success)
+            this.fetchEntries(this.journalID$.value, this.route.snapshot.queryParams as GetEntriesDTO)
         });
     });
-  }
-
-  public handlePageEvent($event: PageEvent): void {
-    const dto = this.entriesDTO$.value;
-    this.entriesDTO$.next({
-      journal: dto.journal,
-      ...dto.bodyRegex && {nameRegex: dto.bodyRegex},
-      ...dto.sort && {sort: dto.sort},
-      ...dto.order && {order: dto.order},
-      ...dto.startDate && {startDate: dto.startDate},
-      ...dto.endDate && {endDate: dto.endDate},
-      ...$event.pageIndex && {page: $event.pageIndex},
-      ...$event.pageSize && {limit: $event.pageSize},
-    });
-    this.fetchEntries();
   }
 
   public convertToPlainText(body: string): string {
