@@ -8,7 +8,6 @@ import {ActivatedRoute, RouterLink} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
 import {Entry} from "../entry.type";
 import {EntryHttpService} from "../entry-http.service";
-import {SubSink} from "../../../utils/sub-sink";
 import {MatInputModule} from "@angular/material/input";
 import {DeleteEntryComponent}
   from "../delete-entry/delete-entry.component";
@@ -42,30 +41,25 @@ export class JournalEntryDetailComponent {
   private entryService = inject(EntryHttpService);
   private route = inject(ActivatedRoute);
   private dialog = inject(MatDialog);
-  private sink = new SubSink();
   public mode$ = new BehaviorSubject<Mode>("normal");
   public journalEntry$ = new BehaviorSubject<Entry | undefined>(undefined);
   private journalId$ = new BehaviorSubject<string>('');
   private entryId$ = new BehaviorSubject<string>('');
 
   public ngOnInit() {
-    this.sink.collect(
-      this.route.paramMap.subscribe((params) => {
-        this.entryId$.next(params.get('id') as string);
-        this.fetchEntry();
-      })
-    )
+    this.route.paramMap.subscribe((params) => {
+      this.entryId$.next(params.get('id') as string);
+      this.fetchEntry();
+    })
   }
 
   private fetchEntry() {
-    this.sink.collect(
-      this.entryService.journalEntry$(this.journalId$.value, this.entryId$.value)
-        .subscribe((journalEntry) => {
-          if (!journalEntry) return;
-          this.journalEntry$.next(journalEntry);
-          if (journalEntry.body === '') this.enterEditMode();
-        })
-    );
+    this.entryService.journalEntry$(this.journalId$.value, this.entryId$.value)
+      .subscribe((journalEntry) => {
+        if (!journalEntry) return;
+        this.journalEntry$.next(journalEntry);
+        if (journalEntry.body === '') this.enterEditMode();
+      })
   }
 
   private updateEntry(body: string) {
@@ -98,14 +92,12 @@ export class JournalEntryDetailComponent {
 
     const body = this.journalEntry$.value?.body as string;
 
-    this.sink.collect(
-      this.entryService.patchJournalEntry$(this.journalId$.value, this.entryId$.value, body)
-        .subscribe((success) => {
-          if (!success) return;
-          this.updateEntry(body);
-          this.enterNormalMode();
-        })
-    );
+    this.entryService.patchJournalEntry$(this.journalId$.value, this.entryId$.value, body)
+      .subscribe((success) => {
+        if (!success) return;
+        this.updateEntry(body);
+        this.enterNormalMode();
+      });
   }
 
   public deleteEntry() {
@@ -117,18 +109,15 @@ export class JournalEntryDetailComponent {
       if (!confirm) return;
 
       if (this.journalEntry$.value) {
-        this.sink.collect(
-          this.entryService.deleteJournalEntry$(this.journalId$.value, this.journalEntry$.value._id)
-            .subscribe((success) => {
-              if (success) this.navigateBack();
-            })
-        );
+        this.entryService.deleteJournalEntry$(this.journalId$.value, this.journalEntry$.value._id)
+          .subscribe((success) => {
+            if (success) this.navigateBack();
+          });
       }
     });
   }
 
   public ngOnDestroy() {
     this.mode$.unsubscribe();
-    this.sink.drain();
   }
 }
