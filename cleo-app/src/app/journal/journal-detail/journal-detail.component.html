@@ -1,13 +1,11 @@
 <div *ngIf="(journal$.value)">
   <mat-toolbar
-    color="primary"
-  >
+    color="primary">
     <mat-toolbar-row>
       <button
         mat-icon-button
         disableRipple
-        (click)="navigateBack()"
-      >
+        (click)="navigateBack()">
         <mat-icon>
           keyboard_arrow_left
         </mat-icon>
@@ -17,39 +15,39 @@
         *ngIf="(journal$.value)"
         mat-icon-button
         disableRipple
-        [matMenuTriggerFor]="menu"
-      >
+        [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
       </button>
+
       <mat-menu #menu="matMenu">
         <button
           mat-menu-item
           disableRipple
-          (click)="handleRenameJournal()"
-        >
+          (click)="handleRenameJournal()">
           Rename...
         </button>
+
         <button
           mat-menu-item
           disableRipple
-          (click)="handleDeleteJournal()"
-        >
+          (click)="handleDeleteJournal()">
           Delete...
         </button>
       </mat-menu>
     </mat-toolbar-row>
+
     <mat-toolbar-row>
       <h2>
         {{journal$.value.name}}
       </h2>
     </mat-toolbar-row>
+
     <mat-toolbar-row>
       <button
         mat-flat-button
         disableRipple
         (click)="handleCreateEntry()"
-        color="primary"
-      >
+        color="primary">
         <mat-icon>add</mat-icon>
         New Entry
       </button>
@@ -58,13 +56,12 @@
         mat-flat-button
         disableRipple
         color="primary"
-        (click)="handleFilterEntriesByDate()"
-      >
-        <!--  todo: Add menu options to choose by date created or last modified -->
+        (click)="handleFilterEntriesByDate()">
         <mat-icon>filter_list</mat-icon>
         Filter
       </button>
     </mat-toolbar-row>
+
     <mat-toolbar-row>
       <form [formGroup]="searchForm" (ngSubmit)="handleOnSearchSubmit()">
         <mat-form-field>
@@ -72,23 +69,21 @@
             matIconPrefix
             mat-icon-button
             aria-label="Search"
-            (click)="handleOnSearchSubmit()"
-          >
+            (click)="handleOnSearchSubmit()">
             <mat-icon>search</mat-icon>
           </button>
+
           <input
             matInput
             type="text"
             placeholder="Search..."
-            formControlName="searchValue"
-          >
+            formControlName="searchValue">
           <button
             *ngIf="searchForm.value.searchValue"
             matSuffix
             mat-icon-button
             aria-label="Clear"
-            (click)="searchForm.patchValue({searchValue: ''}); handleOnSearchSubmit();"
-          >
+            (click)="searchForm.patchValue({searchValue: ''}); handleOnSearchSubmit();">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
@@ -122,23 +117,21 @@
           mat-icon-button
           disableRipple
           [matMenuTriggerFor]="entriesMenu"
-          (click)="$event.stopPropagation()"
-        >
+          (click)="$event.stopPropagation()">
           <mat-icon>more_vert</mat-icon>
         </button>
+
         <mat-menu #entriesMenu="matMenu">
           <button
             disableRipple
             mat-menu-item
-            (click)="navigateToEntry(element)"
-          >
+            (click)="navigateToEntry(element)">
             Open
           </button>
           <button
             disableRipple
             mat-menu-item
-            (click)="handleDeleteEntry(element)"
-          >
+            (click)="handleDeleteEntry(element)">
             Delete...
           </button>
         </mat-menu>
@@ -158,7 +151,6 @@
     [pageSizeOptions]="[10, 25, 50]"
     [pageSize]="10"
     [length]="(count | async)"
-    (page)="handlePageEvent($event)"
-  >
+    (page)="handlePageEvent($event)">
   </mat-paginator>
 </div>
