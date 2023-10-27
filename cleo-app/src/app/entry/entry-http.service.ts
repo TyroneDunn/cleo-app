@@ -63,7 +63,7 @@ export class EntryHttpService {
     );
   }
 
-  public deleteJournalEntry$(journalId: string, entryId: string): Observable<boolean> {
+  public deleteJournalEntry$(entryId: string): Observable<boolean> {
     return this.http.deleteRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}${entryId}`)
       .pipe(
         map((response) => {

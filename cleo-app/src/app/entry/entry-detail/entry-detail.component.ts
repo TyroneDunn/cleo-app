@@ -109,7 +109,7 @@ export class EntryDetailComponent {
       if (!confirm) return;
 
       if (this.journalEntry$.value) {
-        this.entryService.deleteJournalEntry$(this.journalId$.value, this.journalEntry$.value._id)
+        this.entryService.deleteJournalEntry$(this.journalEntry$.value._id)
           .subscribe((success) => {
             if (success) this.navigateBack();
           });
