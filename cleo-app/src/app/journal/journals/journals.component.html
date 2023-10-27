@@ -3,68 +3,63 @@
     <button
       mat-flat-button
       disableRipple
-      class="mat-elevation-z1"
-      (click)="navigateHome()"
-    >
+      (click)="navigateHome()">
       <h2>
         cleo.|
       </h2>
     </button>
+
     <button
       mat-icon-button
       disableRipple
-      class="mat-elevation-z1"
-      [matMenuTriggerFor]="menu"
-    >
+      [matMenuTriggerFor]="menu">
       <mat-icon>more_vert</mat-icon>
     </button>
+
     <mat-menu #menu="matMenu">
       <button
         disableRipple
-        mat-menu-item
-      >
+        mat-menu-item>
         Journals
       </button>
+
       <button
         disableRipple
-        mat-menu-item
-      >
+        mat-menu-item>
         Help
       </button>
+
       <button
         (click)="logout()"
         mat-menu-item
-        disableRipple
-      >
+        disableRipple>
         Logout
       </button>
     </mat-menu>
   </mat-toolbar-row>
+
   <mat-toolbar-row>
     <h2>Journals</h2>
   </mat-toolbar-row>
+
   <mat-toolbar-row>
     <button
-      mat-raised-button
+      mat-flat-button
       disableRipple
-      color="primary"
-      class="mat-elevation-z1"
-      (click)="newJournal()"
-    >
-      <mat-icon>create_new_folder</mat-icon>
+      (click)="newJournal()">
+      <mat-icon>add</mat-icon>
       New Journal
     </button>
+
     <button
-      mat-raised-button
+      mat-flat-button
       disableRipple
-      color="primary"
-      class="mat-elevation-z1"
-      (click)="filterJournalsByDate()"
-    >
-      <mat-icon>date_range</mat-icon>
+      (click)="filterJournalsByDate()">
+      <mat-icon>filter_list</mat-icon>
       Filter
     </button>
   </mat-toolbar-row>
+
   <mat-toolbar-row>
     <form [formGroup]="searchForm" (ngSubmit)="onSearchSubmit()">
       <mat-form-field>
@@ -72,35 +67,33 @@
           matIconPrefix
           mat-icon-button
           aria-label="Search"
-          (click)="onSearchSubmit()"
-        >
+          (click)="onSearchSubmit()">
           <mat-icon>search</mat-icon>
         </button>
+
         <input
           matInput
           type="text"
           placeholder="Search..."
-          formControlName="searchValue"
-        >
+          formControlName="searchValue">
+
         <button
           *ngIf="searchForm.value.searchValue"
           matSuffix
           mat-icon-button
           aria-label="Clear"
-          (click)="searchForm.patchValue({searchValue: ''}); onSearchSubmit();"
-        >
+          (click)="searchForm.patchValue({searchValue: ''}); onSearchSubmit();">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
     </form>
   </mat-toolbar-row>
 </mat-toolbar>
-<!-- todo: add loading indicator-->
 
-<table mat-table matSort matSortActive="lastUpdated" matSortDirection="desc"
-       (matSortChange)="sortJournals($event)"
-       matSortDisableClear
-       [dataSource]="journals">
+<table mat-table matSort
+   (matSortChange)="sortJournals($event)"
+   matSortDisableClear
+   [dataSource]="journals">
   <ng-container matColumnDef="name">
     <th mat-header-cell mat-sort-header *matHeaderCellDef>Name</th>
     <td mat-cell *matCellDef="let element">{{element.name}}</td>
@@ -123,37 +116,40 @@
         mat-icon-button
         disableRipple
         [matMenuTriggerFor]="journalsMenu"
-        (click)="$event.stopPropagation()"
-      >
+        (click)="$event.stopPropagation()">
         <mat-icon>more_vert</mat-icon>
       </button>
+
       <mat-menu #journalsMenu="matMenu">
         <button
           disableRipple
           mat-menu-item
-          (click)="navigateToJournal(element)"
-        >
+          (click)="navigateToJournal(element)">
           Open
         </button>
+
         <button
           disableRipple
           mat-menu-item
-          (click)="editJournal(element)"
-        >
+          (click)="editJournal(element)">
           Rename...
         </button>
+
         <button
           disableRipple
           mat-menu-item
-          (click)="deleteJournal(element)"
-        >
+          (click)="deleteJournal(element)">
           Delete...
         </button>
       </mat-menu>
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr
+    mat-header-row
+    *matHeaderRowDef="displayedColumns">
+  </tr>
+
   <tr
     class="clickable"
     mat-row
@@ -166,6 +162,5 @@
   [pageSizeOptions]="[10, 25, 50]"
   [pageSize]="10"
   [length]="(count | async)"
-  (page)="handlePageEvent($event)"
->
+  (page)="handlePageEvent($event)">
 </mat-paginator>
