@@ -1,20 +1,26 @@
 <mat-toolbar>
   <mat-toolbar-row>
-    <button
-      mat-flat-button
-      disableRipple
-      (click)="navigateHome()">
-      <h2>
-        cleo.|
-      </h2>
-    </button>
+    <div>
+      <button
+        mat-flat-button
+        disableRipple
+        (click)="navigateHome()">
+        <h2>
+          cleo.|
+        </h2>
+      </button>
+    </div>
 
-    <button
-      mat-icon-button
-      disableRipple
-      [matMenuTriggerFor]="menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
+    <span class="flex-expand"></span>
+
+    <div>
+      <button
+        mat-icon-button
+        disableRipple
+        [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
 
     <mat-menu #menu="matMenu">
       <button

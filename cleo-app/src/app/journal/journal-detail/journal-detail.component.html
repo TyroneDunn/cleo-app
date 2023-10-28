@@ -2,22 +2,29 @@
   <mat-toolbar
     color="primary">
     <mat-toolbar-row>
-      <button
-        mat-icon-button
-        disableRipple
-        (click)="navigateBack()">
-        <mat-icon>
-          keyboard_arrow_left
-        </mat-icon>
-      </button>
+      <div>
+        <button
+          mat-icon-button
+          disableRipple
+          (click)="navigateBack()">
+          <mat-icon>
+            keyboard_arrow_left
+          </mat-icon>
+        </button>
+      </div>
 
-      <button
-        *ngIf="(journal$.value)"
-        mat-icon-button
-        disableRipple
-        [matMenuTriggerFor]="menu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
+      <span class="flex-expand"></span>
+
+      <div>
+        <button
+          class="menu-button"
+          *ngIf="(journal$.value)"
+          mat-icon-button
+          disableRipple
+          [matMenuTriggerFor]="menu">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
 
       <mat-menu #menu="matMenu">
         <button
