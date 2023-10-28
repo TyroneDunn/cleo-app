@@ -1,6 +1,5 @@
 <div *ngIf="(journal$.value)">
-  <mat-toolbar
-    color="primary">
+  <mat-toolbar>
     <mat-toolbar-row>
       <div>
         <button
@@ -53,8 +52,7 @@
       <button
         mat-flat-button
         disableRipple
-        (click)="handleCreateEntry()"
-        color="primary">
+        (click)="handleCreateEntry()">
         <mat-icon>add</mat-icon>
         New Entry
       </button>
@@ -62,7 +60,6 @@
       <button
         mat-flat-button
         disableRipple
-        color="primary"
         (click)="handleFilterEntriesByDate()">
         <mat-icon>filter_list</mat-icon>
         Filter

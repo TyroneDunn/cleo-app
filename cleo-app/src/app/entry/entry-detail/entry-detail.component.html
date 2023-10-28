@@ -1,5 +1,4 @@
-<mat-toolbar
-  color="primary">
+<mat-toolbar>
   <mat-toolbar-row>
     <button
       *ngIf="(mode$.value === 'normal')"
@@ -23,8 +22,8 @@
       mat-flat-button
       disableRipple
       (click)="enterEditMode()"
-      *ngIf="(mode$.value === 'normal')"
-      color="primary">
+      *ngIf="(mode$.value === 'normal')">
+      <mat-icon>edit</mat-icon>
       Edit
     </button>
 
@@ -32,8 +31,8 @@
       *ngIf="(mode$.value === 'edit')"
       mat-flat-button
       disableRipple
-      (click)="doneEditing()"
-      color="primary">
+      (click)="doneEditing()">
+      <mat-icon>done</mat-icon>
       Save
     </button>
 
@@ -41,8 +40,8 @@
       mat-flat-button
       disableRipple
       (click)="deleteEntry()"
-      [disabled]="(mode$.value === 'edit')"
-      color="primary">
+      [disabled]="(mode$.value === 'edit')">
+      <mat-icon>delete</mat-icon>
       Delete
     </button>
   </mat-toolbar-row>
