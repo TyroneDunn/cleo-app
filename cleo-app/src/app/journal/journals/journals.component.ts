@@ -10,7 +10,6 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
 import {UserService} from "../../user/user.service";
-import {HOME} from "../../app-routing.constants";
 import {MatDialog} from "@angular/material/dialog";
 import {NewJournalComponent} from "../new-journal/new-journal.component";
 import {EditJournalComponent} from "../edit-journal/edit-journal.component";
@@ -24,6 +23,7 @@ import {MatTableModule} from "@angular/material/table";
 import {MatSortModule, Sort} from "@angular/material/sort";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import {APP_HOME} from "../../../environments/constants";
 
 @Component({
   selector: 'app-journals',
@@ -116,7 +116,7 @@ export class JournalsComponent {
   }
 
   public async navigateHome(): Promise<void> {
-    await this.router.navigate([HOME]);
+    await this.router.navigate([APP_HOME]);
   }
 
   public async navigateToJournal(journal: Journal): Promise<void> {
@@ -251,7 +251,7 @@ export class JournalsComponent {
   public handleLogout(): void {
     this.userService.logout$().subscribe(async (success) => {
       if (!success) return;
-      await this.router.navigate([HOME]);
+      await this.router.navigate([APP_HOME]);
     });
   }
 

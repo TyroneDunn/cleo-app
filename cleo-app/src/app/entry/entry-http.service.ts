@@ -2,8 +2,8 @@ import {inject, Injectable} from '@angular/core';
 import {catchError, map, Observable, of} from "rxjs";
 import {Entry} from "./entry.type";
 import {HttpService} from "../http/http.service";
-import {CLEO_API_JOURNAL_ENTRIES_URL} from "./journal-entry.constants";
 import {CreateEntryDTO, GetEntriesDTO, GetEntriesResponseDTO} from './entry-dtos';
+import {API_ENTRIES_URL} from "../../environments/constants";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class EntryHttpService {
   }
 
   private mapToGetEntriesURL(dto: GetEntriesDTO): string {
-    const url = new URL(CLEO_API_JOURNAL_ENTRIES_URL);
+    const url = new URL(API_ENTRIES_URL);
     url.searchParams.append('journal', dto.journal);
     if (dto.bodyRegex !== undefined)
       url.searchParams.append('bodyRegex', dto.bodyRegex);
@@ -41,7 +41,7 @@ export class EntryHttpService {
   }
 
   public journalEntry$(journalId: string, entryId: string): Observable<Entry | undefined> {
-    return this.http.getRequest$<Entry>(`${CLEO_API_JOURNAL_ENTRIES_URL}${entryId}`).pipe(
+    return this.http.getRequest$<Entry>(`${API_ENTRIES_URL}${entryId}`).pipe(
       map((response) => {
         return response.body as Entry;
       }),
@@ -53,7 +53,7 @@ export class EntryHttpService {
 
   public createJournalEntry$(dto: CreateEntryDTO): Observable<Entry | undefined> {
     const payload = {body: dto.body};
-    return this.http.postRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}${dto.journal}`, payload).pipe(
+    return this.http.postRequest$(`${API_ENTRIES_URL}${dto.journal}`, payload).pipe(
       map((response) => {
         return response.body as Entry;
       }),
@@ -64,7 +64,7 @@ export class EntryHttpService {
   }
 
   public deleteJournalEntry$(entryId: string): Observable<boolean> {
-    return this.http.deleteRequest$(`${CLEO_API_JOURNAL_ENTRIES_URL}${entryId}`)
+    return this.http.deleteRequest$(`${API_ENTRIES_URL}${entryId}`)
       .pipe(
         map((response) => {
           return response.ok;
@@ -77,7 +77,7 @@ export class EntryHttpService {
 
   public patchJournalEntry$(journalId: string, entryId: string, body: string): Observable<boolean> {
     const payload = {body: body};
-    return this.http.patchRequest$<object>(`${CLEO_API_JOURNAL_ENTRIES_URL}${entryId}`, payload).pipe(
+    return this.http.patchRequest$<object>(`${API_ENTRIES_URL}${entryId}`, payload).pipe(
       map((response) => {
         return response.ok;
       }),

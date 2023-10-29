@@ -10,8 +10,8 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators}
   from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {UserService} from "../user/user.service";
-import {JOURNALS, SIGN_IN} from "../app-routing.constants";
 import {MatToolbarModule} from "@angular/material/toolbar";
+import {APP_JOURNALS, APP_SIGN_IN} from "../../environments/constants";
 
 @Component({
   selector: 'app-sign-up',
@@ -76,11 +76,11 @@ export class SignUpComponent {
   private login(username: string, password: string) {
     this.userService.signIn$(username, password).subscribe(async (okStatus) => {
       if (!okStatus) {
-        await this.router.navigate([SIGN_IN]);
+        await this.router.navigate([APP_SIGN_IN]);
         return;
       }
 
-      await this.router.navigate([JOURNALS]);
+      await this.router.navigate([APP_JOURNALS]);
     });
   }
 

@@ -1,8 +1,8 @@
 import {Component, inject} from '@angular/core';
 import {UserService} from "./user/user.service";
 import {BehaviorSubject, delay, timeout} from "rxjs";
-import {HOME} from "./app-routing.constants";
 import {Router} from "@angular/router";
+import {APP_HOME} from "../environments/constants";
 
 type state = 'loading' | 'completed';
 
@@ -25,7 +25,7 @@ export class AppComponent {
       .subscribe(async (okStatus) => {
         this.state.next('completed');
         if (!okStatus)
-          await this.router.navigate([HOME]);
+          await this.router.navigate([APP_HOME]);
       });
   }
 

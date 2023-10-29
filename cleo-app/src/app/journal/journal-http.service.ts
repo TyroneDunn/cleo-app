@@ -2,7 +2,6 @@ import {inject, Injectable} from '@angular/core';
 import {HttpService} from "../http/http.service";
 import {map, Observable} from "rxjs";
 import {Journal} from "./journal.type";
-import {CLEO_API_JOURNALS_URL} from "./journal.constants";
 import {
   CreateJournalDTO,
   GetJournalsDTO,
@@ -11,6 +10,7 @@ import {
 } from "./journal-dtos";
 import {JournalService} from "./journal.service";
 import {UserService} from "../user/user.service";
+import {API_JOURNALS_URL} from "../../environments/constants";
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class JournalHttpService implements JournalService {
   };
 
   public getJournal$ = (id: string): Observable<Journal | null> =>
-    this.http.getRequest$<Journal | null>(`${CLEO_API_JOURNALS_URL}/${id}`).pipe(
+    this.http.getRequest$<Journal | null>(`${API_JOURNALS_URL}/${id}`).pipe(
       map((response) => {
         return response.body as Journal;
       })
@@ -40,7 +40,7 @@ export class JournalHttpService implements JournalService {
       ... dto.name && {name: dto.name}
     };
 
-    return this.http.postRequest$(CLEO_API_JOURNALS_URL, payload).pipe(
+    return this.http.postRequest$(API_JOURNALS_URL, payload).pipe(
       map((response) => {
         return response.body as Journal;
       })
@@ -48,7 +48,7 @@ export class JournalHttpService implements JournalService {
   };
 
   public deleteJournal$ = (id: string): Observable<Journal> =>
-    this.http.deleteRequest$(`${CLEO_API_JOURNALS_URL}/${id}`).pipe(
+    this.http.deleteRequest$(`${API_JOURNALS_URL}/${id}`).pipe(
       map((response) => {
         return response.body as Journal;
       })
@@ -59,7 +59,7 @@ export class JournalHttpService implements JournalService {
       ... dto.name && {name: dto.name}
     };
 
-    return this.http.patchRequest$<object>(`${CLEO_API_JOURNALS_URL}${dto.id}`, payload).pipe(
+    return this.http.patchRequest$<object>(`${API_JOURNALS_URL}${dto.id}`, payload).pipe(
       map((response) => {
         return response.body as Journal;
       })
@@ -67,7 +67,7 @@ export class JournalHttpService implements JournalService {
   };
 
   private mapToGetJournalsURL = (dto: GetJournalsDTO): string => {
-    const url = new URL(CLEO_API_JOURNALS_URL);
+    const url = new URL(API_JOURNALS_URL);
     url.searchParams.append('author', this.userService.user.username);
     if (dto.name)
       url.searchParams.append('name', dto.name);

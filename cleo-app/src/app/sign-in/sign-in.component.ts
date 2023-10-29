@@ -9,8 +9,8 @@ import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {BehaviorSubject} from "rxjs";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {UserService} from "../user/user.service";
-import {JOURNALS} from "../app-routing.constants";
 import {MatToolbarModule} from "@angular/material/toolbar";
+import {APP_JOURNALS} from "../../environments/constants";
 
 @Component({
   selector: 'app-sign-in',
@@ -66,7 +66,7 @@ export class SignInComponent {
         this.error.next('Incorrect username or password.');
         return;
       }
-      await this.router.navigate([JOURNALS]);
+      await this.router.navigate([APP_JOURNALS]);
     });
   }
 

@@ -1,13 +1,13 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpService} from "../http/http.service";
 import {catchError, map, Observable, of} from "rxjs";
-import {
-  CLEO_API_LOGIN_URL,
-  CLEO_API_LOGOUT_URL,
-  CLEO_API_PROTECTED_URL,
-  CLEO_API_REGISTER_URL
-} from "./user.constants";
 import {User} from "./user.type";
+import {
+  API_LOGIN_URL,
+  API_LOGOUT_URL,
+  API_PROTECTED_URL,
+  API_REGISTER_URL
+} from "../../environments/constants";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class UserService {
   private readonly http = inject(HttpService);
   public user: User = {username: ""};
   public readonly authorized$: Observable<boolean> =
-    this.http.getRequest$<object>(CLEO_API_PROTECTED_URL).pipe(
+    this.http.getRequest$<object>(API_PROTECTED_URL).pipe(
       map((response) => {
           this.user = (response.body as User);
         return response.ok;
@@ -32,7 +32,7 @@ export class UserService {
       password: password,
     };
 
-    return this.http.postRequest$(CLEO_API_REGISTER_URL, payload).pipe(
+    return this.http.postRequest$(API_REGISTER_URL, payload).pipe(
       map((response) => {
         return response.ok;
       }),
@@ -48,7 +48,7 @@ export class UserService {
       password: password,
     };
 
-    return this.http.postRequest$(CLEO_API_LOGIN_URL, payload).pipe(
+    return this.http.postRequest$(API_LOGIN_URL, payload).pipe(
       map((response) => {
         this.user = (response.body as User);
         return response.ok;
@@ -60,7 +60,7 @@ export class UserService {
   }
 
   public logout$(): Observable<boolean> {
-    return this.http.postRequest$(CLEO_API_LOGOUT_URL, {}).pipe(
+    return this.http.postRequest$(API_LOGOUT_URL, {}).pipe(
       map((response) => {
         this.user = {username: ''};
         return response.ok;
