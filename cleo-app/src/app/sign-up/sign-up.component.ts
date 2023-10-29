@@ -9,7 +9,7 @@ import {BehaviorSubject} from "rxjs";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators}
   from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
-import {UserService} from "../user/user.service";
+import {SignUpResponse, AuthError, UserService} from "../user/user.service";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {APP_JOURNALS, APP_SIGN_IN} from "../../environments/constants";
 
@@ -63,13 +63,12 @@ export class SignUpComponent {
   }
 
   private signUp(username: string, password: string) {
-    this.userService.signUp$(username, password).subscribe(async (okStatus) => {
-      if (!okStatus) {
-        this.error.next('Username already exists.');
-        return;
-      }
-
-      this.login(username, password);
+    this.userService.signUp$(username, password).subscribe(async (response: SignUpResponse) => {
+      if (!response.success)
+        if (response.error)
+          this.error.next((response.error.error as AuthError).error || '');
+      else
+        this.login(username, password);
     });
   }
 

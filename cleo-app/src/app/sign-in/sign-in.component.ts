@@ -8,7 +8,7 @@ import {MatInputModule} from "@angular/material/input";
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {BehaviorSubject} from "rxjs";
 import {MatFormFieldModule} from "@angular/material/form-field";
-import {UserService} from "../user/user.service";
+import {UserService, AuthError, SignInResponse} from "../user/user.service";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {APP_JOURNALS} from "../../environments/constants";
 
@@ -61,9 +61,9 @@ export class SignInComponent {
   }
 
   private signIn(username: string, password: string): void {
-    this.userService.signIn$(username, password).subscribe(async (success) => {
-      if (!success) {
-        this.error.next('Incorrect username or password.');
+    this.userService.signIn$(username, password).subscribe(async (response: SignInResponse) => {
+      if (!response.success) {
+        this.error.next((response.error as AuthError).error || '');
         return;
       }
       await this.router.navigate([APP_JOURNALS]);

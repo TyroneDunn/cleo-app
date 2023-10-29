@@ -9,6 +9,19 @@ import {
   API_REGISTER_URL
 } from "../../environments/constants";
 
+export type AuthError = {error?: string};
+
+export type SignUpResponse = {
+  success: boolean,
+  error?: AuthError,
+};
+
+export type SignInResponse = {
+  success: boolean,
+  user?: User,
+  error?: AuthError,
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,7 +39,7 @@ export class UserService {
       }),
     );
 
-  public signUp$(username: string, password: string): Observable<boolean> {
+  public signUp$(username: string, password: string): Observable<SignUpResponse> {
     const payload = {
       username: username,
       password: password,
@@ -34,15 +47,21 @@ export class UserService {
 
     return this.http.postRequest$(API_REGISTER_URL, payload).pipe(
       map((response) => {
-        return response.ok;
+        return {
+          success: response.ok,
+          response: response.body || undefined
+        };
       }),
-      catchError((): Observable<boolean> => {
-        return of(false);
+      catchError((err): Observable<SignUpResponse> => {
+        return of({
+          success: false,
+          error: err
+        });
       }),
     );
   }
 
-  public signIn$(username: string, password: string): Observable<boolean> {
+  public signIn$(username: string, password: string): Observable<SignInResponse> {
     const payload = {
       username: username,
       password: password,
@@ -50,12 +69,17 @@ export class UserService {
 
     return this.http.postRequest$(API_LOGIN_URL, payload).pipe(
       map((response) => {
-        this.user = (response.body as User);
-        return response.ok;
+        return {
+          success: response.ok,
+          user: response.body as User  || undefined
+        };
       }),
-      catchError(() => {
-        return of(false);
-      }),
+      catchError((err): Observable<SignInResponse> => {
+        return of({
+          success: false,
+          error: err
+        });
+      })
     );
   }
 
