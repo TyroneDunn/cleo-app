@@ -105,11 +105,11 @@
          (matSortChange)="handleSortEntries($event)"
          matSortDisableClear
          [dataSource]="entries$">
-    <ng-container matColumnDef="body">
-      <th mat-header-cell mat-sort-header *matHeaderCellDef>Body</th>
+    <ng-container matColumnDef="title">
+      <th mat-header-cell mat-sort-header *matHeaderCellDef>Title</th>
       <td mat-cell
           *matCellDef="let element">{{element.title? (convertToPlainText(element.title) |
-        slice:0:64): (convertToPlainText(element.body) | slice:0:64)}}</td>
+        slice:0:64): 'Untitled'}}</td>
     </ng-container>
 
     <ng-container matColumnDef="lastUpdated">

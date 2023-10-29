@@ -68,7 +68,7 @@ export class JournalDetailComponent {
   public searchForm: FormGroup = this.formBuilder.nonNullable.group({
     searchValue: ''
   });
-  public displayedColumns: string[] = ['body', 'lastUpdated', 'actions'];
+  public displayedColumns: string[] = ['title', 'lastUpdated', 'actions'];
   public page!: BehaviorSubject<number>;
   public limit!: BehaviorSubject<number>;
   public filterIsActive: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
