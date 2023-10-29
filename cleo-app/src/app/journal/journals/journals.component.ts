@@ -68,6 +68,7 @@ export class JournalsComponent {
   public displayedColumns: string[] = ['name', 'dateCreated', 'lastUpdated', 'actions'];
   public page!: BehaviorSubject<number>;
   public limit!: BehaviorSubject<number>;
+  public filterIsActive: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
 
   public ngOnInit(): void {
@@ -85,6 +86,10 @@ export class JournalsComponent {
         this.fetchJournals(queryParams as GetJournalsDTO);
         this.page = new BehaviorSubject<number>((queryParams as GetJournalsDTO).page || 0);
         this.limit = new BehaviorSubject<number>((queryParams as GetJournalsDTO).limit || 10);
+        if ((queryParams as GetJournalsDTO).startDate || (queryParams as GetJournalsDTO).endDate)
+          this.filterIsActive.next(true);
+        else
+          this.filterIsActive.next(false);
       }
     });
 
@@ -119,7 +124,14 @@ export class JournalsComponent {
   }
 
   public handleFilterJournalsByDate(): void {
-    const dialogRef = this.dialog.open(DateFilterComponent);
+    const params = this.route.snapshot.queryParams as GetJournalsDTO;
+    const config = {
+      data: {
+        startDate: params.startDate || undefined,
+        endDate: params.endDate || undefined,
+      }
+    };
+    const dialogRef = this.dialog.open(DateFilterComponent, config);
     dialogRef.afterClosed().subscribe((dateFilter) => {
       if (dateFilter.dateRange.startDate || dateFilter.dateRange.endDate)
         this.router.navigate(

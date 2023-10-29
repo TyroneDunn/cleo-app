@@ -25,6 +25,7 @@ import {MatSortModule, Sort} from "@angular/material/sort";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {convert} from "html-to-text";
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import {GetJournalsDTO} from "../journal-dtos";
 
 @Component({
   selector: 'app-journal-detail',
@@ -70,6 +71,7 @@ export class JournalDetailComponent {
   public displayedColumns: string[] = ['body', 'lastUpdated', 'actions'];
   public page!: BehaviorSubject<number>;
   public limit!: BehaviorSubject<number>;
+  public filterIsActive: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   public ngOnInit() {
     this.route.params.subscribe((params) => {
@@ -89,8 +91,13 @@ export class JournalDetailComponent {
           this.fetchEntries(this.journalID$.value, queryParams as GetEntriesDTO);
           this.page = new BehaviorSubject<number>((queryParams as GetEntriesDTO).page || 0);
           this.limit = new BehaviorSubject<number>((queryParams as GetEntriesDTO).limit || 10);
+          if ((queryParams as GetEntriesDTO).startDate || (queryParams as GetEntriesDTO).endDate)
+            this.filterIsActive.next(true);
+          else
+            this.filterIsActive.next(false);
         }
       });
+
     });
 
     this.searchForm.valueChanges
@@ -146,7 +153,14 @@ export class JournalDetailComponent {
   }
 
   public handleFilterEntriesByDate(): void {
-    const dialogRef = this.dialog.open(DateFilterComponent);
+    const params = this.route.snapshot.queryParams as GetJournalsDTO;
+    const config = {
+      data: {
+        startDate: params.startDate || undefined,
+        endDate: params.endDate || undefined,
+      }
+    };
+    const dialogRef = this.dialog.open(DateFilterComponent, config);
     dialogRef.afterClosed().subscribe((dateFilter) => {
       if (dateFilter.dateRange.startDate || dateFilter.dateRange.endDate)
         this.router.navigate(

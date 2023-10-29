@@ -54,7 +54,8 @@
     <button
       mat-flat-button
       disableRipple
-      (click)="handleFilterJournalsByDate()">
+      (click)="handleFilterJournalsByDate()"
+      [color]="(filterIsActive | async)?'accent': null">
       <mat-icon>filter_list</mat-icon>
       Filter
     </button>

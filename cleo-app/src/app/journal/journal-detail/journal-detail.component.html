@@ -60,7 +60,8 @@
       <button
         mat-flat-button
         disableRipple
-        (click)="handleFilterEntriesByDate()">
+        (click)="handleFilterEntriesByDate()"
+        [color]="(filterIsActive | async)?'accent': null">
         <mat-icon>filter_list</mat-icon>
         Filter
       </button>
