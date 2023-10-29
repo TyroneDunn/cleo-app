@@ -61,14 +61,14 @@ export class EntryDetailComponent {
       .subscribe((journalEntry) => {
         if (!journalEntry) return;
         this.journalEntry$.next(journalEntry);
-        if (journalEntry.body === '') this.enterEditMode();
       })
   }
 
-  private updateEntry(body: string) {
+  private updateEntry(body: string, title: string) {
     if (this.journalEntry$.value) {
       let entry = this.journalEntry$.value;
       entry.body = body;
+      entry.title = title;
       this.journalEntry$.next(entry);
     }
   }
@@ -94,11 +94,11 @@ export class EntryDetailComponent {
       return;
 
     const body = this.journalEntry$.value?.body as string;
-
-    this.entryService.patchJournalEntry$(this.journalId$.value, this.entryId$.value, body)
+    const title = this.journalEntry$.value?.title as string;
+    this.entryService.patchJournalEntry$(this.journalId$.value, this.entryId$.value, body, title)
       .subscribe((success) => {
         if (!success) return;
-        this.updateEntry(body);
+        this.updateEntry(body, title);
         this.notify('Entry updated.')
         this.enterNormalMode();
       });

@@ -41,14 +41,15 @@ export class NewEntryComponent {
       this.journalID$.next(params.get('id') as string);
       this.createEntryDTO$ = new BehaviorSubject<CreateEntryDTO>({
         journal: this.journalID$.value,
-        body: "",
+        title: '',
+        body: '',
       });
     })
   }
 
   public async doneEditing() {
     if (this.createEntryDTO$.value)
-      if (this.createEntryDTO$.value.body)
+      if (this.createEntryDTO$.value.title || this.createEntryDTO$.value.body)
         this.entryService.createJournalEntry$(this.createEntryDTO$.value)
           .subscribe(async (journalEntry) => {
             if (journalEntry)

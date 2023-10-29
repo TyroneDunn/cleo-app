@@ -19,6 +19,7 @@ export type GetEntriesResponseDTO = {
 };
 
 export type CreateEntryDTO = {
+  title: string,
   journal: string,
   body: string,
 };

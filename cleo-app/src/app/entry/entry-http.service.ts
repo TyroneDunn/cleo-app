@@ -52,7 +52,10 @@ export class EntryHttpService {
   }
 
   public createJournalEntry$(dto: CreateEntryDTO): Observable<Entry | undefined> {
-    const payload = {body: dto.body};
+    const payload = {
+      title: dto.title,
+      body: dto.body
+    };
     return this.http.postRequest$(`${API_ENTRIES_URL}${dto.journal}`, payload).pipe(
       map((response) => {
         return response.body as Entry;
@@ -75,8 +78,11 @@ export class EntryHttpService {
       );
   }
 
-  public patchJournalEntry$(journalId: string, entryId: string, body: string): Observable<boolean> {
-    const payload = {body: body};
+  public patchJournalEntry$(journalId: string, entryId: string, body: string, title: string): Observable<boolean> {
+    const payload = {
+      title: title,
+      body: body
+    };
     return this.http.patchRequest$<object>(`${API_ENTRIES_URL}${entryId}`, payload).pipe(
       map((response) => {
         return response.ok;

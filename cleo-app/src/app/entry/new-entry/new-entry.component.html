@@ -13,8 +13,18 @@
 <mat-card
   class="mat-mdc-card-outlined">
   <quill-editor
+    placeholder="Title"
+    [modules]="{toolbar: false}"
+    [required]="true"
+    [(ngModel)]="createEntryDTO$.value.title"
+    (onEditorCreated)="$event.focus()"
+  ></quill-editor>
+</mat-card>
+
+<mat-card
+  class="mat-mdc-card-outlined">
+  <quill-editor
     [modules]="{toolbar: false}"
     [(ngModel)]="createEntryDTO$.value.body"
-    (onEditorCreated)="$event.focus()"
   ></quill-editor>
 </mat-card>

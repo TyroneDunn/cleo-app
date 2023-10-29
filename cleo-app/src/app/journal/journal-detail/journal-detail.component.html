@@ -108,7 +108,8 @@
     <ng-container matColumnDef="body">
       <th mat-header-cell mat-sort-header *matHeaderCellDef>Body</th>
       <td mat-cell
-          *matCellDef="let element">{{convertToPlainText(element.body) | slice:0:64}}...</td>
+          *matCellDef="let element">{{element.title? (convertToPlainText(element.title) |
+        slice:0:64): (convertToPlainText(element.body) | slice:0:64)}}</td>
     </ng-container>
 
     <ng-container matColumnDef="lastUpdated">

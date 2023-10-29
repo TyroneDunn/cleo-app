@@ -48,6 +48,18 @@
 </mat-toolbar>
 
 <mat-card
+  *ngIf="(journalEntry$.value)">
+  <quill-editor
+    placeholder="Title"
+    [modules]="{toolbar: false}"
+    [required]="true"
+    [(ngModel)]="journalEntry$.value.title"
+    [readOnly]="(mode$.value === 'normal')"
+    (onEditorCreated)="$event.focus()"
+  ></quill-editor>
+</mat-card>
+
+<mat-card
   class="mat-mdc-card-outlined"
   *ngIf="(journalEntry$.value)">
     <quill-editor
@@ -55,6 +67,5 @@
       [required]="true"
       [(ngModel)]="journalEntry$.value.body"
       [readOnly]="(mode$.value === 'normal')"
-      (onEditorCreated)="$event.focus()"
     ></quill-editor>
 </mat-card>
