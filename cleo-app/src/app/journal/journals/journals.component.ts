@@ -91,6 +91,8 @@ export class JournalsComponent {
         else
           this.filterIsActive.next(false);
       }
+      if ((queryParams as GetJournalsDTO).nameRegex)
+        this.searchForm.patchValue({searchValue: (queryParams as GetJournalsDTO).nameRegex as string})
     });
 
     this.searchForm.valueChanges
