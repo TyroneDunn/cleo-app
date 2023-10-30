@@ -95,6 +95,12 @@ export class EntryDetailComponent {
 
     const body = this.journalEntry$.value?.body as string;
     const title = this.journalEntry$.value?.title as string;
+
+    if (!title) {
+      this.notify('Please enter a title.');
+      return;
+    }
+
     this.entryService.patchJournalEntry$(this.journalId$.value, this.entryId$.value, body, title)
       .subscribe((success) => {
         if (!success) return;

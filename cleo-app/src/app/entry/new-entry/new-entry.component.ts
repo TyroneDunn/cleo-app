@@ -48,14 +48,20 @@ export class NewEntryComponent {
   }
 
   public async doneEditing() {
-    if (this.createEntryDTO$.value)
-      if (this.createEntryDTO$.value.title || this.createEntryDTO$.value.body)
+    if (this.createEntryDTO$.value) {
+      if (this.createEntryDTO$.value.title) {
         this.entryService.createJournalEntry$(this.createEntryDTO$.value)
           .subscribe(async (journalEntry) => {
-            if (journalEntry)
-              this.notify('Entry created.')
+            if (journalEntry) {
+              this.notify('Entry created.');
+            }
           })
-
+      }
+      else if (this.createEntryDTO$.value.body){
+        this.notify('Please enter a title.');
+        return;
+      }
+    }
     await this.router.navigate([`journals/${this.journalID$.value}`]);
   }
 
