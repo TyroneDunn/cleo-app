@@ -23,6 +23,8 @@ export class EntryHttpService {
   private mapToGetEntriesURL(dto: GetEntriesDTO): string {
     const url = new URL(API_ENTRIES_URL);
     url.searchParams.append('journal', dto.journal);
+    if (dto.titleRegex !== undefined)
+      url.searchParams.append('titleRegex', dto.titleRegex);
     if (dto.bodyRegex !== undefined)
       url.searchParams.append('bodyRegex', dto.bodyRegex);
     if (dto.startDate)

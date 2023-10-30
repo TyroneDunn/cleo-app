@@ -2,6 +2,7 @@ import {Entry} from "./entry.type";
 
 export type GetEntriesDTO = {
   journal: string,
+  titleRegex?: string,
   bodyRegex?: string,
   startDate?: string,
   endDate?: string,
