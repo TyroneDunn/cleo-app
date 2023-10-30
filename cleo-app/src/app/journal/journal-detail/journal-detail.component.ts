@@ -17,7 +17,7 @@ import {EditJournalComponent} from "../edit-journal/edit-journal.component";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteJournalComponent} from "../delete-journal/delete-journal.component";
 import {DeleteEntryComponent} from "../../entry/delete-entry/delete-entry.component";
-import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DateFilterComponent} from "../../date-filter/date-filter.component";
 import {GetEntriesDTO} from 'src/app/entry/entry-dtos';
 import {MatTableModule} from "@angular/material/table";
@@ -45,6 +45,7 @@ import {GetJournalsDTO} from "../journal-dtos";
     MatSortModule,
     MatPaginatorModule,
     MatSnackBarModule,
+    FormsModule,
   ],
   templateUrl: './journal-detail.component.html',
   styleUrls: ['./journal-detail.component.scss']
@@ -95,9 +96,11 @@ export class JournalDetailComponent {
             this.filterIsActive.next(true);
           else
             this.filterIsActive.next(false);
+          if ((queryParams as GetEntriesDTO).titleRegex) {
+            this.searchForm.patchValue({searchValue: (queryParams as GetEntriesDTO).titleRegex as string})
+          }
         }
       });
-
     });
 
     this.searchForm.valueChanges
@@ -194,7 +197,10 @@ export class JournalDetailComponent {
       [],
       {
         relativeTo: this.route,
-        queryParams: {'bodyRegex': this.searchForm.value.searchValue},
+        queryParams: {
+          'titleRegex': this.searchForm.value.searchValue,
+          'bodyRegex': this.searchForm.value.searchValue,
+        },
         queryParamsHandling: "merge",
       },
     );
