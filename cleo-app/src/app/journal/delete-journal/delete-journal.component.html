@@ -5,11 +5,11 @@
       <h1>'{{data.journal.name}}'</h1>
     </mat-card-title>
   </mat-card-header>
-
+  <p>Are you sure you want delete this journal and its entries?</p>
   <mat-card-actions>
     <button
       (click)="back()"
-      mat-dialog-close
+      mat-dialog-close="true"
       mat-button
       disableRipple
     >
@@ -17,7 +17,7 @@
     </button>
     <button
       (click)="delete()"
-      mat-dialog-close
+      mat-dialog-close="true"
       disableRipple
       mat-button
       type="submit"

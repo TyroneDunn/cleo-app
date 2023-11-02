@@ -22,7 +22,7 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 })
 export class AboutComponent {
   private location = inject(Location);
-  navigateBack() {
+  public navigateBack(): void {
     this.location.back();
   }
 }

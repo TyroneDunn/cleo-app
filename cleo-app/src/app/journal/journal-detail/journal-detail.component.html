@@ -1,81 +1,98 @@
 <div *ngIf="(journal$.value)">
-  <mat-toolbar
-    color="primary"
-  >
+  <mat-toolbar>
     <mat-toolbar-row>
-      <button
-        mat-icon-button
-        disableRipple
-        (click)="navigateBack()"
-      >
-        <mat-icon>
-          keyboard_arrow_left
-        </mat-icon>
-      </button>
+      <div>
+        <button
+          mat-icon-button
+          disableRipple
+          (click)="navigateBack()">
+          <mat-icon>
+            keyboard_arrow_left
+          </mat-icon>
+        </button>
+      </div>
 
-      <button
-        *ngIf="(journal$.value)"
-        mat-icon-button
-        disableRipple
-        [matMenuTriggerFor]="menu"
-      >
-        <mat-icon>more_vert</mat-icon>
-      </button>
+      <span class="flex-expand"></span>
+
+      <div>
+        <button
+          class="menu-button"
+          *ngIf="(journal$.value)"
+          mat-icon-button
+          disableRipple
+          [matMenuTriggerFor]="menu">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+
       <mat-menu #menu="matMenu">
         <button
           mat-menu-item
           disableRipple
-          (click)="editJournal()"
-        >
-          Edit
+          (click)="handleRenameJournal()">
+          Rename...
         </button>
+
         <button
           mat-menu-item
           disableRipple
-          (click)="deleteJournal()"
-        >
-          Delete
+          (click)="handleDeleteJournal()">
+          Delete...
         </button>
       </mat-menu>
     </mat-toolbar-row>
+
     <mat-toolbar-row>
       <h2>
         {{journal$.value.name}}
       </h2>
     </mat-toolbar-row>
-    <mat-toolbar-row>
-      <p class="mat-subtitle-2">{{journal$.value.dateOfCreation | date}} -
-        {{journal$.value.lastUpdated | date}}</p>
-    </mat-toolbar-row>
+
     <mat-toolbar-row>
       <button
         mat-flat-button
         disableRipple
-        (click)="newEntry()"
-        color="primary"
-      >
+        (click)="handleCreateEntry()">
+        <mat-icon>add</mat-icon>
         New Entry
       </button>
 
       <button
         mat-flat-button
         disableRipple
-        [matMenuTriggerFor]="sortMenu"
-        color="primary"
-      >
-        <mat-icon>sort</mat-icon>
-        Sort By
+        (click)="handleFilterEntriesByDate()"
+        [color]="(filterIsActive | async)?'accent': null">
+        <mat-icon>filter_list</mat-icon>
+        Filter
       </button>
-      <mat-menu #sortMenu="matMenu">
-        <button
-          mat-menu-item
-          disableRipple
-        >Last Updated</button>
-        <button
-          mat-menu-item
-          disableRipple
-        >Created</button>
-      </mat-menu>
+    </mat-toolbar-row>
+
+    <mat-toolbar-row>
+      <form [formGroup]="searchForm" (ngSubmit)="handleOnSearchSubmit()">
+        <mat-form-field>
+          <button
+            matIconPrefix
+            mat-icon-button
+            aria-label="Search"
+            (click)="handleOnSearchSubmit()">
+            <mat-icon>search</mat-icon>
+          </button>
+
+          <input
+            matInput
+            type="text"
+            placeholder="Search..."
+            formControlName="searchValue">
+          <button
+            *ngIf="searchForm.value.searchValue"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="searchForm.patchValue({searchValue: ''}); handleOnSearchSubmit();">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </form>
     </mat-toolbar-row>
   </mat-toolbar>
 
@@ -84,13 +101,64 @@
     mode="indeterminate"
   ></mat-progress-bar>
 
-  <div
-    *ngFor="let entry of journalEntries$ | async"
-  >
-    <app-journal-entry-card
-      (onDeleteJournalEntry)="deleteJournalEntry($event)"
-      [journalId]="journal$.value._id"
-      [journalEntry]="entry"
-    ></app-journal-entry-card>
-  </div>
+  <table mat-table matSort
+         (matSortChange)="handleSortEntries($event)"
+         matSortDisableClear
+         [dataSource]="entries$">
+    <ng-container matColumnDef="title">
+      <th mat-header-cell mat-sort-header *matHeaderCellDef>Title</th>
+      <td mat-cell
+          *matCellDef="let element">{{element.title? (convertToPlainText(element.title) |
+        slice:0:64): 'Untitled'}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastUpdated">
+      <th mat-header-cell mat-sort-header *matHeaderCellDef>Last Updated</th>
+      <td mat-cell *matCellDef="let element">{{element.lastUpdated | date}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button
+          mat-icon-button
+          disableRipple
+          [matMenuTriggerFor]="entriesMenu"
+          (click)="$event.stopPropagation()">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #entriesMenu="matMenu">
+          <button
+            disableRipple
+            mat-menu-item
+            (click)="navigateToEntry(element)">
+            Edit
+          </button>
+          <button
+            disableRipple
+            mat-menu-item
+            (click)="handleDeleteEntry(element)">
+            Delete...
+          </button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      class="clickable"
+      mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      (click)="navigateToEntry(row)">
+    </tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[10, 25, 50]"
+    [pageSize]="(limit | async)"
+    [length]="(count | async)"
+    [pageIndex]="(page | async)"
+    (page)="handlePageEvent($event)">
+  </mat-paginator>
 </div>

@@ -1,0 +1,23 @@
+<mat-card class="hero-card">
+  <mat-card-header>
+    <mat-card-title>
+      <h1>Select Date Range</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <br>
+    <form [formGroup]="form">
+      <mat-form-field appearance="fill">
+        <mat-date-range-input [rangePicker]="picker" formGroupName="dateRange">
+          <input matStartDate placeholder="Start date" formControlName="startDate">
+          <input matEndDate placeholder="End date" formControlName="endDate">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+    </form>
+    <button mat-button (click)="onReset()">Reset</button>
+    <button mat-button (click)="onSubmit()">Filter</button>
+  </mat-card-content>
+</mat-card>
