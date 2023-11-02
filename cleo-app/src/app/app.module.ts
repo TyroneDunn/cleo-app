@@ -4,13 +4,9 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from "@angular/common/http";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {ReactiveFormsModule} from "@angular/forms";
 import {SplashComponent} from "./splash/splash.component";
 import {MatDialogModule} from "@angular/material/dialog";
 import {QuillModule} from "ngx-quill";
-import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MatNativeDateModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -24,10 +20,6 @@ import {MatNativeDateModule} from "@angular/material/core";
       SplashComponent,
       MatDialogModule,
       QuillModule,
-      MatFormFieldModule,
-      ReactiveFormsModule,
-      MatDatepickerModule,
-      MatNativeDateModule,
     ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,6 @@
 <mat-toolbar
-  color="primary">
+  color="primary"
+>
   <a
     id="return-button"
     class="navigation-button mat-elevation-z1"
@@ -10,8 +11,8 @@
     <mat-icon>keyboard_arrow_left</mat-icon>
   </a>
 </mat-toolbar>
-
 <div class="hero-page-container">
+
   <mat-card class="hero-card">
     <mat-card-header class="title-container">
       <h1 class="mat-headline-3">
@@ -26,36 +27,44 @@
       <br>
       <form
         (ngSubmit)="onSubmit()"
-        [formGroup]="signInForm">
+        [formGroup]="signInForm"
+      >
         <div class="form-container">
           <mat-form-field
             class="form-field"
-            appearance="outline">
+            appearance="outline"
+          >
             <mat-label>Username</mat-label>
             <input
               formControlName="username"
               name="username"
               type="text"
               matInput
-              required>
+              required
+            >
           </mat-form-field>
 
           <mat-form-field
             class="form-field"
-            appearance="outline">
+            appearance="outline"
+          >
             <mat-label>Password</mat-label>
             <input
               formControlName="password"
               name="password"
               type="password"
               matInput
-              required>
+              required
+            >
           </mat-form-field>
 
-          <div class="text-left">
+          <div
+            class="text-left"
+          >
             <mat-label
               *ngIf="(error.value)"
-              matError>
+              matError
+            >
               {{error.value}}
             </mat-label>
             <br>
@@ -67,7 +76,8 @@
               type="submit"
               mat-raised-button
               color="primary"
-              disableRipple>
+              disableRipple
+            >
               Sign In
             </button>
           </div>
@@ -88,7 +98,8 @@
     class="help-button"
     mat-icon-button
     color="primary"
-    disableRipple>
+    disableRipple
+  >
     <mat-icon>help</mat-icon>
   </a>
 </div>

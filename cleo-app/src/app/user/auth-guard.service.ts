@@ -1,6 +1,5 @@
 import {inject, Injectable} from '@angular/core';
 import {UserService} from "./user.service";
-import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +7,7 @@ import {Observable} from "rxjs";
 export class AuthGuard {
 private userService = inject(UserService);
 
-  public canActivate(): Observable<boolean> {
+  canActivate() {
     return this.userService.authorized$;
   }
 }

@@ -1,14 +1,20 @@
 <div
-  class="hero-page-container">
-  <mat-card class="hero-card">
-    <mat-card-header class="header-container">
-      <h1 class="mat-headline-1">
+  class="hero-page-container"
+>
+  <mat-card class="hero-card"
+  >
+    <mat-card-header class="header-container"
+    >
+      <h1 class="mat-headline-1"
+      >
         cleo.|
       </h1>
+
     </mat-card-header>
 
     <mat-card-content>
-      <h2 class="mat-headline-6">
+      <h2 class="mat-headline-6"
+      >
         A journal text editor.
       </h2>
       <br>
@@ -21,8 +27,9 @@
           mat-raised-button
           routerLink="/sign-up"
           color="primary"
-          disableRipple>
-          Sign Up
+          disableRipple
+        >
+          Get Started
         </a>
       </mat-card-actions>
 
@@ -33,20 +40,21 @@
         </p>
       </mat-card-content>
     </div>
-
     <mat-card-actions *ngIf="(authorized$ | async)">
       <a
         class="mat-button action-button"
         mat-raised-button
         routerLink="/journals"
         color="primary"
-        disableRipple>
-        Go to Journals
+        disableRipple
+      >
+        Return to Journals
       </a>
     </mat-card-actions>
   </mat-card>
 
-  <p class="mat-caption signature">
+  <p class="mat-caption signature"
+  >
     <a routerLink="/about">About</a> | <a routerLink="/terms-of-service">Terms of Service</a> |
     <a routerLink="/privacy-statement">Privacy</a>
   </p>

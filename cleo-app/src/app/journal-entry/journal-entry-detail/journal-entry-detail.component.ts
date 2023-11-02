@@ -6,21 +6,21 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatButtonModule} from "@angular/material/button";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
-import {Entry} from "../entry.type";
-import {EntryHttpService} from "../entry-http.service";
+import {JournalEntry} from "../journal-entry.type";
+import {JournalEntryService} from "../journal-entry.service";
+import {SubSink} from "../../../utils/sub-sink";
 import {MatInputModule} from "@angular/material/input";
-import {DeleteEntryComponent}
-  from "../delete-entry/delete-entry.component";
+import {DeleteJournalEntryComponent}
+  from "../delete-journal-entry/delete-journal-entry.component";
 import {MatDialog} from "@angular/material/dialog";
 import {MatCardModule} from "@angular/material/card";
 import {QuillEditorComponent} from "ngx-quill";
 import {FormsModule} from "@angular/forms";
-import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 
 type Mode = 'normal' | 'edit';
 
 @Component({
-  selector: 'app-entry-detail',
+  selector: 'app-journal-entry-detail',
   standalone: true,
   imports: [
     CommonModule,
@@ -33,42 +33,46 @@ type Mode = 'normal' | 'edit';
     MatCardModule,
     QuillEditorComponent,
     FormsModule,
-    MatSnackBarModule,
   ],
-  templateUrl: './entry-detail.component.html',
-  styleUrls: ['./entry-detail.component.scss']
+  templateUrl: './journal-entry-detail.component.html',
+  styleUrls: ['./journal-entry-detail.component.scss']
 })
-export class EntryDetailComponent {
+export class JournalEntryDetailComponent {
   private location = inject(Location);
-  private entryService = inject(EntryHttpService);
+  private journalEntryService = inject(JournalEntryService);
   private route = inject(ActivatedRoute);
   private dialog = inject(MatDialog);
-  private snackBar = inject(MatSnackBar);
+  private sink = new SubSink();
   public mode$ = new BehaviorSubject<Mode>("normal");
-  public journalEntry$ = new BehaviorSubject<Entry | undefined>(undefined);
+  public journalEntry$ = new BehaviorSubject<JournalEntry | undefined>(undefined);
   private journalId$ = new BehaviorSubject<string>('');
   private entryId$ = new BehaviorSubject<string>('');
 
   public ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      this.entryId$.next(params.get('id') as string);
-      this.fetchEntry();
-    })
-  }
-
-  private fetchEntry() {
-    this.entryService.journalEntry$(this.journalId$.value, this.entryId$.value)
-      .subscribe((journalEntry) => {
-        if (!journalEntry) return;
-        this.journalEntry$.next(journalEntry);
+    this.sink.collect(
+      this.route.paramMap.subscribe((params) => {
+        this.journalId$.next(params.get('journalId') as string);
+        this.entryId$.next(params.get('entryId') as string);
+        this.updateJournalEntry();
       })
+    )
   }
 
-  private updateEntry(body: string, title: string) {
+  private updateJournalEntry() {
+    this.sink.collect(
+      this.journalEntryService.journalEntry$(this.journalId$.value, this.entryId$.value)
+        .subscribe((journalEntry) => {
+          if (!journalEntry) return;
+          this.journalEntry$.next(journalEntry);
+          if (journalEntry.body === ' ') this.enterEditMode();
+        })
+    );
+  }
+
+  private updateEntry(body: string) {
     if (this.journalEntry$.value) {
       let entry = this.journalEntry$.value;
       entry.body = body;
-      entry.title = title;
       this.journalEntry$.next(entry);
     }
   }
@@ -94,50 +98,38 @@ export class EntryDetailComponent {
       return;
 
     const body = this.journalEntry$.value?.body as string;
-    const title = this.journalEntry$.value?.title as string;
 
-    if (!title) {
-      this.notify('Please enter a title.');
-      return;
-    }
-
-    this.entryService.patchJournalEntry$(this.journalId$.value, this.entryId$.value, body, title)
-      .subscribe((success) => {
-        if (!success) return;
-        this.updateEntry(body, title);
-        this.notify('Entry updated.')
-        this.enterNormalMode();
-      });
+    this.sink.collect(
+      this.journalEntryService.patchJournalEntry$(this.journalId$.value, this.entryId$.value, body)
+        .subscribe((success) => {
+          if (!success) return;
+          this.updateEntry(body);
+          this.enterNormalMode();
+        })
+    );
   }
 
   public deleteEntry() {
     const config = {
       data: {journalEntry: this.journalEntry$.value}
     }
-    const dialogRef = this.dialog.open(DeleteEntryComponent, config);
+    const dialogRef = this.dialog.open(DeleteJournalEntryComponent, config);
     dialogRef.afterClosed().subscribe((confirm) => {
       if (!confirm) return;
 
       if (this.journalEntry$.value) {
-        this.entryService.deleteJournalEntry$(this.journalEntry$.value._id)
-          .subscribe((success) => {
-            if (success) {
-              this.notify('Entry deleted.')
-              this.navigateBack();
-            }
-          });
+        this.sink.collect(
+          this.journalEntryService.deleteJournalEntry$(this.journalId$.value, this.journalEntry$.value._id)
+            .subscribe((success) => {
+              if (success) this.navigateBack();
+            })
+        );
       }
     });
   }
 
-  private notify(message: string): void {
-    this.snackBar.open(message, '×', {
-      duration: 3000,
-      horizontalPosition: "left",
-      verticalPosition: "bottom",
-    });
-  }
   public ngOnDestroy() {
     this.mode$.unsubscribe();
+    this.sink.drain();
   }
 }
