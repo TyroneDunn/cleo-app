@@ -21,7 +21,7 @@ const routes: Routes = [
   {path: 'journals/:id', component: JournalDetailComponent, canActivate: [AuthGuard]},
   {path: 'journals/:id/new-entry', component: NewEntryComponent, canActivate: [AuthGuard]},
   {path: 'entries/:id', component: EntryDetailComponent, canActivate: [AuthGuard]},
-  {path: 'terms-of-service', component: TermsOfServiceComponent},
+  {path: 'terms-of-service', component: TermsOfServiceComponent}
 ];
 
 @NgModule({
