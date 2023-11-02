@@ -1,9 +1,12 @@
-<mat-toolbar>
+<mat-toolbar
+  color="primary"
+>
   <mat-toolbar-row>
     <button
       *ngIf="(mode$.value === 'normal')"
       mat-icon-button
-      (click)="navigateBack()">
+      (click)="navigateBack()"
+    >
       <mat-icon>
         keyboard_arrow_left
       </mat-icon>
@@ -12,7 +15,8 @@
     <button
       *ngIf="(mode$.value === 'edit')"
       mat-icon-button
-      (click)="cancelEditing()">
+      (click)="cancelEditing()"
+    >
       <mat-icon>close</mat-icon>
     </button>
 
@@ -22,46 +26,36 @@
       mat-flat-button
       disableRipple
       (click)="enterEditMode()"
-      *ngIf="(mode$.value === 'normal')">
-      <mat-icon>edit</mat-icon>
+      *ngIf="(mode$.value === 'normal')"
+      color="primary"
+    >
       Edit
     </button>
-
     <button
       *ngIf="(mode$.value === 'edit')"
       mat-flat-button
       disableRipple
-      (click)="doneEditing()">
-      <mat-icon>done</mat-icon>
+      (click)="doneEditing()"
+      color="primary"
+    >
       Save
     </button>
-
     <button
       mat-flat-button
       disableRipple
       (click)="deleteEntry()"
-      [disabled]="(mode$.value === 'edit')">
-      <mat-icon>delete</mat-icon>
+      [disabled]="(mode$.value === 'edit')"
+      color="primary"
+    >
       Delete
     </button>
   </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-card
-  *ngIf="(journalEntry$.value)">
-  <quill-editor
-    placeholder="Title"
-    [modules]="{toolbar: false}"
-    [required]="true"
-    [(ngModel)]="journalEntry$.value.title"
-    [readOnly]="(mode$.value === 'normal')"
-    (onEditorCreated)="$event.focus()"
-  ></quill-editor>
-</mat-card>
-
-<mat-card
   class="mat-mdc-card-outlined"
-  *ngIf="(journalEntry$.value)">
+  *ngIf="(journalEntry$.value)"
+>
     <quill-editor
       [modules]="{toolbar: false}"
       [required]="true"
