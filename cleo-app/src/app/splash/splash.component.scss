@@ -1,0 +1,25 @@
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.logo {
+  animation: pulse 3s infinite;
+  width: 10%;
+  min-width: 100px;
+  filter: drop-shadow(2px 2px 2px #808080);
+};
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
