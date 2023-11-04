@@ -16,9 +16,79 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$cleo-app-primary: mat.define-palette(mat.$gray-palette, 300);
-$cleo-app-accent: mat.define-palette(mat.$orange-palette, 300, A100, A400);
+
+$cleo-palette-white: (
+  50 : #ffffff,
+  100 : #fafafa,
+  200 : #f5f5f5,
+  300 : #f0f0f0,
+  400 : #dedede,
+  500 : #c2c2c2,
+  600 : #979797,
+  700 : #818181,
+  800 : #606060,
+  900 : #3c3c3c,
+  A100 : #ffffff,
+  A200 : #ffffff,
+  A400 : #ffffff,
+  A700 : #ffffff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #000000,
+    600 : #000000,
+    700 : #000000,
+    800 : #000000,
+    900 : #000000,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+$cleo-text-jaune : #e79f13;
+
+$cleo-palette-jaune: (
+  50 : #fffcf3,
+  100 : #fff7e0,
+  200 : #fff2cc,
+  300 : #ffedb8,
+  400 : #ffe9a8,
+  500 : #ffe599,
+  600 : #ffe291,
+  700 : #ffde86,
+  800 : #ffda7c,
+  900 : #ffd36b,
+  A100 : #ffffff,
+  A200 : #ffffff,
+  A400 : #ffffff,
+  A700 : #fffbf3,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #000000,
+    600 : #000000,
+    700 : #000000,
+    800 : #000000,
+    900 : #000000,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+$cleo-app-primary: mat.define-palette($cleo-palette-white, 50);
+$cleo-app-accent: mat.define-palette($cleo-palette-jaune, 800);
 $cleo-app-warn: mat.define-palette(mat.$red-palette);
+
 
 $cleo-app-typography-config: mat.define-typography-config(
   $headline-1: mat.define-typography-level(
@@ -94,3 +164,4 @@ $cleo-app-theme: mat.define-light-theme((
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; margin:0; }
+a {color: $cleo-text-jaune}
